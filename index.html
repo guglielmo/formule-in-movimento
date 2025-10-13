@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Formule in Movimento - Animazioni matematiche e fisiche per studenti. Contenuti educativi ottimizzati per mobile e social media.">
+    <title>Formule in Movimento - Matematica e Fisica in Animazione</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .header {
+            background-color: rgba(255, 255, 255, 0.98);
+            padding: 30px 20px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 2em;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .header .tagline {
+            font-size: 1.1em;
+            color: #667eea;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .header .subtitle {
+            font-size: 0.95em;
+            color: #7f8c8d;
+            font-style: italic;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .intro-section {
+            background-color: white;
+            border-radius: 12px;
+            padding: 30px 25px;
+            margin: 30px auto;
+            max-width: 900px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .intro-section h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+            border-left: 4px solid #667eea;
+            padding-left: 15px;
+        }
+
+        .intro-section p {
+            color: #555;
+            margin-bottom: 12px;
+            font-size: 1.05em;
+        }
+
+        .intro-section .highlight {
+            background-color: #f0f3ff;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 3px solid #667eea;
+        }
+
+        .intro-section ul {
+            margin-left: 25px;
+            color: #555;
+        }
+
+        .intro-section li {
+            margin-bottom: 8px;
+        }
+
+        .sections-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        @media (min-width: 768px) {
+            .sections-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .discipline-section {
+            background-color: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .discipline-section h2 {
+            color: #2c3e50;
+            font-size: 1.8em;
+            margin-bottom: 15px;
+            text-align: center;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .discipline-section.mathematics h2 {
+            border-bottom-color: #e74c3c;
+        }
+
+        .discipline-section.physics h2 {
+            border-bottom-color: #3498db;
+        }
+
+        .animation-card {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            transition: all 0.3s ease;
+        }
+
+        .animation-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+
+        .animation-card h3 {
+            color: #34495e;
+            margin-bottom: 10px;
+            font-size: 1.3em;
+        }
+
+        .animation-card p {
+            color: #666;
+            margin-bottom: 12px;
+            font-size: 0.95em;
+        }
+
+        .animation-card .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .animation-card .tag {
+            background-color: #e8eaf6;
+            color: #5c6bc0;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.85em;
+            font-weight: 500;
+        }
+
+        .animation-card a {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+        }
+
+        .animation-card a:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.5);
+        }
+
+        .coming-soon {
+            padding: 30px;
+            text-align: center;
+            color: #95a5a6;
+            font-style: italic;
+            border: 2px dashed #dee2e6;
+            border-radius: 8px;
+            margin: 20px 0;
+            background-color: #fafafa;
+        }
+
+        .mobile-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin: 10px 5px;
+        }
+
+        .footer {
+            background-color: rgba(255, 255, 255, 0.95);
+            margin-top: 50px;
+            padding: 30px 20px;
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 0.95em;
+        }
+
+        .footer p {
+            margin: 8px 0;
+        }
+
+        .footer strong {
+            color: #667eea;
+        }
+
+        @media (max-width: 767px) {
+            .header h1 {
+                font-size: 1.6em;
+            }
+
+            .header .tagline {
+                font-size: 1em;
+            }
+
+            .intro-section {
+                padding: 20px 15px;
+            }
+
+            .discipline-section {
+                padding: 20px 15px;
+            }
+
+            .animation-card {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>📐 Formule in Movimento 🚀</h1>
+        <p class="tagline">Matematica e Fisica in Animazione</p>
+        <p class="subtitle">Contenuti educativi per studenti | Ottimizzati per mobile e social media</p>
+        <div>
+            <span class="mobile-badge">📱 Mobile-First</span>
+            <span class="mobile-badge">🔗 Facile Condivisione</span>
+            <span class="mobile-badge">🎯 Per Studenti</span>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="intro-section">
+            <h2>Il Progetto</h2>
+            <p>
+                <strong>Formule in Movimento</strong> trasforma concetti matematici e fisici in animazioni visive,
+                rendendo l'apprendimento più intuitivo e coinvolgente. Il nome del progetto ha due significati interconnessi:
+            </p>
+            <div class="highlight">
+                <ul>
+                    <li><strong>Animazioni dinamiche</strong> - Formule, espressioni ed esperimenti che prendono vita attraverso il movimento. Ogni elemento si muove, si trasforma e si anima per spiegare i concetti - non contenuti statici, ma video dinamici creati con Manim</li>
+                    <li><strong>Contenuti mobile</strong> - Video ottimizzati per essere fruiti "in movimento", sui dispositivi che gli studenti usano ogni giorno e condivisi sulle piattaforme social</li>
+                </ul>
+            </div>
+            <p>
+                Ogni animazione è progettata per essere <strong>breve</strong>, <strong>chiara</strong> e <strong>facilmente condivisibile</strong>
+                su piattaforme social come Instagram, TikTok e YouTube Shorts.
+            </p>
+        </div>
+
+        <div class="intro-section">
+            <h2>Perché "Formule" e non "Equazioni"?</h2>
+            <p>
+                Abbiamo scelto deliberatamente "formule" invece di "equazioni" perché è un termine più
+                <strong>accessibile</strong> e meno intimidatorio. "Equazioni" evoca immediatamente compiti e
+                verifiche, mentre "formule" suona più familiare e amichevole. Inoltre, "formule" ha uno
+                <strong>scope più ampio</strong>: include formule matematiche, fisiche, chimiche - tutto ciò
+                che gli studenti incontrano nel loro percorso scolastico.
+            </p>
+        </div>
+
+        <div class="sections-container">
+            <!-- Mathematics Section -->
+            <div class="discipline-section mathematics">
+                <h2>📊 Matematica</h2>
+
+                <p style="text-align: center; margin-bottom: 20px; color: #666;">
+                    Visualizza i concetti matematici attraverso animazioni dinamiche
+                </p>
+
+                <div class="animation-card">
+                    <h3>Equazioni Lineari</h3>
+                    <p>
+                        Impara i fondamenti dell'algebra con una lezione completa sulle equazioni lineari. Le animazioni mostrano come riconoscere equazioni lineari, semplificare espressioni, risolvere equazioni passo dopo passo e verificare le soluzioni. Include esempi progressivamente più complessi con parentesi e proprietà distributiva.
+                    </p>
+                    <div class="tags">
+                        <span class="tag">algebra</span>
+                        <span class="tag">equazioni</span>
+                        <span class="tag">semplificazione</span>
+                    </div>
+                    <a href="animations/matematica/equazioni_lineari/index.html">Guarda Animazione →</a>
+                </div>
+
+                <div class="coming-soon">
+                    <p>🚧 Altre animazioni in arrivo 🚧</p>
+                    <p style="margin-top: 10px; font-size: 0.9em;">
+                        Geometria • Trigonometria<br>
+                        Funzioni • Limiti • Derivate • Integrali
+                    </p>
+                </div>
+
+                <div style="text-align: center; margin-top: 20px;">
+                    <a href="animations/matematica/index.html" style="display: inline-block; background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s ease;">
+                        Esplora la Sezione Matematica →
+                    </a>
+                </div>
+
+                <!-- Template per future animazioni
+                <div class="animation-card">
+                    <h3>Titolo Animazione</h3>
+                    <p>
+                        Descrizione breve dell'animazione e dei concetti che illustra.
+                    </p>
+                    <div class="tags">
+                        <span class="tag">algebra</span>
+                        <span class="tag">equazioni</span>
+                    </div>
+                    <a href="animations/matematica/nome/index.html">Guarda Animazione →</a>
+                </div>
+                -->
+            </div>
+
+            <!-- Physics Section -->
+            <div class="discipline-section physics">
+                <h2>⚡ Fisica</h2>
+
+                <p style="text-align: center; margin-bottom: 20px; color: #666;">
+                    Scopri i fenomeni fisici attraverso visualizzazioni in movimento
+                </p>
+
+                <div class="coming-soon">
+                    <p>🚧 Animazioni in arrivo 🚧</p>
+                    <p style="margin-top: 10px; font-size: 0.9em;">
+                        <strong>Focus principale: Termodinamica</strong><br>
+                        Calore e Temperatura • Leggi della Termodinamica<br>
+                        Trasformazioni Termodinamiche • Entropia<br>
+                        Macchine Termiche • Applicazioni Pratiche
+                    </p>
+                </div>
+
+                <div style="text-align: center; margin-top: 20px;">
+                    <a href="animations/fisica/index.html" style="display: inline-block; background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s ease;">
+                        Esplora la Sezione Fisica →
+                    </a>
+                </div>
+
+                <!-- Template per future animazioni
+                <div class="animation-card">
+                    <h3>Titolo Animazione</h3>
+                    <p>
+                        Descrizione breve dell'animazione e dei fenomeni fisici che illustra.
+                    </p>
+                    <div class="tags">
+                        <span class="tag">cinematica</span>
+                        <span class="tag">moto</span>
+                    </div>
+                    <a href="animations/fisica/nome/index.html">Guarda Animazione →</a>
+                </div>
+                -->
+            </div>
+        </div>
+
+        <div class="intro-section" style="margin-top: 40px;">
+            <h2>🎬 Come Funziona</h2>
+            <p>
+                Ogni animazione è creata con <strong>Manim</strong> (Mathematical Animation Engine),
+                lo stesso software usato dal popolare canale YouTube 3Blue1Brown. Le animazioni:
+            </p>
+            <ul>
+                <li>Sono <strong>ottimizzate per mobile</strong> con design responsive</li>
+                <li>Possono essere <strong>facilmente condivise</strong> su social media</li>
+                <li>Includono <strong>codice embed</strong> per blog e siti scolastici</li>
+                <li>Sono disponibili in <strong>formato verticale</strong> (9:16) per Stories e Reels</li>
+                <li>Sono tutte in <strong>italiano</strong> per studenti italiani</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Creato con <strong>Manim Community Edition</strong></p>
+        <p>Design mobile-first per la generazione sempre connessa</p>
+        <p style="margin-top: 15px; font-size: 0.9em;">
+            📱 Ottimizzato per mobile • 🔗 Facile da condividere • 🎓 Per studenti
+        </p>
+    </div>
+</body>
+</html>
