@@ -47,21 +47,55 @@ Abbiamo scelto deliberatamente "formule" invece di "equazioni" perché:
 
 ```
 formule-in-movimento/
-├── index.html                          # Landing page principale
-├── animations/                         # Animazioni organizzate per disciplina
-│   ├── matematica/                     # Sezione matematica
+├── frontend/                           # Applicazione Astro frontend
+│   ├── src/
+│   │   ├── pages/                     # Pagine Astro (routes)
+│   │   │   ├── index.astro           # Homepage
+│   │   │   ├── 404.astro             # Pagina errore
+│   │   │   ├── matematica/           # Sezione matematica
+│   │   │   │   ├── index.astro       # Landing sezione matematica
+│   │   │   │   └── equazioni-lineari.astro  # Pagina lezione
+│   │   │   └── fisica/               # Sezione fisica
+│   │   │       ├── index.astro       # Landing sezione fisica
+│   │   │       └── gas-perfetto.astro  # Pagina lezione
+│   │   ├── components/               # Componenti Vue/Astro riutilizzabili
+│   │   ├── layouts/                  # Layout pagine
+│   │   └── styles/                   # Fogli di stile CSS
+│   ├── public/                       # Asset statici (favicon, etc.)
+│   │   └── media -> ../../media      # Symlink ai file video
+│   ├── dist/                         # Build output (generato da npm run build)
+│   └── package.json
+├── animations/                        # File sorgente Python Manim
+│   ├── matematica/                    # Animazioni matematica
 │   │   └── [argomento]/
-│   │       ├── [nome].py              # Scene Manim
-│   │       ├── index.html             # Pagina HTML dell'animazione
-│   │       └── media/                 # Video renderizzati
-│   └── fisica/                        # Sezione fisica
+│   │       ├── [nome].py             # Definizioni scene Manim
+│   │       └── manim.cfg             # Configurazione Manim
+│   └── fisica/                        # Animazioni fisica
 │       └── [argomento]/
 │           ├── [nome].py
-│           ├── index.html
-│           └── media/
-├── requirements.txt                    # Dipendenze Python
-├── .python-version                     # Versione Python (3.12)
-└── CLAUDE.md                          # Linee guida per lo sviluppo
+│           └── manim.cfg
+├── media/                             # Directory centralizzata output video
+│   ├── matematica/                    # Video organizzati per disciplina
+│   │   └── [argomento]/
+│   │       └── videos/
+│   │           └── [quality]/        # es. 854p15, 1920p60
+│   │               └── [Scene].mp4
+│   └── fisica/
+│       └── [argomento]/
+│           └── videos/
+│               └── [quality]/
+│                   └── [Scene].mp4
+├── docs/                              # Documentazione
+│   ├── ARCHITECTURE.md               # Architettura del progetto
+│   ├── DEPLOY-MODES.md               # Modalità deployment
+│   └── PODMAN.md                     # Guida Podman
+├── Makefile                           # Comando centrale per tutte le operazioni
+├── Dockerfile                         # Build Docker per produzione
+├── docker-compose.local.yml          # Config Docker/Podman per test locale
+├── nginx.conf                         # Config nginx per deployment diretto
+├── .python-version                    # Versione Python (3.12)
+├── CLAUDE.md                          # Linee guida per lo sviluppo
+└── CONTRIBUTING.md                    # Linee guida contributi
 
 Virtual environment condiviso: ~/.virtualenvs/manim
 ```
@@ -239,21 +273,28 @@ make deploy-animations
 
 ### Local Testing with Docker/Podman
 
+**IMPORTANTE: Solo per test locale, non per produzione.**
+
 For local testing with containers:
 
 ```bash
 # Using Podman (recommended)
-make deploy-podman        # Build and start container
-make stop-podman          # Stop container
-make restart-podman       # Restart after changes
+make deploy-podman-local    # Build and start local test container
+make stop-podman-local      # Stop local test container
+make restart-podman-local   # Restart after changes
 
 # Using Docker
-make deploy-docker        # Build and start container
-make stop-docker          # Stop container
-make restart-docker       # Restart after changes
+make deploy-docker-local    # Build and start local test container
+make stop-docker-local      # Stop local test container
+make restart-docker-local   # Restart after changes
 ```
 
 The site will be available at `http://localhost:8080`.
+
+**For production deployment, use:**
+```bash
+make deploy-production      # Deploy to production via nginx-proxy
+```
 
 ### Frontend Development
 
