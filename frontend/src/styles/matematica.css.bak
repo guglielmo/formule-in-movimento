@@ -1,0 +1,31 @@
+/*
+ * Formule in Movimento - Matematica Theme
+ * Red color scheme for mathematics animations
+ */
+
+:root {
+    --primary-color: #e74c3c;
+    --primary-dark: #c0392b;
+    --primary-bg-light: linear-gradient(135deg, #e74c3c15 0%, #c0392b15 100%);
+    --primary-shadow: rgba(231, 76, 60, 0.2);
+}
+
+body {
+    background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+}
+
+.nav-link {
+    color: #e74c3c;
+}
+
+.nav-link:hover {
+    color: #c0392b;
+}
+
+h1 {
+    color: #e74c3c;
+}
+
+.intro-section h2 {
+    color: #e74c3c;
+}

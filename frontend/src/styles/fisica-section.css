@@ -1,0 +1,269 @@
+/*
+ * Formule in Movimento - Fisica Section Page Styles
+ * Blue gradient theme for fisica landing page
+ */
+
+body {
+  background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+  line-height: 1.6;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  background-color: white;
+  border-radius: 15px;
+  padding: 40px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+}
+
+.logo-section {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.section-logo {
+  height: 50px;
+  width: auto;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.section-logo:hover {
+  transform: scale(1.05);
+  opacity: 0.9;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 40px;
+  padding-bottom: 20px;
+  border-bottom: 3px solid #3498db;
+}
+
+.header h1 {
+  font-size: 2.5em;
+  color: #3498db;
+  margin-bottom: 10px;
+}
+
+.header .emoji {
+  font-size: 3em;
+  margin-bottom: 10px;
+}
+
+.header p {
+  font-size: 1.1em;
+  color: #7f8c8d;
+  font-style: italic;
+}
+
+.content {
+  margin-top: 30px;
+}
+
+.content h2 {
+  color: #2c3e50;
+  font-size: 1.8em;
+  margin-bottom: 20px;
+  border-left: 4px solid #3498db;
+  padding-left: 15px;
+}
+
+.content p {
+  color: #555;
+  font-size: 1.1em;
+  margin-bottom: 20px;
+  line-height: 1.8;
+}
+
+.highlight-box {
+  background: linear-gradient(135deg, #3498db15 0%, #2980b915 100%);
+  border-left: 4px solid #3498db;
+  padding: 20px;
+  border-radius: 8px;
+  margin: 25px 0;
+}
+
+.highlight-box h3 {
+  color: #3498db;
+  font-size: 1.5em;
+  margin-bottom: 15px;
+}
+
+.highlight-box p {
+  color: #555;
+  margin-bottom: 10px;
+}
+
+.topics {
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  padding: 25px;
+  margin: 30px 0;
+}
+
+.topics h3 {
+  color: #3498db;
+  font-size: 1.4em;
+  margin-bottom: 15px;
+}
+
+.topics ul {
+  list-style: none;
+  padding: 0;
+}
+
+.topics li {
+  padding: 10px 0;
+  padding-left: 30px;
+  position: relative;
+  color: #555;
+  font-size: 1.05em;
+}
+
+.topics li:before {
+  content: "🔥";
+  position: absolute;
+  left: 0;
+  font-size: 1.2em;
+}
+
+.topics .subtopics {
+  margin-left: 30px;
+  margin-top: 10px;
+}
+
+.topics .subtopics li {
+  font-size: 0.95em;
+  color: #666;
+}
+
+.topics .subtopics li:before {
+  content: "•";
+  color: #3498db;
+  font-size: 1.5em;
+}
+
+.coming-soon {
+  background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+  color: white;
+  padding: 30px;
+  border-radius: 10px;
+  text-align: center;
+  margin: 30px 0;
+  font-size: 1.2em;
+  font-weight: 600;
+}
+
+.animations-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 25px;
+  margin: 30px 0;
+}
+
+.animation-card {
+  background-color: white;
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  border: 2px solid transparent;
+}
+
+.animation-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 25px rgba(52, 152, 219, 0.3);
+  border-color: #3498db;
+}
+
+.animation-card h3 {
+  color: #3498db;
+  font-size: 1.5em;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.animation-card .emoji {
+  font-size: 1.3em;
+}
+
+.animation-card p {
+  color: #666;
+  font-size: 1em;
+  line-height: 1.6;
+  margin-bottom: 15px;
+}
+
+.animation-card .topics-list {
+  color: #888;
+  font-size: 0.95em;
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px solid #eee;
+}
+
+.animation-card .cta {
+  color: #3498db;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 10px;
+}
+
+.animation-card:hover .cta {
+  gap: 10px;
+}
+
+.back-link {
+  text-align: center;
+  margin-top: 40px;
+}
+
+.back-link a {
+  display: inline-block;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 15px 35px;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.1em;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.back-link a:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+}
+
+@media (max-width: 767px) {
+  .container {
+    padding: 25px 20px;
+  }
+
+  .header h1 {
+    font-size: 2em;
+  }
+
+  .content h2 {
+    font-size: 1.5em;
+  }
+}

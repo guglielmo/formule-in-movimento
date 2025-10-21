@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  formule-in-movimento:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: formule-in-movimento:latest
+    container_name: formule-in-movimento
+    ports:
+      - "8080:80"  # Map port 8080 on host to port 80 in container
+    volumes:
+      # Mount media directory for Manim videos (allows updates without rebuild)
+      - ./media:/usr/share/nginx/html/media:ro
+    restart: unless-stopped
+    networks:
+      - formule-network
+
+networks:
+  formule-network:
+    driver: bridge

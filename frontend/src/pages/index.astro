@@ -1,0 +1,130 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/home.css';
+---
+
+<BaseLayout
+  title="Formule in Movimento - Matematica e Fisica in Animazione"
+  description="Formule in Movimento - Animazioni matematiche e fisiche per studenti. Contenuti educativi ottimizzati per mobile e social media."
+>
+  <Header
+    title=""
+    tagline="Matematica e Fisica in Animazione"
+    subtitle="Contenuti educativi per studenti | Ottimizzati per mobile e social media"
+    showBadges={true}
+    showLogo={true}
+  />
+
+  <div class="container">
+    <div class="intro-section">
+      <h2>Il Progetto</h2>
+      <p>
+        <strong>Formule in Movimento</strong> trasforma concetti matematici e fisici in animazioni visive,
+        rendendo l'apprendimento più intuitivo e coinvolgente. Il nome del progetto ha due significati interconnessi:
+      </p>
+      <div class="highlight">
+        <ul>
+          <li><strong>Animazioni dinamiche</strong> - Formule, espressioni ed esperimenti che prendono vita attraverso il movimento. Ogni elemento si muove, si trasforma e si anima per spiegare i concetti - non contenuti statici, ma video dinamici creati con Manim</li>
+          <li><strong>Contenuti mobile</strong> - Video ottimizzati per essere fruiti "in movimento", sui dispositivi che gli studenti usano ogni giorno e condivisi sulle piattaforme social</li>
+        </ul>
+      </div>
+      <p>
+        Ogni animazione è progettata per essere <strong>breve</strong>, <strong>chiara</strong> e <strong>facilmente condivisibile</strong>
+        su piattaforme social come Instagram, TikTok e YouTube Shorts.
+      </p>
+    </div>
+
+    <div class="sections-container">
+      <!-- Mathematics Section -->
+      <div class="discipline-section mathematics">
+        <h2>📊 Matematica</h2>
+
+        <p style="text-align: center; margin-bottom: 20px; color: #666;">
+          Visualizza i concetti matematici attraverso animazioni dinamiche
+        </p>
+
+        <div class="animation-card">
+          <h3>Equazioni Lineari</h3>
+          <p>
+            Impara i fondamenti dell'algebra con una lezione completa sulle equazioni lineari. Le animazioni mostrano come riconoscere equazioni lineari, semplificare espressioni, risolvere equazioni passo dopo passo e verificare le soluzioni. Include esempi progressivamente più complessi con parentesi e proprietà distributiva.
+          </p>
+          <div class="tags">
+            <span class="tag">algebra</span>
+            <span class="tag">equazioni</span>
+            <span class="tag">semplificazione</span>
+          </div>
+          <a href="/matematica/equazioni-lineari">Guarda Animazione →</a>
+        </div>
+
+        <div class="coming-soon">
+          <p>🚧 Altre animazioni in arrivo 🚧</p>
+          <p style="margin-top: 10px; font-size: 0.9em;">
+            Geometria • Trigonometria<br>
+            Funzioni • Limiti • Derivate • Integrali
+          </p>
+        </div>
+
+        <div style="text-align: center; margin-top: 20px;">
+          <a href="/matematica" style="display: inline-block; background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s ease;">
+            Esplora la Sezione Matematica →
+          </a>
+        </div>
+      </div>
+
+      <!-- Physics Section -->
+      <div class="discipline-section physics">
+        <h2>⚡ Fisica</h2>
+
+        <p style="text-align: center; margin-bottom: 20px; color: #666;">
+          Scopri i fenomeni fisici attraverso visualizzazioni in movimento
+        </p>
+
+        <div class="animation-card">
+          <h3>Legge dei Gas Perfetti</h3>
+          <p>
+            Scopri come la legge fondamentale <strong>pV = nRT</strong> deriva dalle trasformazioni termodinamiche. Le animazioni mostrano le tre trasformazioni fondamentali (isoterma, isocora e isobara) con simulazioni visive di gas in contenitori, grafici dinamici e la relazione tra pressione, volume e temperatura. Comprendi come Boyle, Charles e Gay-Lussac hanno scoperto queste leggi attraverso esperimenti.
+          </p>
+          <div class="tags">
+            <span class="tag">termodinamica</span>
+            <span class="tag">gas ideali</span>
+            <span class="tag">trasformazioni</span>
+          </div>
+          <a href="/fisica/gas-perfetto">Guarda Animazione →</a>
+        </div>
+
+        <div class="coming-soon">
+          <p>🚧 Altre animazioni in arrivo 🚧</p>
+          <p style="margin-top: 10px; font-size: 0.9em;">
+            Calore e Temperatura • Entropia<br>
+            Macchine Termiche • Cicli Termodinamici
+          </p>
+        </div>
+
+        <div style="text-align: center; margin-top: 20px;">
+          <a href="/fisica" style="display: inline-block; background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: all 0.3s ease;">
+            Esplora la Sezione Fisica →
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="intro-section" style="margin-top: 40px;">
+      <h2>🎬 Come Funziona</h2>
+      <p>
+        Ogni animazione è creata con <strong>Manim</strong> (Mathematical Animation Engine),
+        lo stesso software usato dal popolare canale YouTube 3Blue1Brown. Le animazioni:
+      </p>
+      <ul>
+        <li>Sono <strong>ottimizzate per mobile</strong> con design responsive</li>
+        <li>Possono essere <strong>facilmente condivise</strong> su social media</li>
+        <li>Includono <strong>codice embed</strong> per blog e siti scolastici</li>
+        <li>Sono disponibili in <strong>formato verticale</strong> (9:16) per Stories e Reels</li>
+        <li>Sono tutte in <strong>italiano</strong> per studenti italiani</li>
+      </ul>
+    </div>
+  </div>
+
+  <Footer />
+</BaseLayout>

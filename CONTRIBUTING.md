@@ -68,15 +68,23 @@ cd formule-in-movimento
 ### 2. Setup Ambiente
 
 ```bash
-# Crea virtual environment
-python -m venv .venv
-source .venv/bin/activate  # Linux/Mac
-# oppure
-.venv\Scripts\activate     # Windows
+# Se non l'hai già fatto, crea il virtual environment condiviso
+python3 -m venv ~/.virtualenvs/manim
 
-# Installa dipendenze
-pip install -r requirements.txt
+# Attiva l'ambiente condiviso
+source ~/.virtualenvs/manim/bin/activate  # Linux/Mac
+# oppure
+%USERPROFILE%\.virtualenvs\manim\Scripts\activate  # Windows
+
+# Installa dipendenze (se non già installate)
+pip install manim
+
+# Oppure usa il Makefile del progetto
+cd formule-in-movimento
+make setup
 ```
+
+**Nota**: Usiamo un virtual environment condiviso in `~/.virtualenvs/manim` per tutti i progetti Manim.
 
 ### 3. Crea un Branch
 

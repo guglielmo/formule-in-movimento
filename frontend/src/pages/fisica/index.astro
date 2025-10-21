@@ -1,0 +1,63 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import '../../styles/fisica-section.css';
+---
+
+<BaseLayout
+  title="Fisica | Formule in Movimento"
+  description="Sezione Fisica - Formule in Movimento. Animazioni per visualizzare i fenomeni fisici e le leggi della natura."
+>
+  <div class="container">
+    <div class="logo-section">
+      <a href="/">
+        <img src="/logo-icon.svg" alt="Formule in Movimento" class="section-logo" />
+      </a>
+    </div>
+
+    <div class="header">
+      <div class="emoji">⚡</div>
+      <h1>Fisica</h1>
+      <p>Animazioni per visualizzare i fenomeni fisici e le leggi della natura</p>
+    </div>
+
+    <div class="content">
+      <h2>Animazioni Disponibili</h2>
+
+      <div class="lessons-section">
+        <div class="lesson-card" style="border-left: 4px solid #3498db; padding: 20px; background: #fff; margin: 20px 0; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border-radius: 8px;">
+          <h4 style="margin-top: 0; color: #3498db;">
+            <a href="/fisica/gas-perfetto" style="color: #3498db; text-decoration: none;">
+              Legge dei Gas Perfetti (pV = nRT)
+            </a>
+          </h4>
+          <p style="color: #555; margin: 10px 0;">
+            Scopri come la legge universale dei gas perfetti deriva dalle tre trasformazioni termodinamiche fondamentali:
+            isoterma (T = cost), isocora (V = cost) e isobara (p = cost). Animazioni verticali ottimizzate per mobile.
+          </p>
+          <p style="margin-top: 15px;">
+            <strong>Argomenti trattati:</strong> Legge di Boyle, Legge di Charles, Legge di Gay-Lussac,
+            trasformazioni termodinamiche, teoria cinetica dei gas
+          </p>
+          <a href="/fisica/gas-perfetto" style="display: inline-block; margin-top: 15px; padding: 10px 20px; background: #3498db; color: white; text-decoration: none; border-radius: 5px; font-weight: bold;">
+            Vai alla Lezione →
+          </a>
+        </div>
+      </div>
+
+      <div class="topics">
+        <h3>Argomenti in Preparazione</h3>
+        <ul>
+          <li>Calore e Temperatura</li>
+          <li>Primo Principio della Termodinamica</li>
+          <li>Trasformazioni Termodinamiche</li>
+          <li>Secondo Principio e Entropia</li>
+          <li>Applicazioni Pratiche</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="back-link">
+      <a href="/">← Torna alla Home</a>
+    </div>
+  </div>
+</BaseLayout>

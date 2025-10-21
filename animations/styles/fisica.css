@@ -1,0 +1,31 @@
+/*
+ * Formule in Movimento - Fisica Theme
+ * Blue color scheme for physics animations
+ */
+
+:root {
+    --primary-color: #3498db;
+    --primary-dark: #2980b9;
+    --primary-bg-light: linear-gradient(135deg, #3498db15 0%, #2980b915 100%);
+    --primary-shadow: rgba(52, 152, 219, 0.2);
+}
+
+body {
+    background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+}
+
+.nav-link {
+    color: #3498db;
+}
+
+.nav-link:hover {
+    color: #2980b9;
+}
+
+h1 {
+    color: #3498db;
+}
+
+.intro-section h2 {
+    color: #3498db;
+}

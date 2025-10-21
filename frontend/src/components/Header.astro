@@ -1,0 +1,95 @@
+---
+export interface Props {
+  title: string;
+  tagline?: string;
+  subtitle?: string;
+  showBadges?: boolean;
+  showLogo?: boolean;
+  useIconLogo?: boolean;
+  logoSize?: 'large' | 'small';
+}
+
+const {
+  title,
+  tagline,
+  subtitle,
+  showBadges = false,
+  showLogo = true,
+  useIconLogo = false,
+  logoSize = 'large'
+} = Astro.props;
+---
+
+<header class="header">
+  {showLogo && (
+    <div class="logo-container">
+      <a href="/">
+        <img
+          src={useIconLogo ? "/logo-icon.svg" : "/logo-header.svg"}
+          alt="Formule in Movimento"
+          class="header-logo"
+          data-size={logoSize}
+        />
+      </a>
+    </div>
+  )}
+
+  {title && <h1>{title}</h1>}
+  {tagline && <p class="tagline">{tagline}</p>}
+  {subtitle && <p class="subtitle">{subtitle}</p>}
+  {showBadges && (
+    <div>
+      <span class="mobile-badge">📱 Mobile-First</span>
+      <span class="mobile-badge">🔗 Facile Condivisione</span>
+      <span class="mobile-badge">🎯 Per Studenti</span>
+    </div>
+  )}
+</header>
+
+<style>
+  .logo-container {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  /* Large logo (home page) */
+  .header-logo[data-size="large"] {
+    height: 120px;
+    width: auto;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+  }
+
+  /* Small logo (lesson pages) */
+  .header-logo[data-size="small"] {
+    height: 100px;
+    width: auto;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+  }
+
+  .header-logo:hover {
+    transform: scale(1.05);
+    opacity: 0.9;
+  }
+
+  /* Responsive: smaller logo on mobile */
+  @media (max-width: 768px) {
+    .header-logo[data-size="large"] {
+      height: 80px;
+    }
+
+    .header-logo[data-size="small"] {
+      height: 50px;
+    }
+  }
+
+  .mobile-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 15px;
+    font-size: 0.85em;
+    font-weight: 600;
+    margin: 10px 5px;
+  }
+</style>

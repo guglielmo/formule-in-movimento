@@ -1,0 +1,146 @@
+---
+export interface Props {
+  src: string;  // Quality-agnostic path: /media/matematica/equazioni_lineari/SceneName.mp4
+  title?: string;
+}
+
+const { src, title } = Astro.props;
+
+// Extract base path without quality folder
+// Expected format: /media/{discipline}/videos/{topic}/{scene}.mp4
+// OR legacy format: /media/{discipline}/videos/{topic}/{quality}/{scene}.mp4
+
+let basePath = src;
+let sceneName = '';
+
+// Parse the path to extract components
+const pathMatch = src.match(/\/media\/([^/]+)\/videos\/([^/]+)\/(.+)\.mp4$/);
+if (pathMatch) {
+  const [, discipline, topic, sceneOrQuality] = pathMatch;
+
+  // Check if it includes a quality folder (legacy format)
+  if (sceneOrQuality.includes('/')) {
+    // Legacy format: already has quality
+    basePath = src;
+    sceneName = sceneOrQuality.split('/')[1];
+  } else {
+    // New format: no quality folder
+    sceneName = sceneOrQuality;
+    basePath = `/media/${discipline}/videos/${topic}`;
+  }
+} else {
+  // Fallback: use as-is
+  console.warn('VideoPlayer: unexpected path format:', src);
+}
+
+// Quality levels to try, in order of preference (best to worst)
+const qualities = ['1920p60', '1920p15', '1280p30', '854p15'];
+---
+
+<div class="video-player-wrapper">
+  <video controls data-base-path={basePath} data-scene-name={sceneName} data-qualities={JSON.stringify(qualities)}>
+    <!-- Sources will be added by client-side script -->
+    Il tuo browser non supporta il tag video.
+  </video>
+
+  <div class="share-hint">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+      <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z"/>
+      <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z"/>
+    </svg>
+    <span class="hint-text">Registra lo schermo per condividere su Instagram, TikTok o YouTube Shorts</span>
+  </div>
+</div>
+
+<script>
+  // Client-side script to detect and load best available quality
+  document.addEventListener('DOMContentLoaded', () => {
+    const videos = document.querySelectorAll('video[data-base-path]');
+
+    videos.forEach(async (video) => {
+      const basePath = video.getAttribute('data-base-path');
+      const sceneName = video.getAttribute('data-scene-name');
+      const qualities = JSON.parse(video.getAttribute('data-qualities') || '[]');
+
+      // Try each quality level until we find one that exists
+      for (const quality of qualities) {
+        const videoPath = `${basePath}/${quality}/${sceneName}.mp4`;
+
+        // Check if video exists using HEAD request
+        try {
+          const response = await fetch(videoPath, { method: 'HEAD' });
+          if (response.ok) {
+            // Found a working quality, use it
+            const source = document.createElement('source');
+            source.src = videoPath;
+            source.type = 'video/mp4';
+            video.appendChild(source);
+
+            // Load the video
+            video.load();
+
+            // Optional: log which quality was selected (for debugging)
+            console.log(`VideoPlayer: Using ${quality} for ${sceneName}`);
+            break;
+          }
+        } catch (error) {
+          // Network error or file not found, try next quality
+          continue;
+        }
+      }
+
+      // If no quality was found, show error
+      if (video.children.length === 0) {
+        console.error(`VideoPlayer: No quality found for ${sceneName} at ${basePath}`);
+        video.innerHTML = '<p style="color: red; padding: 20px;">Video non disponibile</p>';
+      }
+    });
+  });
+</script>
+
+<style>
+  .video-player-wrapper {
+    position: relative;
+    margin-bottom: 20px;
+  }
+
+  /* Video styling inherited from common.css */
+
+  .share-hint {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 12px;
+    padding: 10px 16px;
+    background: linear-gradient(135deg, rgba(142, 68, 173, 0.08) 0%, rgba(52, 152, 219, 0.08) 100%);
+    border-left: 3px solid var(--primary-color);
+    border-radius: 6px;
+    font-size: 0.9em;
+    color: #555;
+    transition: all 0.3s ease;
+  }
+
+  .share-hint svg {
+    flex-shrink: 0;
+    color: var(--primary-color);
+    opacity: 0.8;
+  }
+
+  .hint-text {
+    line-height: 1.4;
+    text-align: center;
+  }
+
+  .video-player-wrapper:hover .share-hint {
+    background: linear-gradient(135deg, rgba(142, 68, 173, 0.12) 0%, rgba(52, 152, 219, 0.12) 100%);
+    border-left-width: 4px;
+  }
+
+  @media (max-width: 767px) {
+    .share-hint {
+      font-size: 0.85em;
+      padding: 8px 12px;
+    }
+  }
+</style>

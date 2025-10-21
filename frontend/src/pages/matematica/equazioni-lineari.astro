@@ -1,0 +1,183 @@
+---
+import LessonLayout from '../../layouts/LessonLayout.astro';
+import VideoPlayer from '../../components/VideoPlayer.astro';
+---
+
+<LessonLayout
+  title="Equazioni Lineari"
+  subtitle="Algebra fondamentale: espressioni, semplificazione e risoluzione"
+  description="Equazioni Lineari - Impara l'algebra attraverso animazioni dinamiche | Formule in Movimento"
+  theme="matematica"
+>
+  <div class="intro-section">
+    <h2 style="margin-top: 0;">Che cos'è un'equazione lineare?</h2>
+    <p>
+      Un'<strong>equazione lineare</strong> è un'equazione algebrica in cui ogni termine è una costante
+      o il prodotto di una costante e una singola variabile elevata alla prima potenza.
+      La forma generale di un'equazione lineare in una variabile è:
+    </p>
+    <div class="example">
+      ax + b = c
+    </div>
+    <p>dove <strong>a</strong>, <strong>b</strong> e <strong>c</strong> sono costanti e <strong>a ≠ 0</strong>.</p>
+
+    <div class="key-concept">
+      <strong>Caratteristiche principali:</strong>
+      <ul>
+        <li>La variabile (di solito <em>x</em>) appare solo alla prima potenza</li>
+        <li>Non ci sono radici, frazioni con la variabile al denominatore, o esponenti sulla variabile</li>
+        <li>Il grafico di un'equazione lineare è sempre una linea retta</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>1. Riconoscere Equazioni Lineari</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/matematica/videos/equazioni_lineari/RiconoscereEquazioniLineari.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> Questa animazione mostra la differenza tra equazioni lineari e non lineari.
+      Imparerai a riconoscere le equazioni lineari identificando le caratteristiche chiave:
+      <ul>
+        <li><strong>Equazioni Lineari:</strong> 2x + 3 = 7, 5x - 4 = 2x + 8, x/3 + 5 = 9</li>
+        <li><strong>NON Lineari:</strong> x² + 3 = 7 (esponente), √x = 4 (radice), 1/x = 2 (variabile al denominatore)</li>
+      </ul>
+      La capacità di distinguere tra equazioni lineari e non lineari è fondamentale per scegliere il metodo di risoluzione corretto.
+    </div>
+  </div>
+
+  <h2>2. Semplificare Espressioni</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/matematica/videos/equazioni_lineari/SemplificareEspressioni.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> Prima di risolvere un'equazione, spesso è necessario semplificare le espressioni.
+      Questa animazione mostra due tecniche essenziali:
+
+      <h3>Raccogliere i termini simili</h3>
+      <p>I <em>termini simili</em> sono termini che contengono le stesse variabili con gli stessi esponenti.
+      Per esempio, in <code>3x + 5 + 2x - 3</code>, i termini <code>3x</code> e <code>2x</code> sono simili
+      (entrambi contengono <em>x</em>), così come <code>5</code> e <code>-3</code> (entrambi sono costanti).</p>
+      <div class="example">
+        3x + 5 + 2x - 3 = (3x + 2x) + (5 - 3) = 5x + 2
+      </div>
+
+      <h3>Proprietà distributiva</h3>
+      <p>La proprietà distributiva afferma che <code>a(b + c) = ab + ac</code>. Questa proprietà è essenziale
+      per eliminare le parentesi nelle espressioni.</p>
+      <div class="example">
+        3(2x - 4) + 5 = 6x - 12 + 5 = 6x - 7
+      </div>
+    </div>
+  </div>
+
+  <h2>3. Risolvere un'Equazione Lineare</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/matematica/videos/equazioni_lineari/RisolvereEquazione.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> Questa animazione dimostra il processo passo-passo per risolvere
+      un'equazione lineare. L'obiettivo è <em>isolare la variabile</em> su un lato dell'equazione.
+
+      <div class="steps">
+        <strong>Passi per risolvere 3x + 5 = 2x + 11:</strong>
+        <ol>
+          <li><strong>Raccogliere le variabili su un lato:</strong> Sottrarre 2x da entrambi i lati
+            <div class="example">3x - 2x + 5 = 11</div>
+          </li>
+          <li><strong>Semplificare:</strong> Combinare i termini simili
+            <div class="example">x + 5 = 11</div>
+          </li>
+          <li><strong>Isolare la variabile:</strong> Sottrarre 5 da entrambi i lati
+            <div class="example">x = 11 - 5</div>
+          </li>
+          <li><strong>Calcolare la soluzione:</strong>
+            <div class="example">x = 6</div>
+          </li>
+        </ol>
+      </div>
+
+      <div class="key-concept">
+        <strong>Principio fondamentale:</strong> Qualsiasi operazione eseguita su un lato dell'equazione
+        deve essere eseguita anche sull'altro lato per mantenere l'uguaglianza.
+      </div>
+    </div>
+  </div>
+
+  <h2>4. Verificare la Soluzione</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/matematica/videos/equazioni_lineari/VerificareSoluzione.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> Dopo aver trovato una soluzione, è importante <em>verificarla</em>
+      sostituendo il valore nella equazione originale. Se entrambi i lati dell'equazione hanno lo stesso valore,
+      la soluzione è corretta!
+
+      <div class="steps">
+        <strong>Verifica per x = 6 nell'equazione 3x + 5 = 2x + 11:</strong>
+        <ol>
+          <li><strong>Sostituire x = 6:</strong>
+            <div class="example">3(6) + 5 = 2(6) + 11</div>
+          </li>
+          <li><strong>Calcolare il lato sinistro:</strong>
+            <div class="example">18 + 5 = 23</div>
+          </li>
+          <li><strong>Calcolare il lato destro:</strong>
+            <div class="example">12 + 11 = 23</div>
+          </li>
+          <li><strong>Confrontare:</strong>
+            <div class="example">23 = 23 ✓</div>
+            <p>I due lati sono uguali, quindi x = 6 è la soluzione corretta!</p>
+          </li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <h2>5. Equazione Più Complessa</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/matematica/videos/equazioni_lineari/EquazioniComplesse.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> Questa animazione affronta un'equazione più complessa che richiede
+      l'uso di più tecniche: proprietà distributiva, raccolta di termini simili e operazioni inverse.
+
+      <div class="steps">
+        <strong>Risolvere 2(x + 3) = 4x - 2:</strong>
+        <ol>
+          <li><strong>Applicare la proprietà distributiva:</strong>
+            <div class="example">2x + 6 = 4x - 2</div>
+          </li>
+          <li><strong>Spostare le variabili a sinistra:</strong> Sottrarre 4x da entrambi i lati
+            <div class="example">2x - 4x + 6 = -2</div>
+          </li>
+          <li><strong>Semplificare:</strong>
+            <div class="example">-2x + 6 = -2</div>
+          </li>
+          <li><strong>Sottrarre 6 da entrambi i lati:</strong>
+            <div class="example">-2x = -8</div>
+          </li>
+          <li><strong>Dividere entrambi i lati per -2:</strong>
+            <div class="example">x = 4</div>
+          </li>
+        </ol>
+      </div>
+
+      <div class="key-concept">
+        <strong>Nota importante:</strong> Quando si divide o moltiplica per un numero negativo,
+        prestare attenzione ai segni. Ricorda che un negativo diviso per un negativo dà un positivo!
+      </div>
+    </div>
+  </div>
+
+  <h2>Riepilogo</h2>
+  <div class="intro-section">
+    <p>Le equazioni lineari sono fondamentali in algebra e appaiono in molte applicazioni del mondo reale.
+    I passi chiave per risolverle sono:</p>
+    <ol>
+      <li><strong>Riconoscere</strong> se l'equazione è lineare</li>
+      <li><strong>Semplificare</strong> entrambi i lati dell'equazione</li>
+      <li><strong>Isolare</strong> la variabile usando operazioni inverse</li>
+      <li><strong>Verificare</strong> la soluzione sostituendola nell'equazione originale</li>
+    </ol>
+    <p>
+      Con la pratica, questi passi diventeranno naturali e sarai in grado di risolvere equazioni lineari
+      sempre più complesse!
+    </p>
+  </div>
+</LessonLayout>

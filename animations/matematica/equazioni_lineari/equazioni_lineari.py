@@ -7,91 +7,98 @@ class RiconoscereEquazioniLineari(Scene):
         # Light background theme
         self.camera.background_color = WHITE
 
-        # Title
-        title = Text("Riconoscere Equazioni Lineari", font_size=44, color=BLACK)
-        title.to_edge(UP, buff=0.5)
+        # Title - positioned at the top with minimal margin
+        title = Text("Riconoscere Equazioni Lineari", font_size=30, color=BLACK, weight=BOLD)
+        title.to_edge(UP, buff=0.1)
         self.play(Write(title))
         self.wait()
 
-        # Show general form first
+        # Show general form first - positioned below the title with less spacing
         form_intro = VGroup(
-            Text("Forma generale di un'equazione lineare:", font_size=32, color=DARK_BLUE),
-            MathTex("ax + b = c", color=BLACK, font_size=72),
-            Text("dove a ≠ 0", font_size=28, color=DARK_GRAY, slant=ITALIC)
-        ).arrange(DOWN, buff=0.5)
-        form_intro.move_to(ORIGIN)
+            Text("Forma generale di un'equazione lineare:", font_size=26, color=DARK_BLUE),
+            MathTex("ax + b = c", color=BLACK, font_size=48),
+            Text("dove a ≠ 0", font_size=24, color=DARK_GRAY, slant=ITALIC)
+        ).arrange(DOWN, buff=0.4)
+        form_intro.next_to(title, DOWN, buff=0.6)
 
         self.play(FadeIn(form_intro, shift=UP*0.3))
         self.wait(3)  # Wait 3 seconds for info to sink in
+
+        # Store the position where form_intro starts (for placing linear block)
+        form_intro_top = form_intro.get_top()
 
         # Fade out the form
         self.play(FadeOut(form_intro))
         self.wait(0.5)
 
-        # Column headers
-        linear_header = Text("Lineari ✓", font_size=36, color=GREEN_D, weight=BOLD)
-        linear_header.to_edge(LEFT, buff=1.5).shift(UP*1.3)
+        # LINEAR BLOCK - should start at the same level as form_intro
+        linear_header = Text("Lineari ✓", font_size=30, color=GREEN_D, weight=BOLD)
 
-        nonlinear_header = Text("NON Lineari ✗", font_size=36, color=RED_D, weight=BOLD)
-        nonlinear_header.to_edge(RIGHT, buff=1.5).shift(UP*1.3)
-
-        # Show linear header first
-        self.play(FadeIn(linear_header, shift=RIGHT*0.3))
-        self.wait(0.3)
-
-        # Linear equations (left side)
+        # Linear equations - smaller font sizes
         linear_eqs = VGroup(
             MathTex("2x + 3 = 7", color=GREEN_D, font_size=48),
             MathTex("5x - 4 = 2x + 8", color=GREEN_D, font_size=48),
             MathTex("\\frac{x}{3} + 5 = 9", color=GREEN_D, font_size=48),
             MathTex("-3x = 12", color=GREEN_D, font_size=48)
-        ).arrange(DOWN, buff=0.35, aligned_edge=LEFT)
-        linear_eqs.next_to(linear_header, DOWN, buff=0.5)
-        linear_eqs.to_edge(LEFT, buff=1.5)
+        ).arrange(DOWN, buff=0.35)
+
+        # Create linear block group and position it where form_intro was
+        linear_block = VGroup(linear_header, linear_eqs).arrange(DOWN, buff=0.5)
+        linear_block.move_to(form_intro_top - UP / 2, aligned_edge=UP)
+
+        # Show linear header and equations
+        self.play(FadeIn(linear_header, shift=DOWN*0.3))
+        self.wait(0.3)
 
         # Animate linear equations appearing one by one
         for linear_eq in linear_eqs:
-            self.play(FadeIn(linear_eq, shift=RIGHT*0.3))
+            self.play(FadeIn(linear_eq, shift=DOWN*0.3))
             self.wait(0.4)
 
         # Wait to let info sink in
         self.wait(1)
 
-        # Show non-linear header
-        self.play(FadeIn(nonlinear_header, shift=LEFT*0.3))
-        self.wait(0.3)
+        # NON-LINEAR BLOCK - positioned below the linear block with spacing
+        nonlinear_header = Text("NON Lineari ✗", font_size=30, color=RED_D, weight=BOLD)
 
-        # Non-linear equations (right side)
+        # Non-linear equations - smaller font sizes
         nonlinear_eqs = VGroup(
             MathTex("x^2 + 3 = 7", color=RED_D, font_size=48),
             MathTex("\\sqrt{x} = 4", color=RED_D, font_size=48),
             MathTex("\\frac{1}{x} = 2", color=RED_D, font_size=48),
             MathTex("x^3 - 2x = 5", color=RED_D, font_size=48)
-        ).arrange(DOWN, buff=0.35, aligned_edge=LEFT)
-        nonlinear_eqs.next_to(nonlinear_header, DOWN, buff=0.3, aligned_edge=LEFT)
-        nonlinear_eqs.shift(RIGHT * 0.2)  # Slight adjustment for visual balance
+        ).arrange(DOWN, buff=0.35)
+
+        # Create non-linear block group and position below linear block
+        nonlinear_block = VGroup(nonlinear_header, nonlinear_eqs).arrange(DOWN, buff=0.5)
+        # Position it below the linear block with proper spacing (1.0 unit of space)
+        nonlinear_block.next_to(linear_block, DOWN, buff=2.0)
+
+        # Show non-linear header and equations
+        self.play(FadeIn(nonlinear_header, shift=DOWN*0.3))
+        self.wait(0.3)
 
         # Animate non-linear equations appearing one by one
         for nonlinear_eq in nonlinear_eqs:
-            self.play(FadeIn(nonlinear_eq, shift=LEFT*0.3))
+            self.play(FadeIn(nonlinear_eq, shift=DOWN*0.3))
             self.wait(0.4)
 
         self.wait(1)
 
-        # Add boxes around each column
+        # Add boxes around each block
         linear_box = SurroundingRectangle(
-            VGroup(linear_header, linear_eqs),
+            linear_block,
             color=GREEN_D,
             buff=0.3,
             corner_radius=0.1,
-            stroke_width=3
+            stroke_width=4
         )
         nonlinear_box = SurroundingRectangle(
-            VGroup(nonlinear_header, nonlinear_eqs),
+            nonlinear_block,
             color=RED_D,
             buff=0.3,
             corner_radius=0.1,
-            stroke_width=3
+            stroke_width=4
         )
 
         self.play(

@@ -1,0 +1,306 @@
+---
+import LessonLayout from '../../layouts/LessonLayout.astro';
+import VideoPlayer from '../../components/VideoPlayer.astro';
+---
+
+<LessonLayout
+  title="Legge dei Gas Perfetti"
+  subtitle="pV = nRT: dalle trasformazioni termodinamiche alla legge universale"
+  description="Legge dei Gas Perfetti - Scopri come la legge pV = nRT deriva dalle trasformazioni isoterme, isocore e isobare | Formule in Movimento"
+  theme="fisica"
+>
+  <div class="intro-section">
+    <h2 style="margin-top: 0;">Che cos'è la legge dei gas perfetti?</h2>
+    <p>
+      La <strong>legge dei gas perfetti</strong> (o <em>equazione di stato dei gas ideali</em>) è una relazione
+      fondamentale della termodinamica che descrive il comportamento dei gas. Questa legge stabilisce una relazione
+      tra pressione, volume, temperatura e quantità di gas:
+    </p>
+    <div class="example">
+      pV = nRT
+    </div>
+    <p>dove:
+    <ul>
+      <li><strong>p</strong> = pressione (in Pascal, Pa)</li>
+      <li><strong>V</strong> = volume (in metri cubi, m³)</li>
+      <li><strong>n</strong> = numero di moli del gas</li>
+      <li><strong>R</strong> = costante universale dei gas (8.314 J/(mol·K))</li>
+      <li><strong>T</strong> = temperatura assoluta (in Kelvin, K)</li>
+    </ul>
+    </p>
+
+    <div class="key-concept">
+      <strong>Da dove viene questa legge?</strong>
+      <p style="margin-top: 10px;">
+        La legge dei gas perfetti non è una formula "caduta dal cielo", ma deriva dalla combinazione di tre leggi
+        sperimentali più semplici, ciascuna ottenuta studiando trasformazioni termodinamiche con una variabile costante:
+      </p>
+      <ul style="margin-top: 10px;">
+        <li><strong>Legge di Boyle</strong> (trasformazione isoterma, T = cost): pV = costante</li>
+        <li><strong>Prima legge di Gay-Lussac</strong> (trasformazione isocora, V = cost): p/T = costante</li>
+        <li><strong>Legge di Charles</strong> (trasformazione isobara, p = cost): V/T = costante</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>Introduzione: La Legge dei Gas Perfetti</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/fisica/videos/gas_perfetto/LeggeDeiGasPerfetti.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> Questa animazione presenta la legge dei gas perfetti <strong>pV = nRT</strong>
+      e introduce le variabili di stato che la compongono. La legge si applica ai gas ideali e approssima bene
+      il comportamento dei gas reali a temperature elevate e pressioni moderate.
+      <p style="margin-top: 10px;">
+        <em>Nota:</em> Questa legge è sempre valida finché la <strong>quantità di gas</strong> (numero di moli <strong>n</strong>)
+        rimane costante. <strong>R</strong> è la <strong>costante universale dei gas</strong>, una costante fondamentale
+        della natura. Le variabili <strong>p</strong>, <strong>V</strong> e <strong>T</strong> possono variare liberamente,
+        e la legge descrive come sono correlate tra loro.
+      </p>
+    </div>
+  </div>
+
+  <h2>1. Trasformazione Isoterma (T = cost)</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/fisica/videos/gas_perfetto/TrasformazioneIsoterma.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> In una <strong>trasformazione isoterma</strong>, la temperatura del gas
+      rimane costante mentre volume e pressione variano. Questa trasformazione segue la <strong>legge di Boyle</strong>:
+
+      <div class="example" style="margin-top: 15px;">
+        pV = costante
+      </div>
+
+      <p style="margin-top: 15px;">
+        <strong>Schema superiore:</strong> Un pistone mobile permette al gas di comprimersi ed espandersi.
+        L'animazione mostra un ciclo completo in due fasi:
+      </p>
+
+      <p style="margin-top: 10px;">
+        <strong>Fase 1 - Compressione:</strong>
+      </p>
+      <ul>
+        <li>Il pistone <strong>scende</strong> (volume diminuisce)</li>
+        <li>Il gas si <strong>comprime verticalmente</strong></li>
+        <li>La pressione <strong>aumenta</strong> (le particelle urtano più spesso le pareti)</li>
+        <li>La temperatura rimane <strong>costante</strong> (il gas cede calore all'ambiente)</li>
+      </ul>
+
+      <p style="margin-top: 10px;">
+        <strong>Fase 2 - Espansione:</strong>
+      </p>
+      <ul>
+        <li>Il pistone <strong>sale</strong> tornando alla posizione iniziale (volume aumenta)</li>
+        <li>Il gas si <strong>espande</strong> tornando allo stato originale</li>
+        <li>La pressione <strong>diminuisce</strong> (le particelle urtano meno spesso le pareti)</li>
+        <li>La temperatura rimane <strong>costante</strong> (il gas assorbe calore dall'ambiente)</li>
+      </ul>
+
+      <p style="margin-top: 15px;">
+        <strong>Grafico inferiore:</strong> La curva rossa mostra la relazione iperbolica tra pressione <em>p</em>
+        e volume <em>V</em>. Il punto rosso traccia il percorso: si sposta verso destra (compressione, pressione
+        aumenta) e poi torna indietro verso sinistra (espansione, pressione diminuisce), seguendo la stessa curva
+        in entrambe le direzioni.
+      </p>
+
+      <div class="key-concept" style="margin-top: 15px;">
+        <strong>Applicazioni pratiche:</strong> Le trasformazioni isoterme avvengono quando un gas scambia
+        calore con l'ambiente abbastanza rapidamente da mantenere temperatura costante. Questo accade, ad esempio,
+        nei compressori di aria condizionata e nei cilindri dei motori durante certe fasi del ciclo termodinamico.
+      </div>
+    </div>
+  </div>
+
+  <h2>2. Trasformazione Isocora (V = cost)</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/fisica/videos/gas_perfetto/TrasformazioneIsocora.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> In una <strong>trasformazione isocora</strong> (o isovolumetrica),
+      il volume del gas rimane costante mentre temperatura e pressione variano. Questa trasformazione segue
+      la <strong>prima legge di Gay-Lussac</strong> (o legge di Volta):
+
+      <div class="example" style="margin-top: 15px;">
+        p/T = costante
+      </div>
+
+      <p style="margin-top: 15px;">
+        <strong>Schema superiore:</strong> Un contenitore rigido e chiuso impedisce al gas di espandersi.
+        Durante il riscaldamento:
+      </p>
+      <ul>
+        <li>Il volume rimane <strong>costante</strong> (pareti rigide)</li>
+        <li>La temperatura <strong>aumenta</strong> (forniamo calore)</li>
+        <li>La pressione <strong>aumenta</strong> (particelle più energetiche urtano con più forza)</li>
+      </ul>
+
+      <p style="margin-top: 15px;">
+        <strong>Grafico inferiore:</strong> La pressione <em>p</em> aumenta linearmente con il tempo,
+        proporzionale all'aumento di temperatura.
+      </p>
+
+      <div class="key-concept" style="margin-top: 15px;">
+        <strong>Attenzione!</strong> Le trasformazioni isocore possono essere pericolose: riscaldare un gas
+        in un contenitore sigillato può causare un aumento pericoloso della pressione. Per questo motivo,
+        le pentole a pressione hanno valvole di sicurezza!
+      </div>
+    </div>
+  </div>
+
+  <h2>3. Trasformazione Isobara (p = cost)</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/fisica/videos/gas_perfetto/TrasformazioneIsobara.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> In una <strong>trasformazione isobara</strong>, la pressione del gas
+      rimane costante mentre volume e temperatura variano. Questa trasformazione segue la
+      <strong>legge di Charles</strong> (o seconda legge di Volta):
+
+      <div class="example" style="margin-top: 15px;">
+        V/T = costante
+      </div>
+
+      <p style="margin-top: 15px;">
+        <strong>Schema superiore:</strong> Un pistone mobile con un peso costante sopra mantiene la pressione
+        costante. Durante il riscaldamento:
+      </p>
+      <ul>
+        <li>La pressione rimane <strong>costante</strong> (peso fisso sul pistone)</li>
+        <li>La temperatura <strong>aumenta</strong> (forniamo calore)</li>
+        <li>Il volume <strong>aumenta</strong> (il pistone si solleva per mantenere p costante)</li>
+      </ul>
+
+      <p style="margin-top: 15px;">
+        <strong>Grafico inferiore:</strong> Il volume <em>V</em> aumenta linearmente con il tempo,
+        proporzionale all'aumento di temperatura.
+      </p>
+
+      <div class="key-concept" style="margin-top: 15px;">
+        <strong>Esempio quotidiano:</strong> L'aria calda nelle mongolfiere si espande (V aumenta) a pressione
+        atmosferica costante (p = cost), riducendo la densità dell'aria all'interno e facendo sollevare la mongolfiera.
+      </div>
+    </div>
+  </div>
+
+  <h2>Come si ottiene pV = nRT?</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/fisica/videos/gas_perfetto/DerivazioneLeggeDeiGasPerfetti.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> Questa animazione mostra passo dopo passo come la <strong>legge dei gas perfetti
+      pV = nRT</strong> si ottiene combinando matematicamente le tre leggi sperimentali.
+
+      <p style="margin-top: 15px;">
+        <strong>Passaggi della derivazione:</strong>
+      </p>
+
+      <ol style="margin-top: 10px;">
+        <li style="margin-bottom: 10px;">
+          <strong>Leggi sperimentali di partenza:</strong>
+          <ul style="margin-top: 5px;">
+            <li><strong>Boyle (T, n costanti):</strong> pV = k → Il prodotto pressione-volume è costante</li>
+            <li><strong>Gay-Lussac (V, n costanti):</strong> p/T = k → La pressione è proporzionale alla temperatura</li>
+            <li><strong>Charles (p, n costanti):</strong> V/T = k → Il volume è proporzionale alla temperatura</li>
+          </ul>
+        </li>
+
+        <li style="margin-bottom: 10px;">
+          <strong>Riscrittura esplicita:</strong> Dalle leggi si ricavano le forme esplicite:
+          <ul style="margin-top: 5px;">
+            <li>Da Boyle: V = k/p</li>
+            <li>Da Gay-Lussac: p = kT</li>
+            <li>Da Charles: V = kT</li>
+          </ul>
+        </li>
+
+        <li style="margin-bottom: 10px;">
+          <strong>Estrazione delle proporzionalità:</strong>
+          <ul style="margin-top: 5px;">
+            <li>V ∝ 1/p (il volume è inversamente proporzionale alla pressione)</li>
+            <li>p ∝ T (la pressione è proporzionale alla temperatura)</li>
+            <li>V ∝ T (il volume è proporzionale alla temperatura)</li>
+          </ul>
+        </li>
+
+        <li style="margin-bottom: 10px;">
+          <strong>Aggiunta della quantità di sostanza:</strong> Sperimentalmente si trova che anche il numero
+          di moli influisce sul volume: <strong>V ∝ n</strong> (più gas → più volume).
+        </li>
+
+        <li style="margin-bottom: 10px;">
+          <strong>Combinazione delle proporzionalità:</strong> Combinando tutte le relazioni si ottiene:
+          <div class="example" style="margin-top: 10px;">
+            V ∝ nT/p
+          </div>
+        </li>
+
+        <li style="margin-bottom: 10px;">
+          <strong>Introduzione della costante R:</strong> Per trasformare la proporzionalità in uguaglianza,
+          si introduce la costante di proporzionalità <strong>R</strong>:
+          <div class="example" style="margin-top: 10px;">
+            V = R · nT/p
+          </div>
+        </li>
+
+        <li style="margin-bottom: 10px;">
+          <strong>Forma finale:</strong> Moltiplicando entrambi i lati per <em>p</em> si ottiene la
+          <strong>legge dei gas perfetti</strong>:
+          <div class="example" style="margin-top: 10px;">
+            pV = nRT
+          </div>
+          <p style="margin-top: 5px; color: #555;">
+            dove <strong>R = 8.314 J/(mol·K)</strong> è la <strong>costante universale dei gas</strong>,
+            uguale per tutti i gas ideali.
+          </p>
+        </li>
+      </ol>
+
+      <div class="key-concept" style="margin-top: 20px;">
+        <strong>Significato profondo:</strong>
+        <p style="margin-top: 10px;">
+          Questa derivazione mostra che la legge dei gas perfetti non è una formula arbitraria, ma
+          l'inevitabile conseguenza logica di tre semplici leggi sperimentali. È un bellissimo esempio
+          di come la matematica possa unificare fenomeni apparentemente diversi in una singola equazione elegante.
+        </p>
+      </div>
+
+      <div class="key-concept" style="margin-top: 15px;">
+        <strong>Interpretazione microscopica:</strong>
+        <p style="margin-top: 10px;">
+          La legge può anche essere derivata dalla <strong>teoria cinetica dei gas</strong>, che descrive
+          il gas come un insieme di particelle che si muovono in modo casuale. In questa visione:
+        </p>
+        <ul style="margin-top: 5px;">
+          <li>La <strong>pressione</strong> deriva dagli urti delle particelle con le pareti del contenitore</li>
+          <li>La <strong>temperatura</strong> è proporzionale all'energia cinetica media delle particelle</li>
+          <li>Il <strong>volume</strong> è lo spazio disponibile per il movimento delle particelle</li>
+          <li>Il <strong>numero di moli</strong> indica quante particelle sono presenti</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <h2>Riepilogo</h2>
+  <div class="intro-section">
+    <p>
+      La <strong>legge dei gas perfetti pV = nRT</strong> è una delle equazioni più importanti della termodinamica.
+      Questa legge:
+    </p>
+    <ul>
+      <li>Deriva dalla combinazione di tre leggi sperimentali (Boyle, Charles, Gay-Lussac)</li>
+      <li>Descrive il comportamento dei gas ideali in funzione di pressione, volume, temperatura e quantità</li>
+      <li>Si applica con ottima approssimazione ai gas reali in molte condizioni</li>
+      <li>È fondamentale per comprendere i cicli termodinamici, i motori e molti fenomeni naturali</li>
+    </ul>
+
+    <div class="key-concept" style="margin-top: 20px;">
+      <strong>Le tre trasformazioni fondamentali:</strong>
+      <ul style="margin-top: 10px;">
+        <li><strong>Isoterma (T = cost):</strong> pV = cost → Se espando il gas, la pressione diminuisce</li>
+        <li><strong>Isocora (V = cost):</strong> p/T = cost → Se riscaldo il gas, la pressione aumenta</li>
+        <li><strong>Isobara (p = cost):</strong> V/T = cost → Se riscaldo il gas, il volume aumenta</li>
+      </ul>
+    </div>
+
+    <p style="margin-top: 20px;">
+      Comprendere queste trasformazioni è essenziale per studiare i cicli termodinamici (come il ciclo di Carnot),
+      i motori termici, i frigoriferi e molti altri fenomeni della fisica e dell'ingegneria.
+    </p>
+  </div>
+</LessonLayout>

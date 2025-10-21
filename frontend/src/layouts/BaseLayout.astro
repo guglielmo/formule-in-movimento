@@ -1,0 +1,136 @@
+---
+import '../styles/common.css';
+
+export interface Props {
+  title: string;
+  description?: string;
+  theme?: 'home' | 'matematica' | 'fisica';
+  ogImage?: string;
+}
+
+const {
+  title,
+  description = "Formule in Movimento - Animazioni matematiche e fisiche per studenti",
+  theme = 'home',
+  ogImage = '/logo-social-og.svg'
+} = Astro.props;
+
+// Theme colors
+const themeColors = {
+  matematica: {
+    primary: '#e74c3c',
+    primaryDark: '#c0392b',
+  },
+  fisica: {
+    primary: '#3498db',
+    primaryDark: '#2980b9',
+  },
+  home: {
+    primary: '#667eea',
+    primaryDark: '#764ba2',
+  }
+};
+
+const colors = themeColors[theme];
+
+// Canonical URL (use actual domain in production)
+const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://formuleinmovimento.celata.com').href;
+
+// Full OG image URL
+const ogImageURL = new URL(ogImage, Astro.site || 'https://formuleinmovimento.celata.com').href;
+---
+
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content={description}>
+  <meta name="generator" content={Astro.generator}>
+  <title>{title}</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+
+  <!-- Canonical URL -->
+  <link rel="canonical" href={canonicalURL}>
+
+  <!-- Theme Color -->
+  <meta name="theme-color" content={colors.primary}>
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content={canonicalURL}>
+  <meta property="og:title" content={title}>
+  <meta property="og:description" content={description}>
+  <meta property="og:image" content={new URL('/og-image.png', Astro.site || 'https://formuleinmovimento.celata.com').href}>
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:locale" content="it_IT">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content={canonicalURL}>
+  <meta name="twitter:title" content={title}>
+  <meta name="twitter:description" content={description}>
+  <meta name="twitter:image" content={new URL('/og-image.png', Astro.site || 'https://formuleinmovimento.celata.com').href}>
+
+  <!-- Additional SEO -->
+  <meta name="author" content="Formule in Movimento">
+  <meta name="keywords" content="matematica, fisica, animazioni, manim, educazione, studenti, formule, equazioni">
+
+  <style define:vars={{
+    primaryColor: colors.primary,
+    primaryDark: colors.primaryDark,
+  }}>
+    :root {
+      --primary-color: var(--primaryColor);
+      --primary-dark: var(--primaryDark);
+      --primary-bg-light: linear-gradient(135deg, color-mix(in srgb, var(--primaryColor) 8%, transparent) 0%, color-mix(in srgb, var(--primaryDark) 8%, transparent) 100%);
+      --primary-shadow: color-mix(in srgb, var(--primaryColor) 20%, transparent);
+    }
+
+    body {
+      background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+    }
+
+    .nav-link {
+      color: var(--primary-color);
+    }
+
+    .nav-link:hover {
+      color: var(--primary-dark);
+    }
+
+    h1 {
+      color: var(--primary-color);
+    }
+
+    .intro-section h2 {
+      color: var(--primary-color);
+    }
+  </style>
+  {(theme === 'matematica' || theme === 'fisica') && (
+    <style>
+      /* Accessibility fix: White h2 titles with light border (except in intro-section) */
+      .container > h2 {
+        color: #ffffff !important;
+        border-bottom: 3px solid rgba(255, 255, 255, 0.8) !important;
+      }
+
+      /* Keep intro-section h2 with primary color */
+      .intro-section h2 {
+        color: var(--primary-color) !important;
+        border-bottom: none !important;
+      }
+    </style>
+  )}
+</head>
+<body>
+  <slot />
+</body>
+</html>

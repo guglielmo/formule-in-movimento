@@ -1,0 +1,58 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import '../../styles/matematica-section.css';
+---
+
+<BaseLayout
+  title="Matematica | Formule in Movimento"
+  description="Sezione Matematica - Formule in Movimento. Animazioni per comprendere visivamente i concetti matematici."
+>
+  <div class="container">
+    <div class="logo-section">
+      <a href="/">
+        <img src="/logo-icon.svg" alt="Formule in Movimento" class="section-logo" />
+      </a>
+    </div>
+
+    <div class="header">
+      <div class="emoji">📊</div>
+      <h1>Matematica</h1>
+      <p>Animazioni per comprendere visivamente i concetti matematici</p>
+    </div>
+
+    <div class="content">
+      <h2>Animazioni Disponibili</h2>
+
+      <div class="animations-grid">
+        <a href="/matematica/equazioni-lineari" class="animation-card">
+          <h3><span class="emoji">📐</span> Equazioni Lineari</h3>
+          <p>
+            Impara i fondamenti dell'algebra: come riconoscere, semplificare e risolvere equazioni lineari passo dopo passo.
+          </p>
+          <div class="topics-list">
+            <strong>Include:</strong> Riconoscere equazioni • Semplificare espressioni • Risolvere equazioni • Verificare soluzioni • Equazioni complesse
+          </div>
+          <span class="cta">Guarda le animazioni →</span>
+        </a>
+      </div>
+
+      <div class="topics">
+        <h3>Argomenti in Preparazione</h3>
+        <ul>
+          <li>Disequazioni e sistemi</li>
+          <li>Geometria: figure, teoremi, trasformazioni</li>
+          <li>Trigonometria: funzioni circolari, identità</li>
+          <li>Funzioni: grafici, comportamento, trasformazioni</li>
+          <li>Limiti: convergenza, infiniti, continuità</li>
+          <li>Derivate: tangenti, ottimizzazione, applicazioni</li>
+          <li>Integrali: aree, volumi, applicazioni fisiche</li>
+          <li>Serie: somme infinite, convergenza</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="back-link">
+      <a href="/">← Torna alla Home</a>
+    </div>
+  </div>
+</BaseLayout>
