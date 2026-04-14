@@ -26,6 +26,10 @@ Thumbs.db
 # Logs
 *.log
 
+# Backups
+*.tar.gz
+*.zip
+
 # Deployment (infrastructure lives in /home/gu/sites/)
 docker/
 deploy.sh
