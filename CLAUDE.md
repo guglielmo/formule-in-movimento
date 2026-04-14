@@ -411,6 +411,100 @@ When creating educational scenes for students:
 - **Short duration**: Keep animations concise (30-90 seconds ideal for social media)
 - **Mobile viewing**: Ensure text is readable on small screens (larger font sizes)
 
+### Vertical Video Layout Standards
+
+**CRITICAL: All animations MUST follow these standards for vertical (9:16) video format.**
+
+**1. Frame Configuration (manim.cfg):**
+
+Every animation directory must have a `manim.cfg` file with these settings:
+
+```ini
+[CLI]
+# Vertical video format for social media (9:16 aspect ratio)
+# Frame dimensions in logical units (coordinate system)
+# Default is 14.22 x 8.0 (16:9), we swap to 8.0 x 14.22 for vertical 9:16
+frame_width = 8.0
+frame_height = 14.22
+media_dir = ../../../media/<discipline>
+```
+
+**Why this matters:** These frame dimensions define Manim's coordinate system. Without them, content will be horizontally oriented in a vertical video frame.
+
+**2. Positioning Patterns:**
+
+Use **relative positioning** instead of absolute coordinates:
+
+```python
+# ✅ CORRECT: Relative positioning
+title = Text("Title", font_size=36, color=BLACK, weight=BOLD)
+title.to_edge(UP, buff=0.1)  # Minimal buffer from top
+
+subtitle = Text("Subtitle", font_size=28, color=DARK_BLUE)
+subtitle.next_to(title, DOWN, buff=0.5)  # Positioned relative to title
+
+content = MathTex(r"x = 2", color=BLACK, font_size=64)
+content.move_to(ORIGIN)  # Centered content
+
+# ❌ WRONG: Absolute coordinates
+title.move_to(UP * 4.5)  # Don't use absolute UP/DOWN coordinates
+content.move_to(DOWN * 2.0)  # This doesn't scale properly
+```
+
+**3. Font Size Guidelines:**
+
+- **Titles**: 30-44px (use `font_size=36` as standard)
+- **Subtitles/Headers**: 26-32px
+- **Body text/Steps**: 24-28px
+- **Math equations**: 48-64px for normal display
+- **Final solutions**: 64-80px (highlighted in GREEN_D)
+- **Small notes**: 22-26px
+
+**4. Spacing (buff) Guidelines:**
+
+- Title to content: `buff=0.5` to `buff=0.6`
+- Between content blocks: `buff=0.4` to `buff=0.6`
+- Between list items: `buff=0.3` to `buff=0.4`
+- For `.arrange()` in VGroup: `buff=0.3` to `buff=0.5`
+
+**5. Common Patterns:**
+
+```python
+# Title at top with minimal margin
+title = Text("Scene Title", font_size=36, color=BLACK, weight=BOLD)
+title.to_edge(UP, buff=0.1)
+self.play(Write(title))
+
+# Section header
+header = Text("Section:", font_size=28, color=DARK_BLUE, weight=BOLD)
+header.next_to(title, DOWN, buff=0.5)
+self.play(FadeIn(header))
+
+# Math content
+equation = MathTex(r"ax + b = c", color=BLACK, font_size=56)
+equation.next_to(header, DOWN, buff=0.6)
+self.play(Write(equation))
+
+# Step-by-step list
+steps = VGroup(
+    Text("1. First step", font_size=24, color=DARK_GRAY),
+    Text("2. Second step", font_size=24, color=DARK_GRAY),
+    Text("3. Third step", font_size=24, color=DARK_GRAY)
+).arrange(DOWN, buff=0.3, aligned_edge=LEFT)
+steps.next_to(equation, DOWN, buff=0.5)
+
+# Centered final solution
+solution = MathTex(r"x = 5", color=GREEN_D, font_size=72)
+solution.move_to(ORIGIN)
+box = SurroundingRectangle(solution, color=GREEN_D, buff=0.4, corner_radius=0.2, stroke_width=6)
+self.play(Write(solution))
+self.play(Create(box))
+```
+
+**6. Reference Implementation:**
+
+Always refer to `animations/matematica/equazioni_lineari/` as the reference implementation for vertical layout patterns. When in doubt, check how that animation handles positioning and sizing.
+
 ### Mathematics Topics
 Examples: algebra, geometry, trigonometry, functions, limits, derivatives, integrals, series
 

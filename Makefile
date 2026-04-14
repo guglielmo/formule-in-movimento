@@ -214,29 +214,6 @@ check-deps:
 # GENERIC ANIMATION BUILD RULES
 # ============================================================================
 
-# Python one-liner to list Scene classes from a file
-define LIST_SCENES
-import ast
-import sys
-try:
-    tree = ast.parse(open('$(1).py').read())
-    scenes = [node.name for node in ast.walk(tree)
-              if isinstance(node, ast.ClassDef)
-              and any(base.id == 'Scene' if isinstance(base, ast.Name) else False
-                     for base in node.bases if hasattr(base, 'id'))]
-    if scenes:
-        for s in scenes:
-            print(f'  - {s}')
-    else:
-        print('  (no Scene classes found)')
-except FileNotFoundError:
-    print(f'  Error: {$(1)}.py not found', file=sys.stderr)
-    sys.exit(1)
-except Exception as e:
-    print(f'  Error parsing file: {e}', file=sys.stderr)
-    sys.exit(1)
-endef
-
 # Generic function to build an animation
 # Usage: $(call build_animation,animation_name,discipline,animation_path)
 define build_animation
@@ -247,7 +224,7 @@ ifeq ($$(LIST),true)
 		echo "$$(RED)Error: animations/$(3)/$(1).py not found$$(NC)"; \
 		exit 1; \
 	fi
-	@cd animations/$(3) && $(PYTHON) -c '$$(call LIST_SCENES,$(1))'
+	@cd animations/$(3) && $(PYTHON) -c "import ast; tree = ast.parse(open('$(1).py').read()); scenes = [node.name for node in ast.walk(tree) if isinstance(node, ast.ClassDef) and any(getattr(base, 'id', None) == 'Scene' for base in node.bases)]; [print('  - ' + s) for s in scenes] if scenes else print('  (no Scene classes found)')"
 else
 	$$(MAKE) media/$(3)/videos/$$(QUALITY_DIR)/.built ANIM_NAME=$(1) ANIM_PATH=$(3) ANIM_DISCIPLINE=$(2)
 endif

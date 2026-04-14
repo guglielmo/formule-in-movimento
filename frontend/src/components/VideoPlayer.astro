@@ -21,7 +21,8 @@ if (pathMatch) {
   // Check if it includes a quality folder (legacy format)
   if (sceneOrQuality.includes('/')) {
     // Legacy format: already has quality
-    basePath = src;
+    // Extract base path without the quality/scene part
+    basePath = `/media/${discipline}/videos/${topic}`;
     sceneName = sceneOrQuality.split('/')[1];
   } else {
     // New format: no quality folder

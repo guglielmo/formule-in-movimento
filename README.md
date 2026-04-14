@@ -32,7 +32,7 @@ Abbiamo scelto deliberatamente "formule" invece di "equazioni" perché:
 - **Download facilitato**: Opzioni per scaricare video per uso offline
 
 ### 🎓 Contenuti Educativi
-- **Matematica**: Algebra, geometria, trigonometria, analisi, calcolo
+- **Matematica**: Algebra (equazioni lineari, sistemi lineari), geometria, trigonometria, analisi, calcolo
 - **Fisica**: Principalmente termodinamica (focus di quest'anno), con altri argomenti di fisica generale
 - **Italiano**: Tutti i contenuti, testi e narrazione in lingua italiana
 - **Progressivi**: Dal livello base a concetti più avanzati
@@ -168,6 +168,17 @@ make setup
    Questo compila le animazioni in alta qualità e deploya tutto automaticamente.
 
 **Fatto! Non serve mai toccare il Makefile - tutto è auto-discovered.**
+
+## Contenuti Disponibili
+
+### Matematica
+
+- **Equazioni Lineari** (`equazioni_lineari`) - Risoluzione di equazioni di primo grado con metodo grafico e algebrico
+- **Sistemi di Equazioni Lineari** (`sistemi_lineari`) - Quattro metodi per risolvere sistemi 2×2: sostituzione, confronto, riduzione e Cramer
+
+### Fisica
+
+- **Gas Perfetto** (`gas_perfetto`) - Equazione di stato, legge dei gas perfetti, trasformazioni termodinamiche
 
 ## Makefile: Il Centro di Comando del Progetto
 

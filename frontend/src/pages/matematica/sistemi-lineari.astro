@@ -1,0 +1,282 @@
+---
+import LessonLayout from '../../layouts/LessonLayout.astro';
+import VideoPlayer from '../../components/VideoPlayer.astro';
+---
+
+<LessonLayout
+  title="Sistemi di Equazioni Lineari"
+  subtitle="Metodi di risoluzione: sostituzione, confronto, riduzione e Cramer"
+  description="Sistemi di Equazioni Lineari - Impara i metodi per risolvere sistemi di due equazioni | Formule in Movimento"
+  theme="matematica"
+  breadcrumbs={[
+    { label: 'Home', href: '/' },
+    { label: 'Matematica', href: '/matematica' },
+    { label: 'Sistemi Lineari' }
+  ]}
+>
+  <div class="intro-section">
+    <h2 style="margin-top: 0;">Che cos'è un sistema di equazioni lineari?</h2>
+    <p>
+      Un <strong>sistema di equazioni lineari</strong> è un insieme di due o più equazioni lineari che devono essere
+      soddisfatte <em>contemporaneamente</em>. La soluzione di un sistema è la coppia (o n-upla) di valori che
+      rende vere tutte le equazioni del sistema.
+    </p>
+    <div class="example">
+      Sistema 2×2 (due equazioni, due incognite):<br>
+      &#123; 2x + y = 5<br>
+      &#123; x - y = 1
+    </div>
+    <p>La soluzione è <strong>x = 2, y = 1</strong> perché soddisfa entrambe le equazioni.</p>
+
+    <div class="key-concept">
+      <strong>Metodi di risoluzione:</strong>
+      <ul>
+        <li><strong>Sostituzione:</strong> Isola una variabile e sostituisci nell'altra equazione</li>
+        <li><strong>Confronto:</strong> Isola la stessa variabile in entrambe e uguaglia</li>
+        <li><strong>Riduzione (Eliminazione):</strong> Somma/sottrai le equazioni per eliminare una variabile</li>
+        <li><strong>Cramer:</strong> Usa i determinanti per trovare le soluzioni</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>Introduzione ai Sistemi</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/matematica/videos/sistemi_lineari/854p15/IntroduzioneSystemi.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> Questa animazione introduce il concetto di sistema di equazioni lineari.
+      Scoprirai cos'è un sistema, come riconoscerlo e una panoramica dei quattro metodi principali di risoluzione.
+      <p style="margin-top: 10px;">
+        Un sistema è un insieme di equazioni che devono essere soddisfatte <em>contemporaneamente</em>.
+        La soluzione è la coppia di valori (x, y) che rende vere tutte le equazioni del sistema.
+      </p>
+    </div>
+  </div>
+
+  <h2>1. Metodo di Sostituzione</h2>
+
+  <h3>Teoria + Esempio Semplice</h3>
+  <div class="video-container">
+    <VideoPlayer src="/media/matematica/videos/sistemi_lineari/854p15/SostituzioneTeoriaEsempio.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> Il metodo di sostituzione è uno dei metodi più intuitivi per risolvere sistemi lineari.
+
+      <div class="steps">
+        <strong>Procedimento:</strong>
+        <ol>
+          <li>Isola una variabile in una delle due equazioni</li>
+          <li>Sostituisci l'espressione ottenuta nell'altra equazione</li>
+          <li>Risolvi l'equazione risultante (che ha una sola variabile)</li>
+          <li>Sostituisci il valore trovato per calcolare l'altra variabile</li>
+        </ol>
+      </div>
+
+      <strong>Sistema:</strong>
+      <div class="example">
+        &#123; y = 2x - 1<br>
+        &#123; x + y = 5
+      </div>
+      <p>
+        In questo esempio, <code>y</code> è già isolata nella prima equazione, quindi possiamo
+        sostituirla direttamente nella seconda. Questo rende la risoluzione particolarmente semplice.
+      </p>
+      <p><strong>Soluzione:</strong> x = 2, y = 3</p>
+    </div>
+  </div>
+
+  <h3>Esempio Avanzato</h3>
+  <div class="video-container">
+    <VideoPlayer src="/media/matematica/videos/sistemi_lineari/854p15/SostituzioneEsempioAvanzato.mp4" />
+    <div class="description">
+      <strong>Sistema:</strong>
+      <div class="example">
+        &#123; 2x + y = 7<br>
+        &#123; x - 2y = 1
+      </div>
+      <p>
+        In questo esempio, nessuna variabile è già isolata. L'animazione mostra come isolare
+        <code>x</code> dalla seconda equazione e sostituirlo nella prima.
+      </p>
+      <p><strong>Soluzione:</strong> x = 3, y = 1</p>
+    </div>
+  </div>
+
+  <h2>2. Metodo del Confronto</h2>
+
+  <h3>Teoria + Esempio Semplice</h3>
+  <div class="video-container">
+    <VideoPlayer src="/media/matematica/videos/sistemi_lineari/854p15/ConfrontoTeoriaEsempio.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> Il metodo del confronto è particolarmente utile quando si può facilmente
+      isolare la stessa variabile in entrambe le equazioni.
+
+      <div class="steps">
+        <strong>Procedimento:</strong>
+        <ol>
+          <li>Isola la <em>stessa variabile</em> in entrambe le equazioni</li>
+          <li>Uguaglia le due espressioni ottenute</li>
+          <li>Risolvi l'equazione risultante</li>
+          <li>Sostituisci il valore trovato per calcolare l'altra variabile</li>
+        </ol>
+      </div>
+
+      <strong>Sistema:</strong>
+      <div class="example">
+        &#123; y = 3x - 2<br>
+        &#123; y = x + 4
+      </div>
+      <p>
+        Questo è un caso ideale per il metodo del confronto: <code>y</code> è già isolata in entrambe le equazioni!
+        Basta uguagliare le due espressioni: <code>3x - 2 = x + 4</code>.
+      </p>
+      <p><strong>Soluzione:</strong> x = 3, y = 7</p>
+    </div>
+  </div>
+
+  <h3>Esempio Avanzato</h3>
+  <div class="video-container">
+    <VideoPlayer src="/media/matematica/videos/sistemi_lineari/854p15/ConfrontoEsempioAvanzato.mp4" />
+    <div class="description">
+      <strong>Sistema:</strong>
+      <div class="example">
+        &#123; 2x + y = 8<br>
+        &#123; x + y = 5
+      </div>
+      <p>
+        In questo esempio, isoliamo <code>y</code> da entrambe le equazioni ottenendo
+        <code>y = 8 - 2x</code> e <code>y = 5 - x</code>, poi le uguagliamo.
+      </p>
+      <p><strong>Soluzione:</strong> x = 3, y = 2</p>
+    </div>
+  </div>
+
+  <h2>3. Metodo di Riduzione (Eliminazione)</h2>
+
+  <h3>Teoria + Esempio Semplice</h3>
+  <div class="video-container">
+    <VideoPlayer src="/media/matematica/videos/sistemi_lineari/854p15/RiduzioneTeoriaEsempio.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> Il metodo di riduzione (o eliminazione) è spesso il più efficiente.
+      Si basa sull'idea di eliminare una variabile sommando o sottraendo le equazioni.
+
+      <div class="steps">
+        <strong>Procedimento:</strong>
+        <ol>
+          <li>Se necessario, moltiplica una o entrambe le equazioni per rendere i coefficienti di una variabile uguali (o opposti)</li>
+          <li>Somma o sottrai le equazioni per eliminare quella variabile</li>
+          <li>Risolvi l'equazione risultante (che ha una sola variabile)</li>
+          <li>Sostituisci il valore trovato in una delle equazioni originali</li>
+        </ol>
+      </div>
+      <p style="margin-top: 10px;">
+        <strong>Nota:</strong> Questo metodo è anche chiamato <em>metodo di eliminazione</em>
+        perché elimina una variabile dal sistema.
+      </p>
+
+      <strong>Sistema:</strong>
+      <div class="example">
+        &#123; 2x + y = 7<br>
+        &#123; 3x - y = 8
+      </div>
+      <p>
+        Caso fortunato! I coefficienti di <code>y</code> sono già opposti (+1 e -1).
+        Sommando le due equazioni, <code>y</code> si elimina automaticamente: <code>(2x + y) + (3x - y) = 7 + 8</code>
+        che diventa <code>5x = 15</code>.
+      </p>
+      <p><strong>Soluzione:</strong> x = 3, y = 1</p>
+    </div>
+  </div>
+
+  <h3>Esempio Avanzato</h3>
+  <div class="video-container">
+    <VideoPlayer src="/media/matematica/videos/sistemi_lineari/854p15/RiduzioneEsempioAvanzato.mp4" />
+    <div class="description">
+      <strong>Sistema:</strong>
+      <div class="example">
+        &#123; 3x + 2y = 12<br>
+        &#123; 2x + y = 7
+      </div>
+      <p>
+        In questo caso, i coefficienti non sono opposti. L'animazione mostra come moltiplicare la seconda equazione
+        per <code>-2</code> per rendere i coefficienti di <code>y</code> opposti (+2 e -2),
+        poi sommare per eliminare <code>y</code>.
+      </p>
+      <p><strong>Soluzione:</strong> x = 2, y = 3</p>
+    </div>
+  </div>
+
+  <h2>4. Metodo di Cramer</h2>
+
+  <h3>Teoria + Esempio</h3>
+  <div class="video-container">
+    <VideoPlayer src="/media/matematica/videos/sistemi_lineari/854p15/CramerTeoriaEsempio.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> Il metodo di Cramer usa i <em>determinanti</em> per risolvere sistemi lineari.
+      È un metodo elegante e sistematico, particolarmente utile per sistemi più grandi.
+
+      <p style="margin-top: 10px;">
+        Per un sistema <code>&#123; ax + by = e</code>, <code>cx + dy = f &#125;</code>, si calcolano:
+      </p>
+
+      <div class="example">
+        Δ = |a  b| = ad - bc  (determinante principale)<br>
+            |c  d|<br><br>
+
+        Δₓ = |e  b| = ed - bf  (sostituisci la colonna x)<br>
+             |f  d|<br><br>
+
+        Δᵧ = |a  e| = af - ec  (sostituisci la colonna y)<br>
+             |c  f|
+      </div>
+
+      <p style="margin-top: 10px;">
+        Poi: <code>x = Δₓ / Δ</code> e <code>y = Δᵧ / Δ</code>
+      </p>
+
+      <p style="margin-top: 10px;">
+        <strong>Importante:</strong> Il metodo funziona solo se <code>Δ ≠ 0</code>.
+        Se <code>Δ = 0</code>, il sistema non ha soluzione unica (infinite soluzioni o nessuna soluzione).
+      </p>
+
+      <strong>Sistema dell'esempio:</strong>
+      <div class="example">
+        &#123; 2x + 3y = 8<br>
+        &#123; x - y = 1
+      </div>
+      <p>
+        L'animazione mostra passo-passo come calcolare i determinanti:
+      </p>
+      <ul>
+        <li>Δ = (2)(−1) − (3)(1) = −2 − 3 = −5</li>
+        <li>Δₓ = (8)(−1) − (3)(1) = −8 − 3 = −11 → x = −11/−5 = 11/5</li>
+        <li>Δᵧ = (2)(1) − (8)(1) = 2 − 8 = −6 → y = −6/−5 = 6/5</li>
+      </ul>
+      <p><strong>Soluzione:</strong> x = 11/5, y = 6/5</p>
+    </div>
+  </div>
+
+  <h2>Riepilogo</h2>
+  <div class="intro-section">
+    <p>
+      Hai imparato <strong>quattro metodi</strong> per risolvere sistemi di equazioni lineari 2×2:
+    </p>
+    <ul>
+      <li><strong>Sostituzione:</strong> Semplice e intuitivo, ideale quando una variabile è già isolata</li>
+      <li><strong>Confronto:</strong> Efficace quando si può facilmente isolare la stessa variabile in entrambe</li>
+      <li><strong>Riduzione:</strong> Molto efficiente, specialmente quando i coefficienti sono favorevoli</li>
+      <li><strong>Cramer:</strong> Sistematico e generalizzabile, usa i determinanti</li>
+    </ul>
+    <p>
+      Ogni metodo ha i suoi vantaggi. Con la pratica, imparerai a riconoscere quale metodo è più conveniente
+      per ogni sistema specifico. L'importante è comprendere la logica dietro ogni metodo e verificare sempre
+      le soluzioni ottenute sostituendole nelle equazioni originali!
+    </p>
+
+    <div class="key-concept">
+      <strong>Consiglio:</strong>
+      <p style="margin-top: 10px;">
+        Verifica sempre le tue soluzioni sostituendo i valori di <code>x</code> e <code>y</code>
+        nelle equazioni originali. Entrambe le equazioni devono essere soddisfatte!
+      </p>
+    </div>
+  </div>
+</LessonLayout>
