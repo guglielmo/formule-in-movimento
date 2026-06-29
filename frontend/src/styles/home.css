@@ -188,6 +188,67 @@ body {
   box-shadow: 0 4px 15px rgba(102, 126, 234, 0.5);
 }
 
+.topic-menu {
+  list-style: none;
+  margin: 20px 0;
+  padding: 0;
+}
+
+.topic-menu li {
+  margin: 0 0 12px 0;
+}
+
+.topic-menu a {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-left: 4px solid #667eea;
+  border-radius: 8px;
+  padding: 14px 18px;
+  text-decoration: none;
+  transition: all 0.25s ease;
+}
+
+.topic-menu a:hover {
+  transform: translateX(4px);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.12);
+  background-color: #fff;
+}
+
+.topic-menu .topic-name {
+  color: #34495e;
+  font-size: 1.1em;
+  font-weight: 600;
+}
+
+.topic-menu .topic-name::after {
+  content: " →";
+  color: #667eea;
+}
+
+.topic-menu .topic-desc {
+  color: #777;
+  font-size: 0.9em;
+}
+
+.mathematics .topic-menu a {
+  border-left-color: #e74c3c;
+}
+
+.mathematics .topic-menu .topic-name::after {
+  color: #e74c3c;
+}
+
+.physics .topic-menu a {
+  border-left-color: #3498db;
+}
+
+.physics .topic-menu .topic-name::after {
+  color: #3498db;
+}
+
 .coming-soon {
   padding: 30px;
   text-align: center;
