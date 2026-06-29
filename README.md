@@ -57,7 +57,8 @@ formule-in-movimento/
 │   │   │   │   └── equazioni-lineari.astro  # Pagina lezione
 │   │   │   └── fisica/               # Sezione fisica
 │   │   │       ├── index.astro       # Landing sezione fisica
-│   │   │       └── gas-perfetto.astro  # Pagina lezione
+│   │   │       ├── gas-perfetto.astro  # Pagina lezione
+│   │   │       └── onde.astro        # Pagina lezione
 │   │   ├── components/               # Componenti Vue/Astro riutilizzabili
 │   │   ├── layouts/                  # Layout pagine
 │   │   └── styles/                   # Fogli di stile CSS
@@ -94,8 +95,10 @@ formule-in-movimento/
 ├── docker-compose.local.yml          # Config Docker/Podman per test locale
 ├── nginx.conf                         # Config nginx per deployment diretto
 ├── .python-version                    # Versione Python (3.12)
+├── .github/workflows/                 # GitHub Actions (genera animazioni + deploy Vercel)
 ├── CLAUDE.md                          # Linee guida per lo sviluppo
-└── CONTRIBUTING.md                    # Linee guida contributi
+├── CONTRIBUTING.md                    # Linee guida contributi
+└── CHANGELOG.md                       # Storico delle modifiche
 
 Virtual environment condiviso: ~/.virtualenvs/manim
 ```
@@ -179,6 +182,7 @@ make setup
 ### Fisica
 
 - **Gas Perfetto** (`gas_perfetto`) - Equazione di stato, legge dei gas perfetti, trasformazioni termodinamiche
+- **Le Onde** (`onde`) - Onde trasversali e longitudinali, ampiezza e frequenza, corde/suono/terremoti, onde periodiche, impulsive e complesse, equazione dell'onda e calcolo della fase
 
 ## Makefile: Il Centro di Comando del Progetto
 
@@ -320,6 +324,32 @@ make frontend-dev
 make frontend-build
 ```
 
+## Generazione automatica e Deploy su Vercel (CI/CD)
+
+Oltre al deploy manuale, il progetto include un workflow **GitHub Actions**
+(`.github/workflows/genera-animazioni.yml`) che genera le animazioni e pubblica
+il sito su **Vercel**.
+
+**Come funziona:**
+
+1. **Discover** - scopre automaticamente le animazioni (come il Makefile).
+2. **Build** (una in parallelo per ogni animazione) - usa una cache basata
+   sull'hash dei sorgenti: un'animazione viene rigenerata **solo quando non è
+   già stata generata** per quel contenuto. Manim/LaTeX vengono installati solo
+   in caso di cache-miss, poi gira `make <animazione>`.
+3. **Deploy** - costruisce il frontend, include i video e pubblica il sito
+   statico su Vercel tramite Vercel CLI.
+
+**Avvio:** è manuale, da *Actions → "Genera animazioni e deploy Vercel" →
+Run workflow* (si può scegliere la qualità, default `qm`).
+
+**Secret richiesti** (Settings → Secrets and variables → Actions):
+`VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID`.
+
+> Nota: il deploy **non** usa l'integrazione Git di Vercel ma la CLI, perché
+> Vercel non può eseguire Manim/LaTeX: i video vengono prebuildati in CI e poi
+> caricati già pronti.
+
 ## Comandi Comuni (tutti via Makefile)
 
 ### Gestione Animazioni
@@ -384,6 +414,10 @@ make deploy-animations
 - **LaTeX**: Rendering di formule matematiche
 - **HTML5/CSS3**: Pagine web responsive
 - **Git**: Version control
+
+## Changelog
+
+Lo storico delle modifiche è in [CHANGELOG.md](CHANGELOG.md). Versione corrente: **0.2.0**.
 
 ## Contribuire
 
