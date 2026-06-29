@@ -9,15 +9,18 @@ tramite **GitHub Actions**. Questo è l'unico processo di deploy supportato.
 
 ## 1. Come fare un deploy
 
-Il workflow `.github/workflows/genera-animazioni.yml` gira in due modi:
+Il workflow `.github/workflows/genera-animazioni.yml` decide cosa fare in base
+all'evento:
 
-- **Automatico a ogni push** (qualsiasi branch) → **deploy di preview** con un
-  URL temporaneo, a qualità `ql` (render veloce). La produzione **non** viene
-  toccata. L'URL del deploy è nel riepilogo della run (*Actions → run → Summary*).
-- **Manuale** (*Actions → "Genera animazioni e deploy Vercel" → Run workflow*) →
-  scegli `quality` (`ql`/`qm`/`qh`/`qk`) e `target`:
-  - `production` → pubblica in produzione (`vercel deploy --prod`);
-  - `preview` → solo anteprima.
+| Evento | Deploy | Qualità |
+|---|---|---|
+| **push/merge su `main`** | **produzione** (`vercel deploy --prod`, aggiorna `formule-in-movimento.celata.com`) | `qh` |
+| **push su un altro branch** | **preview** (URL temporaneo) | `ql` |
+| **avvio manuale** (*Actions → Run workflow*) | a scelta via input `target` | a scelta via input `quality` |
+
+In breve: si lavora su un branch (ogni push genera una **preview** da riguardare,
+URL nel *Summary* della run); quando si **mergia in `main`** il sito va in
+**produzione** in qualità di pubblicazione `qh`.
 
 Fasi del workflow:
 
