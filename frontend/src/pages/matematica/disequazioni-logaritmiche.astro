@@ -1,0 +1,130 @@
+---
+import LessonLayout from '../../layouts/LessonLayout.astro';
+import VideoPlayer from '../../components/VideoPlayer.astro';
+---
+
+<LessonLayout
+  title="Disequazioni Logaritmiche"
+  subtitle="Il verso dipende dalla base: crescente o decrescente"
+  description="Disequazioni Logaritmiche - Monotonia del logaritmo, base maggiore o minore di 1, condizioni di esistenza e intersezione delle soluzioni | Formule in Movimento"
+  theme="matematica"
+>
+  <div class="intro-section">
+    <h2 style="margin-top: 0;">Che cos'è una disequazione logaritmica?</h2>
+    <p>
+      Una <strong>disequazione logaritmica</strong> contiene l'incognita nell'argomento di un logaritmo,
+      ma al posto dell'uguale c'è una <em>disuguaglianza</em>. Rispetto alle equazioni cambia una cosa
+      fondamentale: bisogna tenere conto della <strong>monotonia</strong> del logaritmo.
+    </p>
+
+    <div class="key-concept">
+      <strong>La regola che decide tutto:</strong>
+      <ul>
+        <li>Se la base è <strong>maggiore di 1</strong>, il logaritmo è <em>crescente</em>: la
+          disuguaglianza <strong>mantiene il verso</strong>.</li>
+        <li>Se la base è <strong>compresa tra 0 e 1</strong>, il logaritmo è <em>decrescente</em>: la
+          disuguaglianza <strong>inverte il verso</strong>.</li>
+      </ul>
+      E come sempre, prima di tutto le <strong>condizioni di esistenza</strong> (argomenti &gt; 0).
+    </div>
+  </div>
+
+  <h2>1. La Monotonia del Logaritmo</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/matematica/videos/disequazioni_logaritmiche/MonotoniaELogaritmo.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> I grafici di log<sub>2</sub> x e log<sub>1/2</sub> x mostrano i due
+      comportamenti opposti del logaritmo, da cui dipende il verso della disequazione.
+      <ul>
+        <li><strong>base &gt; 1</strong> (crescente): log<sub>a</sub> f(x) &gt; log<sub>a</sub> g(x) ⟺ f(x) &gt; g(x)</li>
+        <li><strong>0 &lt; base &lt; 1</strong> (decrescente): log<sub>a</sub> f(x) &gt; log<sub>a</sub> g(x) ⟺ f(x) &lt; g(x)</li>
+      </ul>
+      Nel secondo caso il verso <strong>si inverte</strong>: è l'errore più frequente, da tenere sempre presente.
+    </div>
+  </div>
+
+  <h2>2. Base Maggiore di 1</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/matematica/videos/disequazioni_logaritmiche/DisequazioneCrescente.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> Con base &gt; 1 il verso si conserva: dopo aver imposto le condizioni
+      di esistenza, si confrontano direttamente gli argomenti.
+
+      <div class="steps">
+        <strong>Risolvere log<sub>2</sub>(2x−1) &gt; log<sub>2</sub>(x+3):</strong>
+        <ol>
+          <li><strong>C.E.:</strong> 2x−1 &gt; 0 e x+3 &gt; 0 ⟹ x &gt; 1/2</li>
+          <li><strong>Base 2 &gt; 1, stesso verso:</strong> 2x−1 &gt; x+3</li>
+          <li><strong>Risolvo:</strong> x &gt; 4</li>
+          <li><strong>Interseco con le C.E.:</strong> x &gt; 4 (già contenuto in x &gt; 1/2)</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <h2>3. Base tra 0 e 1</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/matematica/videos/disequazioni_logaritmiche/DisequazioneDecrescente.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> Stessa disequazione di prima, ma con base 1/2: poiché il logaritmo è
+      <em>decrescente</em>, passando agli argomenti il verso <strong>si inverte</strong>.
+
+      <div class="steps">
+        <strong>Risolvere log<sub>1/2</sub>(2x−1) &gt; log<sub>1/2</sub>(x+3):</strong>
+        <ol>
+          <li><strong>C.E.:</strong> x &gt; 1/2 (come prima)</li>
+          <li><strong>Base 1/2 &lt; 1, verso invertito:</strong> 2x−1 &lt; x+3</li>
+          <li><strong>Risolvo:</strong> x &lt; 4</li>
+          <li><strong>Interseco con le C.E.:</strong> 1/2 &lt; x &lt; 4</li>
+        </ol>
+      </div>
+
+      <div class="key-concept">
+        <strong>Confronto:</strong> stessi numeri, stesso segno di partenza, ma soluzioni diverse —
+        x &gt; 4 con base 2, un intervallo limitato 1/2 &lt; x &lt; 4 con base 1/2. È tutto merito (o colpa)
+        della base!
+      </div>
+    </div>
+  </div>
+
+  <h2>4. Un Esempio Completo</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/matematica/videos/disequazioni_logaritmiche/EsempioCompleto.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> Quando compaiono più logaritmi si usano le proprietà, esattamente come
+      nelle equazioni, e si arriva a una disequazione algebrica (qui di secondo grado).
+
+      <div class="steps">
+        <strong>Risolvere log<sub>2</sub> x + log<sub>2</sub>(x−2) &lt; 3:</strong>
+        <ol>
+          <li><strong>C.E.:</strong> x &gt; 0 e x−2 &gt; 0 ⟹ x &gt; 2</li>
+          <li><strong>Proprietà del prodotto:</strong> log<sub>2</sub>[x(x−2)] &lt; 3</li>
+          <li><strong>Base 2 &gt; 1, definizione:</strong> x(x−2) &lt; 2<sup>3</sup> = 8</li>
+          <li><strong>Disequazione di 2° grado:</strong> x² − 2x − 8 &lt; 0 ⟹ −2 &lt; x &lt; 4</li>
+          <li><strong>Interseco con le C.E. (x &gt; 2):</strong> <strong>2 &lt; x &lt; 4</strong></li>
+        </ol>
+      </div>
+
+      <div class="key-concept">
+        <strong>Il ruolo delle C.E.:</strong> la disequazione algebrica darebbe −2 &lt; x &lt; 4, ma le
+        condizioni di esistenza tagliano via la parte x ≤ 2. La soluzione corretta è solo 2 &lt; x &lt; 4.
+      </div>
+    </div>
+  </div>
+
+  <h2>Riepilogo</h2>
+  <div class="intro-section">
+    <p>Lo schema per una disequazione logaritmica ricalca quello delle equazioni, con un passaggio in più:</p>
+    <ol>
+      <li><strong>Condizioni di esistenza:</strong> ogni argomento dei logaritmi deve essere positivo</li>
+      <li><strong>Ridurre</strong> a un solo logaritmo per membro con le proprietà</li>
+      <li><strong>Guardare la base:</strong> verso invariato se &gt; 1, verso invertito se tra 0 e 1</li>
+      <li><strong>Risolvere</strong> la disequazione algebrica ottenuta</li>
+      <li><strong>Intersecare</strong> con le condizioni di esistenza per la soluzione finale</li>
+    </ol>
+    <p>
+      Con equazioni e disequazioni logaritmiche si chiude il capitolo su esponenziali e logaritmi: la
+      prossima tappa del percorso sarà la <strong>goniometria</strong>.
+    </p>
+  </div>
+</LessonLayout>
