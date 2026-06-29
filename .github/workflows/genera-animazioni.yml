@@ -16,8 +16,9 @@
 # Quando gira e cosa fa:
 #   - push/merge su main          -> deploy in PRODUZIONE, qualità `qh`
 #     (qualità di pubblicazione). Aggiorna formule-in-movimento.celata.com.
-#   - push su un altro branch      -> deploy di PREVIEW (URL temporaneo),
-#     qualità `ql` (render veloce). La produzione non viene toccata.
+#   - push su un altro branch      -> deploy di PREVIEW (qualità `ql`),
+#     raggiungibile sull'alias stabile anteprima.formule-in-movimento.celata.com.
+#     La produzione non viene toccata.
 #   - workflow_dispatch (manuale)  -> qualità e ambiente a scelta (input
 #     `quality` e `target`).
 #
@@ -266,27 +267,49 @@ jobs:
           cp -RL media frontend/dist/media
           cp frontend/vercel.json frontend/dist/vercel.json
 
-      # Deploy su Vercel. In base a target (preview/production):
-      #   - production -> `vercel deploy --prod` (aggiorna il dominio custom e il
-      #     dominio .vercel.app di produzione).
-      #   - preview    -> `vercel deploy` (senza --prod): crea un deployment di
-      #     anteprima con un URL temporaneo univoco (es.
-      #     formule-in-movimento-<hash>-<scope>.vercel.app), senza toccare la
-      #     produzione. L'URL viene stampato e messo nel riepilogo della run.
+      # Deploy su Vercel. I domini sono gestiti SEMPRE con alias espliciti
+      # (`--skip-domain` disattiva l'assegnazione automatica), così produzione e
+      # anteprima non si contendono i domini:
+      #   - production -> `vercel deploy --prod --skip-domain`, poi alias del
+      #     dominio di produzione (PROD_DOMAIN). Senza --skip-domain ogni deploy
+      #     di produzione si riprenderebbe anche PREVIEW_ALIAS (Vercel applica
+      #     alla produzione i custom domain senza preview-branch, e senza Git il
+      #     preview-branch non è configurabile).
+      #   - preview    -> `vercel deploy` (senza --prod), poi alias STABILE
+      #     PREVIEW_ALIAS sull'ultimo deployment ("l'ultimo preview vince").
+      # Nota: con --skip-domain il dominio di default *.vercel.app di produzione
+      # non si auto-aggiorna; il dominio canonico di produzione è PROD_DOMAIN.
       - name: Deploy su Vercel
+        env:
+          PROD_DOMAIN: formule-in-movimento.celata.com
+          PREVIEW_ALIAS: anteprima.formule-in-movimento.celata.com
         run: |
           npm install -g vercel@latest
           TARGET="${{ needs.setup.outputs.target }}"
           if [ "$TARGET" = "production" ]; then
             echo "Deploy di PRODUZIONE…"
             URL=$(vercel deploy frontend/dist \
-              --prod --yes --archive=tgz \
+              --prod --yes --archive=tgz --skip-domain \
               --token="${{ secrets.VERCEL_TOKEN }}")
+            echo "Assegno il dominio di produzione $PROD_DOMAIN…"
+            vercel alias set "$URL" "$PROD_DOMAIN" \
+              --token="${{ secrets.VERCEL_TOKEN }}"
+            ALIAS_URL="https://$PROD_DOMAIN"
           else
             echo "Deploy di PREVIEW (URL temporaneo, la produzione non cambia)…"
             URL=$(vercel deploy frontend/dist \
               --yes --archive=tgz \
               --token="${{ secrets.VERCEL_TOKEN }}")
+            echo "Assegno l'alias stabile $PREVIEW_ALIAS all'ultimo preview…"
+            # Non bloccante: se il dominio dell'anteprima non è ancora configurato
+            # su Vercel, l'alias fallisce ma il preview (URL con hash) resta valido.
+            if vercel alias set "$URL" "$PREVIEW_ALIAS" \
+                 --token="${{ secrets.VERCEL_TOKEN }}"; then
+              ALIAS_URL="https://$PREVIEW_ALIAS"
+            else
+              echo "::warning::Alias $PREVIEW_ALIAS non assegnato (dominio non ancora configurato su Vercel?)."
+              ALIAS_URL=""
+            fi
           fi
           echo "Deployment URL: $URL"
           {
@@ -294,6 +317,8 @@ jobs:
             echo ""
             echo "- **URL deployment**: $URL"
             if [ "$TARGET" = "production" ]; then
-              echo "- Produzione: https://formule-in-movimento.celata.com"
+              echo "- Produzione: $ALIAS_URL"
+            elif [ -n "$ALIAS_URL" ]; then
+              echo "- Anteprima stabile: $ALIAS_URL"
             fi
           } >> "$GITHUB_STEP_SUMMARY"

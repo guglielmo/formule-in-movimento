@@ -15,12 +15,13 @@ all'evento:
 | Evento | Deploy | Qualità |
 |---|---|---|
 | **push/merge su `main`** | **produzione** (`vercel deploy --prod`, aggiorna `formule-in-movimento.celata.com`) | `qh` |
-| **push su un altro branch** | **preview** (URL temporaneo) | `ql` |
+| **push su un altro branch** | **preview**, raggiungibile sull'alias stabile `anteprima.formule-in-movimento.celata.com` (oltre all'URL temporaneo) | `ql` |
 | **avvio manuale** (*Actions → Run workflow*) | a scelta via input `target` | a scelta via input `quality` |
 
-In breve: si lavora su un branch (ogni push genera una **preview** da riguardare,
-URL nel *Summary* della run); quando si **mergia in `main`** il sito va in
-**produzione** in qualità di pubblicazione `qh`.
+In breve: si lavora su un branch (ogni push genera una **preview** da riguardare
+sempre allo stesso indirizzo, vedi §3.1; l'URL è anche nel *Summary* della run);
+quando si **mergia in `main`** il sito va in **produzione** in qualità di
+pubblicazione `qh`.
 
 Fasi del workflow:
 
@@ -31,7 +32,10 @@ Fasi del workflow:
    non rirenderizza e non scarica nemmeno l'immagine. In cache-miss il rendering
    gira **dentro l'immagine CI** con Manim/LaTeX preinstallati (vedi §2.2).
 4. **deploy** — `make frontend-build`, include i video nella `dist/` e pubblica
-   su Vercel.
+   su Vercel. I domini sono assegnati con **alias espliciti** (`vercel alias
+   set`) e l'assegnazione automatica è disattivata (`--skip-domain` in
+   produzione), così produzione e anteprima non si contendono i domini
+   (vedi §3 e §3.1).
 
 HTTPS e certificati sono gestiti automaticamente da Vercel.
 
@@ -106,6 +110,45 @@ HTTPS automatico (Let's Encrypt gestito da Vercel).
 3. **Attendi la verifica.** Vercel rileva il record, verifica il dominio ed
    emette automaticamente il certificato TLS. Da quel momento il sito è
    raggiungibile su `https://formule-in-movimento.celata.com`.
+
+> **Come viene assegnato il dominio.** Il workflow deploya la produzione con
+> `vercel deploy --prod --skip-domain` e poi assegna il dominio esplicitamente
+> con `vercel alias set`. Questo serve a non far "rubare" l'alias dell'anteprima
+> dai deploy di produzione (vedi §3.1). Effetto collaterale: il dominio di
+> default `*.vercel.app` di produzione **non** si auto-aggiorna; l'indirizzo
+> canonico di produzione è `formule-in-movimento.celata.com`.
+
+### 3.1 Anteprima stabile: anteprima.formule-in-movimento.celata.com
+
+I deploy di **preview** (push su un branch ≠ `main`) ricevono un URL temporaneo
+diverso a ogni run; per avere **sempre lo stesso indirizzo** il workflow assegna
+all'ultimo preview l'alias `anteprima.formule-in-movimento.celata.com`
+(`vercel alias set …`). Vale "**l'ultimo preview vince**": con più branch aperti
+contemporaneamente, l'alias punta all'anteprima deployata più di recente (gli
+altri restano raggiungibili al loro URL con hash).
+
+Poiché la produzione usa `--skip-domain` (vedi §3), un merge in `main` **non**
+ri-aggancia questo dominio alla produzione: l'anteprima resta puntata all'ultimo
+preview.
+
+Configurazione **una tantum**, identica alla produzione:
+
+1. Aggiungi il dominio al progetto Vercel: **Settings → Domains → Add** →
+   `anteprima.formule-in-movimento.celata.com` (o
+   `npx vercel domains add anteprima.formule-in-movimento.celata.com`).
+2. Crea il record DNS su `celata.com` (usa il valore mostrato da Vercel):
+
+   | Tipo  | Nome (host)                       | Valore                  |
+   |-------|-----------------------------------|-------------------------|
+   | CNAME | `anteprima.formule-in-movimento`  | `cname.vercel-dns.com.` |
+
+3. Attendi la verifica: HTTPS automatico, e da lì lo step `vercel alias set` del
+   workflow potrà puntarci i preview.
+
+> Finché il dominio non è aggiunto/verificato su Vercel, lo step `vercel alias
+> set` non riesce ad assegnare l'alias, ma **non fa fallire** il workflow (emette
+> solo un warning) e il preview resta raggiungibile al suo URL temporaneo. Una
+> volta configurato il dominio, l'alias inizia a funzionare da solo.
 
 ## 4. Manutenzione / Cleanup
 

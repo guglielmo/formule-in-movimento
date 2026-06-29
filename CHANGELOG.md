@@ -13,6 +13,14 @@ e il progetto adotta il [Versionamento Semantico](https://semver.org/lang/it/).
   branch → **preview** a qualità `ql`, con URL temporaneo nel riepilogo della
   run. L'avvio manuale resta disponibile con input `quality` e `target`
   (`production`/`preview`).
+- **Anteprima a URL stabile:** i preview vengono aliasati a
+  `anteprima.formule-in-movimento.celata.com`, così l'ultima anteprima è sempre
+  allo stesso indirizzo (richiede di aggiungere il dominio su Vercel + record
+  CNAME; lo step è non bloccante finché non è configurato). I domini sono ora
+  assegnati con alias espliciti e la produzione usa `--skip-domain`, così i
+  deploy di produzione non "rubano" l'alias dell'anteprima (di conseguenza il
+  dominio `*.vercel.app` di default non si auto-aggiorna: l'indirizzo canonico
+  di produzione è `formule-in-movimento.celata.com`).
 - **Immagine CI con Manim + LaTeX preinstallati** (`docker/Dockerfile.ci`):
   in cache-miss il rendering gira dentro l'immagine, senza reinstallare apt/pip
   a ogni run. L'immagine è costruita e pubblicata su GHCR dal job `ci-image`
