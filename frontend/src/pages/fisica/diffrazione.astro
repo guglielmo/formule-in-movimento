@@ -7,7 +7,7 @@ import CalcolatoreDiffrazione from '../../components/CalcolatoreDiffrazione.vue'
 <LessonLayout
   title="Interferenza e Diffrazione"
   subtitle="Dalla somma delle onde alle frange della doppia fenditura"
-  description="Interferenza e Diffrazione delle onde - Principio di sovrapposizione, effetto della fase, interferenza costruttiva e distruttiva, diffrazione (Huygens) e doppia fenditura | Formule in Movimento"
+  description="Interferenza e Diffrazione delle onde - Principio di sovrapposizione, effetto della fase, interferenza costruttiva e distruttiva, diffrazione (Huygens), doppia fenditura, teorema di Fourier e spettro delle armoniche | Formule in Movimento"
   theme="fisica"
   breadcrumbs={[
     { label: 'Home', href: '/' },
@@ -42,6 +42,11 @@ import CalcolatoreDiffrazione from '../../components/CalcolatoreDiffrazione.vue'
       <strong>Descrizione:</strong> Il <strong>principio di sovrapposizione</strong>: quando due onde si
       incontrano, gli spostamenti si sommano punto per punto. La risultante y = y₁ + y₂ dipende da come
       le due onde sono allineate (cioè dalla loro fase).
+      <p style="margin-top: 12px;">
+        Questa stessa idea — la <strong>composizione delle onde</strong> — portata al limite di
+        <em>molte</em> sinusoidi è il cuore del <a href="#fourier">teorema di Fourier</a> (sezione 7):
+        sommando armoniche si può costruire qualsiasi onda periodica.
+      </p>
     </div>
   </div>
 
@@ -117,6 +122,53 @@ import CalcolatoreDiffrazione from '../../components/CalcolatoreDiffrazione.vue'
   </div>
   <CalcolatoreDiffrazione client:load />
 
+  <h2 id="fourier">7. Il teorema di Fourier</h2>
+  <div class="intro-section">
+    <p>
+      Abbiamo visto che le onde si <strong>sommano</strong>. Il <strong>teorema di Fourier</strong>
+      ribalta il punto di vista: <em>qualsiasi onda periodica</em>, per quanto complicata, si può sempre
+      <strong>scomporre</strong> in una somma di semplici <strong>onde armoniche</strong> (sinusoidi). La
+      sinusoide più lenta è la <strong>fondamentale</strong> (frequenza <strong>f₁</strong>); le altre, le
+      <strong>armoniche</strong>, hanno frequenze multiple: <strong>f<sub>n</sub> = n · f₁</strong>.
+    </p>
+  </div>
+  <div class="video-container">
+    <VideoPlayer src="/media/fisica/videos/diffrazione/TeoremaFourier.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> Un'onda periodica dall'aspetto irregolare viene
+      <strong>scomposta</strong> nelle sue componenti: la <strong>fondamentale</strong> e le sue
+      <strong>armoniche</strong> (frequenze doppia, tripla, …). Sommandole si riottiene l'onda di partenza:
+      è il cuore dell'analisi di Fourier.
+    </div>
+  </div>
+
+  <h2>8. La sintesi: costruire un'onda quadra</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/fisica/videos/diffrazione/SintesiOndaQuadra.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> Partendo dalla sola fondamentale e aggiungendo una alla volta le
+      armoniche dispari, la somma si avvicina sempre di più a un'<strong>onda quadra</strong>. È la
+      <strong>sintesi</strong> di Fourier:
+      <div class="example" style="margin-top: 15px;">
+        y = (4/π) · (sin x + ⅓ sin 3x + ⅕ sin 5x + …)
+      </div>
+      Più armoniche si sommano, più la forma è fedele.
+    </div>
+  </div>
+
+  <h2>9. Lo spettro: il peso delle armoniche</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/fisica/videos/diffrazione/SpettroFrequenze.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> La stessa onda può essere descritta nel <strong>dominio del tempo</strong>
+      (la sua forma) o nel <strong>dominio delle frequenze</strong>, lo <strong>spettro</strong>: un grafico a
+      barre che indica <em>quanto pesa</em> ciascuna armonica. Per l'onda quadra restano solo le armoniche
+      <strong>dispari</strong>, con ampiezza che decresce come <strong>1/n</strong>. Lo spettro spiega, ad
+      esempio, perché la stessa nota suona diversa su strumenti diversi: è una questione di
+      <strong>timbro</strong>.
+    </div>
+  </div>
+
   <h2>Riepilogo</h2>
   <div class="intro-section">
     <p>
@@ -125,15 +177,16 @@ import CalcolatoreDiffrazione from '../../components/CalcolatoreDiffrazione.vue'
       <strong>distruttiva</strong> (annullamento). La <strong>diffrazione</strong> (principio di Huygens)
       fa allargare le onde oltre le fenditure e aggirare gli ostacoli; con <strong>due fenditure</strong>
       l'interferenza genera le <strong>frange</strong>, con i massimi dati da d · sin θ = m · λ.
+      Infine il <strong>teorema di Fourier</strong> mostra il rovescio della medaglia: ogni onda periodica
+      si <strong>scompone</strong> nelle sue <strong>armoniche</strong>, e il suo <strong>spettro</strong> ne
+      rivela il contenuto in frequenza.
     </p>
   </div>
 
   <h2>In arrivo in questo capitolo</h2>
   <div class="intro-section">
-    <p>Questo capitolo verrà ampliato con due approfondimenti sulle onde:</p>
+    <p>Questo capitolo verrà ampliato con un ulteriore approfondimento sulle onde:</p>
     <ul>
-      <li><strong>Teorema di Fourier:</strong> come ogni onda periodica si scompone in una somma di
-        <em>onde armoniche</em> (sinusoidi).</li>
       <li><strong>Descrizione geometrica dell'interferenza:</strong> i <em>cammini ottici</em> e la
         differenza di percorso che determinano massimi e minimi.</li>
     </ul>
