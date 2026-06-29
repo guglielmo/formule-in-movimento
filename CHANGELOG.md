@@ -7,6 +7,22 @@ e il progetto adotta il [Versionamento Semantico](https://semver.org/lang/it/).
 
 ## [Non rilasciato]
 
+## [0.4.0] - 2026-06-29
+
+### Modificato
+- Il capitolo "Interferenza e Rifrazione" è stato sostituito con **"Interferenza e Diffrazione"**:
+  l'arco didattico (sovrapposizione → fase → interferenza) porta naturalmente alla diffrazione,
+  non alla rifrazione.
+
+### Aggiunto
+- **Animazione di fisica "Interferenza e Diffrazione"** (`animations/fisica/diffrazione/`) —
+  5 scene verticali: somma di onde, effetto della fase, interferenza costruttiva e distruttiva,
+  diffrazione (principio di Huygens) e doppia fenditura di Young (frange, `d sin θ = m λ`).
+  - Pagina lezione `frontend/src/pages/fisica/diffrazione.astro` e card nell'indice di fisica.
+
+### Rimosso
+- Animazione `rifrazione` (sostituita da `diffrazione`).
+
 ## [0.3.0] - 2026-06-29
 
 ### Aggiunto
@@ -57,7 +73,8 @@ e il progetto adotta il [Versionamento Semantico](https://semver.org/lang/it/).
 ### Aggiunto
 - Commit iniziale del progetto **Formule in Movimento**.
 
-[Non rilasciato]: https://github.com/guglielmo/formule-in-movimento/compare/v0.3.0...HEAD
+[Non rilasciato]: https://github.com/guglielmo/formule-in-movimento/compare/v0.4.0...HEAD
+[0.4.0]: https://github.com/guglielmo/formule-in-movimento/releases/tag/v0.4.0
 [0.3.0]: https://github.com/guglielmo/formule-in-movimento/releases/tag/v0.3.0
 [0.2.0]: https://github.com/guglielmo/formule-in-movimento/releases/tag/v0.2.0
 [0.1.0]: https://github.com/guglielmo/formule-in-movimento/releases/tag/v0.1.0

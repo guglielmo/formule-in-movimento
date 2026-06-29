@@ -187,44 +187,48 @@ class CostruttivaDistruttiva(VerticalTemplate):
 
 
 # ============================================================================
-# 4. FRONTI D'ONDA E RAGGI
+# 4. DIFFRAZIONE: l'onda aggira gli ostacoli (principio di Huygens)
 # ============================================================================
 
-class FrontiDOnda(Scene):
-    """Il fronte d'onda unisce i punti in fase; il raggio ne indica la direzione."""
+class Diffrazione(Scene):
+    """Oltre una fenditura stretta il fronte d'onda si allarga: diffrazione."""
 
     def construct(self):
         self.camera.background_color = WHITE
-        intestazione = titolo("Fronti d'onda e raggi", "dai fronti alla direzione")
+        intestazione = titolo("La diffrazione", "l'onda aggira gli ostacoli")
         self.play(Write(intestazione))
         self.wait(0.3)
 
-        # Fronti d'onda piani (linee verticali) che avanzano
-        fronti = VGroup(*[
-            Line([x, 2.6, 0], [x, -0.6, 0], color=BLUE_D, stroke_width=4)
-            for x in np.arange(-3.0, 1.01, 1.0)
+        Sy = 1.3            # altezza della fenditura
+        g = 0.45            # semi-apertura della fenditura
+        S = np.array([0.0, Sy, 0])
+
+        # Barriera con fenditura centrale
+        muro_top = Line([0, Sy + g, 0], [0, 3.4, 0], color=DARK_GRAY, stroke_width=9)
+        muro_bot = Line([0, Sy - g, 0], [0, -1.2, 0], color=DARK_GRAY, stroke_width=9)
+
+        # Fronti d'onda piani in arrivo (a sinistra)
+        piani = VGroup(*[
+            Line([x, -1.2, 0], [x, 3.4, 0], color=BLUE_D, stroke_width=4)
+            for x in (-3.0, -2.3, -1.6, -0.9)
         ])
-        self.play(LaggedStart(*[Create(l) for l in fronti], lag_ratio=0.12))
+        # Fronti circolari oltre la fenditura (a destra): semicerchi
+        circolari = VGroup(*[
+            Arc(radius=r, arc_center=S, start_angle=-PI / 2, angle=PI,
+                color=GREEN_D, stroke_width=4)
+            for r in (0.6, 1.2, 1.8, 2.4)
+        ])
 
-        lab_fronte = fit(Text("fronte d'onda", font_size=22, color=BLUE_D))
-        lab_fronte.move_to([0, 3.1, 0])
-
-        # Raggio: perpendicolare ai fronti
-        raggio = Arrow([-3.4, 1.0, 0], [3.4, 1.0, 0], color=RED_D, buff=0)
-        lab_raggio = fit(Text("raggio", font_size=22, color=RED_D))
-        lab_raggio.next_to(raggio.get_end(), UP, buff=0.1)
-
-        self.play(FadeIn(lab_fronte))
-        self.play(GrowArrow(raggio), FadeIn(lab_raggio))
-
-        # I fronti avanzano nella direzione del raggio
-        self.play(fronti.animate.shift(RIGHT * 2.0), run_time=3, rate_func=linear)
+        self.play(Create(muro_top), Create(muro_bot))
+        self.play(LaggedStart(*[Create(l) for l in piani], lag_ratio=0.15))
+        self.play(piani.animate.shift(RIGHT * 0.6), run_time=1.2, rate_func=linear)
+        self.play(LaggedStart(*[Create(a) for a in circolari], lag_ratio=0.25))
 
         nota = VGroup(
-            Text("Il fronte d'onda unisce i punti in fase.", font_size=23, color=BLACK),
-            Text("Il raggio è perpendicolare ai fronti", font_size=23, color=DARK_GRAY),
-            Text("e indica la direzione di propagazione.", font_size=23, color=DARK_GRAY),
-        ).arrange(DOWN, buff=0.18)
+            Text("Ogni punto del fronte è sorgente", font_size=23, color=BLACK),
+            Text("di onde secondarie (Huygens):", font_size=23, color=BLACK),
+            Text("oltre la fenditura l'onda si allarga.", font_size=23, color=DARK_GRAY),
+        ).arrange(DOWN, buff=0.16)
         fit(nota)
         nota.move_to(DOWN * 3.6)
         self.play(FadeIn(nota))
@@ -232,85 +236,63 @@ class FrontiDOnda(Scene):
 
 
 # ============================================================================
-# 5. LA RIFRAZIONE
+# 5. DOPPIA FENDITURA: frange di interferenza
 # ============================================================================
 
-class Rifrazione(Scene):
-    """Cambiando mezzo cambiano velocità e lunghezza d'onda: l'onda piega."""
+class DoppiaFenditura(Scene):
+    """Due fenditure: le onde si sovrappongono e creano frange chiare e scure."""
 
     def construct(self):
         self.camera.background_color = WHITE
-        intestazione = titolo("La rifrazione", "cambio di mezzo e velocità")
+        intestazione = titolo("Doppia fenditura", "frange di interferenza")
         self.play(Write(intestazione))
         self.wait(0.3)
 
-        O = np.array([0.0, 1.4, 0])
-        th1 = 42 * DEGREES
-        th2 = 26 * DEGREES
-        d1 = np.array([np.sin(th1), -np.cos(th1), 0])   # propagazione incidente (giù-destra)
-        d2 = np.array([np.sin(th2), -np.cos(th2), 0])   # propagazione rifratta
-        perp1 = np.array([np.cos(th1), np.sin(th1), 0])
-        perp2 = np.array([np.cos(th2), np.sin(th2), 0])
-        P1 = O - d1 * 2.3
-        P2 = O + d2 * 2.6
+        # Due sorgenti (le due fenditure)
+        S1 = np.array([-2.6, 2.7, 0])
+        S2 = np.array([-2.6, 0.7, 0])
+        sorg1 = Dot(S1, color=BLUE_D, radius=0.08)
+        sorg2 = Dot(S2, color=GREEN_D, radius=0.08)
 
-        # Mezzi: 1 (sopra, veloce) e 2 (sotto, lento)
-        mezzo2 = Rectangle(width=7.2, height=6.2, fill_color=BLUE_D, fill_opacity=0.10,
-                           stroke_width=0).move_to([0, O[1] - 6.2 / 2, 0])
-        confine = Line([-3.6, O[1], 0], [3.6, O[1], 0], color=DARK_GRAY, stroke_width=3)
-        lab_m1 = fit(Text("Mezzo 1 (veloce)", font_size=22, color=DARK_GRAY)).move_to([1.9, O[1] + 1.5, 0])
-        lab_m2 = fit(Text("Mezzo 2 (lento)", font_size=22, color=DARK_BLUE)).move_to([-1.9, O[1] - 1.0, 0])
+        onde1 = VGroup(*[Arc(radius=r, arc_center=S1, start_angle=-PI / 2, angle=PI,
+                             color=BLUE_D, stroke_width=2.5, stroke_opacity=0.7)
+                         for r in (0.8, 1.6, 2.4, 3.2, 4.0)])
+        onde2 = VGroup(*[Arc(radius=r, arc_center=S2, start_angle=-PI / 2, angle=PI,
+                             color=GREEN_D, stroke_width=2.5, stroke_opacity=0.7)
+                         for r in (0.8, 1.6, 2.4, 3.2, 4.0)])
 
-        normale = DashedLine(O + UP * 2.2, O + DOWN * 2.2, color=DARK_GRAY, stroke_width=2)
+        # Schermo a destra
+        schermo = Line([3.1, -1.8, 0], [3.1, 4.0, 0], color=DARK_GRAY, stroke_width=4)
+        lab_schermo = fit(Text("schermo", font_size=20, color=DARK_GRAY)).next_to(schermo, DOWN, buff=0.1)
 
-        incidente = Arrow(P1, O, color=RED_D, buff=0)
-        rifratto = Arrow(O, P2, color=GREEN_D, buff=0)
+        # Frange sullo schermo: massimi (rossi) alternati a minimi
+        ymid = (S1[1] + S2[1]) / 2
+        massimi = VGroup(*[Dot([3.1, ymid + k * 0.85, 0], color=RED_D, radius=0.1)
+                           for k in (-2, -1, 0, 1, 2)])
+        minimi = VGroup(*[Line([2.95, ymid + (k + 0.5) * 0.85, 0],
+                               [3.25, ymid + (k + 0.5) * 0.85, 0],
+                               color=DARK_GRAY, stroke_width=2)
+                          for k in (-2, -1, 0, 1)])
 
-        arc1 = Arc(radius=0.7, arc_center=O, start_angle=PI / 2, angle=th1,
-                   color=DARK_BLUE, stroke_width=3)
-        lab_th1 = MathTex(r"\theta_1", color=DARK_BLUE, font_size=32).move_to(
-            O + 1.05 * np.array([np.cos(PI / 2 + th1 / 2), np.sin(PI / 2 + th1 / 2), 0]))
-        arc2 = Arc(radius=0.7, arc_center=O, start_angle=-PI / 2, angle=th2,
-                   color=DARK_BLUE, stroke_width=3)
-        lab_th2 = MathTex(r"\theta_2", color=DARK_BLUE, font_size=32).move_to(
-            O + 1.05 * np.array([np.cos(-PI / 2 + th2 / 2), np.sin(-PI / 2 + th2 / 2), 0]))
+        self.play(FadeIn(sorg1), FadeIn(sorg2))
+        self.play(LaggedStart(*[Create(a) for a in onde1], lag_ratio=0.12),
+                  LaggedStart(*[Create(a) for a in onde2], lag_ratio=0.12),
+                  run_time=2.5)
+        self.play(Create(schermo), FadeIn(lab_schermo))
+        self.play(LaggedStart(*[GrowFromCenter(m) for m in massimi], lag_ratio=0.15),
+                  *[Create(m) for m in minimi])
 
-        # Fronti d'onda: piu' larghi nel mezzo 1, piu' stretti nel mezzo 2
-        def fronti_lungo(direction, perp, spacing, n, start, length, color):
-            g = VGroup()
-            for i in range(n):
-                c = O + direction * (start + i * spacing)
-                g.add(Line(c - perp * length / 2, c + perp * length / 2,
-                           color=color, stroke_width=3))
-            return g
-
-        fronti1 = fronti_lungo(-d1, perp1, 0.85, 3, 0.6, 1.0, RED_D)
-        fronti2 = fronti_lungo(d2, perp2, 0.5, 3, 0.5, 0.8, GREEN_D)
-
-        self.play(FadeIn(mezzo2), Create(confine), FadeIn(lab_m1), FadeIn(lab_m2))
-        self.play(Create(normale))
-        self.play(GrowArrow(incidente))
-        self.play(LaggedStart(*[Create(f) for f in fronti1], lag_ratio=0.2))
-        self.play(GrowArrow(rifratto))
-        self.play(LaggedStart(*[Create(f) for f in fronti2], lag_ratio=0.2))
-        self.play(Create(arc1), Write(lab_th1), Create(arc2), Write(lab_th2))
-        self.wait(0.3)
-
-        # Legge di Snell e relazioni
-        snell = fit(MathTex(r"n_1 \sin\theta_1 = n_2 \sin\theta_2", color=BLACK, font_size=40))
-        snell.move_to([0, -2.9, 0])
-        box = SurroundingRectangle(snell, color=DARK_BLUE, buff=0.2, corner_radius=0.12)
-        rel = fit(MathTex(r"\frac{\sin\theta_1}{\sin\theta_2} = \frac{v_1}{v_2} = \frac{\lambda_1}{\lambda_2}",
-                          color=DARK_BLUE, font_size=36))
-        rel.next_to(snell, DOWN, buff=0.5)
-        self.play(Write(snell), Create(box))
-        self.play(Write(rel))
-
+        # Condizione dei massimi
+        formula = fit(MathTex(r"d\,\sin\theta = m\,\lambda", color=BLACK, font_size=40))
+        formula.move_to([0, -2.6, 0])
+        box = SurroundingRectangle(formula, color=DARK_BLUE, buff=0.2, corner_radius=0.12)
         nota = VGroup(
-            Text("Cambiano velocità e lunghezza d'onda;", font_size=22, color=BLACK),
-            Text("la frequenza resta la stessa: l'onda piega.", font_size=22, color=DARK_GRAY),
+            Text("In fase → massimo (chiaro)", font_size=22, color=RED_D),
+            Text("In opposizione → minimo (scuro)", font_size=22, color=DARK_GRAY),
         ).arrange(DOWN, buff=0.15)
         fit(nota)
-        nota.move_to([0, -5.6, 0])
+        nota.move_to([0, -4.0, 0])
+
+        self.play(Write(formula), Create(box))
         self.play(FadeIn(nota))
         self.wait(2)

@@ -4,14 +4,14 @@ import VideoPlayer from '../../components/VideoPlayer.astro';
 ---
 
 <LessonLayout
-  title="Interferenza e Rifrazione"
-  subtitle="Dalla somma delle onde all'interferenza, fino alla rifrazione"
-  description="Interferenza e Rifrazione delle onde - Principio di sovrapposizione, effetto della fase, interferenza costruttiva e distruttiva, fronti d'onda e rifrazione (legge di Snell) | Formule in Movimento"
+  title="Interferenza e Diffrazione"
+  subtitle="Dalla somma delle onde alle frange della doppia fenditura"
+  description="Interferenza e Diffrazione delle onde - Principio di sovrapposizione, effetto della fase, interferenza costruttiva e distruttiva, diffrazione (Huygens) e doppia fenditura | Formule in Movimento"
   theme="fisica"
   breadcrumbs={[
     { label: 'Home', href: '/' },
     { label: 'Fisica', href: '/fisica' },
-    { label: 'Interferenza e Rifrazione' }
+    { label: 'Interferenza e Diffrazione' }
   ]}
 >
   <div class="intro-section">
@@ -20,23 +20,23 @@ import VideoPlayer from '../../components/VideoPlayer.astro';
       Quando due o più onde si propagano nello stesso punto, i loro effetti si
       <strong>sommano</strong>: è il <em>principio di sovrapposizione</em>. Il risultato dipende dalla
       <strong>fase</strong> relativa delle onde: possono rinforzarsi o annullarsi a vicenda
-      (<strong>interferenza</strong>). Lo stesso ragionamento sui fronti d'onda permette di capire perché
-      un'onda <strong>devia</strong> quando cambia mezzo: la <strong>rifrazione</strong>.
+      (<strong>interferenza</strong>). Da qui nasce la <strong>diffrazione</strong>: le onde aggirano gli
+      ostacoli e, oltre una fenditura, si allargano dando luogo a <strong>frange</strong> di interferenza.
     </p>
 
     <div class="key-concept">
       <strong>Concetto Chiave:</strong>
       <p style="margin-top: 10px;">
-        La <strong>fase</strong> decide tutto: due onde in fase si rinforzano (interferenza costruttiva),
-        due onde in opposizione di fase si annullano (interferenza distruttiva). E quando un'onda passa in
-        un mezzo dove viaggia più lenta, la sua lunghezza d'onda si accorcia e il fronte d'onda piega.
+        La <strong>fase</strong> decide tutto: dove le onde arrivano in fase si rinforzano (massimo,
+        zona chiara), dove arrivano in opposizione di fase si annullano (minimo, zona scura). È così che
+        due fenditure producono una figura di frange alternate.
       </p>
     </div>
   </div>
 
   <h2>1. Somma di onde</h2>
   <div class="video-container">
-    <VideoPlayer src="/media/fisica/videos/rifrazione/SommaDiOnde.mp4" />
+    <VideoPlayer src="/media/fisica/videos/diffrazione/SommaDiOnde.mp4" />
     <div class="description">
       <strong>Descrizione:</strong> Il <strong>principio di sovrapposizione</strong>: quando due onde si
       incontrano, gli spostamenti si sommano punto per punto. La risultante y = y₁ + y₂ dipende da come
@@ -46,7 +46,7 @@ import VideoPlayer from '../../components/VideoPlayer.astro';
 
   <h2>2. L'effetto della fase</h2>
   <div class="video-container">
-    <VideoPlayer src="/media/fisica/videos/rifrazione/EffettoFase.mp4" />
+    <VideoPlayer src="/media/fisica/videos/diffrazione/EffettoFase.mp4" />
     <div class="description">
       <strong>Descrizione:</strong> Due onde identiche, sfasate di <strong>Δφ</strong>. Variando lo
       sfasamento da 0 a 2π si vede l'<strong>ampiezza della risultante</strong> crescere e poi annullarsi:
@@ -56,7 +56,7 @@ import VideoPlayer from '../../components/VideoPlayer.astro';
 
   <h2>3. Interferenza costruttiva e distruttiva</h2>
   <div class="video-container">
-    <VideoPlayer src="/media/fisica/videos/rifrazione/CostruttivaDistruttiva.mp4" />
+    <VideoPlayer src="/media/fisica/videos/diffrazione/CostruttivaDistruttiva.mp4" />
     <div class="description">
       <strong>Descrizione:</strong> I due casi limite.
       <ul>
@@ -68,27 +68,29 @@ import VideoPlayer from '../../components/VideoPlayer.astro';
     </div>
   </div>
 
-  <h2>4. Fronti d'onda e raggi</h2>
+  <h2>4. La diffrazione</h2>
   <div class="video-container">
-    <VideoPlayer src="/media/fisica/videos/rifrazione/FrontiDOnda.mp4" />
+    <VideoPlayer src="/media/fisica/videos/diffrazione/Diffrazione.mp4" />
     <div class="description">
-      <strong>Descrizione:</strong> Un <strong>fronte d'onda</strong> unisce i punti che oscillano in fase;
-      il <strong>raggio</strong> è perpendicolare ai fronti e indica la direzione di propagazione. È lo
-      strumento giusto per descrivere cosa succede quando l'onda incontra un nuovo mezzo.
+      <strong>Descrizione:</strong> Quando un fronte d'onda piano attraversa una <strong>fenditura stretta</strong>,
+      oltre l'apertura si <strong>allarga</strong> in fronti circolari: è la <strong>diffrazione</strong>.
+      Si spiega col <strong>principio di Huygens</strong> — ogni punto di un fronte d'onda è sorgente di
+      onde secondarie — ed è il motivo per cui le onde aggirano gli ostacoli.
     </div>
   </div>
 
-  <h2>5. La rifrazione</h2>
+  <h2>5. La doppia fenditura</h2>
   <div class="video-container">
-    <VideoPlayer src="/media/fisica/videos/rifrazione/Rifrazione.mp4" />
+    <VideoPlayer src="/media/fisica/videos/diffrazione/DoppiaFenditura.mp4" />
     <div class="description">
-      <strong>Descrizione:</strong> Passando da un mezzo a un altro, l'onda cambia <strong>velocità</strong>
-      e <strong>lunghezza d'onda</strong> (la <strong>frequenza resta la stessa</strong>): per questo il
-      fronte d'onda <strong>piega</strong>. La direzione del raggio segue la <strong>legge di Snell</strong>:
+      <strong>Descrizione:</strong> Con <strong>due fenditure</strong>, le onde diffratte si sovrappongono:
+      dove arrivano in fase si rinforzano (massimo, frangia chiara), dove arrivano in opposizione si
+      annullano (minimo, frangia scura). I massimi si trovano dove la differenza di cammino è un multiplo
+      della lunghezza d'onda:
       <div class="example" style="margin-top: 15px;">
-        n₁ · sin θ₁ = n₂ · sin θ₂
+        d · sin θ = m · λ
       </div>
-      Se il mezzo 2 è più "lento", il raggio si avvicina alla normale (θ₂ &lt; θ₁).
+      È l'esperimento di Young, prova storica della natura ondulatoria della luce.
     </div>
   </div>
 
@@ -97,9 +99,9 @@ import VideoPlayer from '../../components/VideoPlayer.astro';
     <p>
       La <strong>sovrapposizione</strong> fa sommare gli spostamenti delle onde; la <strong>fase</strong>
       relativa determina un'<strong>interferenza costruttiva</strong> (rinforzo) o
-      <strong>distruttiva</strong> (annullamento). Ragionando per <strong>fronti d'onda</strong>, si capisce
-      la <strong>rifrazione</strong>: cambiando mezzo, velocità e lunghezza d'onda cambiano mentre la
-      frequenza resta costante, e il raggio devia secondo la <strong>legge di Snell</strong>.
+      <strong>distruttiva</strong> (annullamento). La <strong>diffrazione</strong> (principio di Huygens)
+      fa allargare le onde oltre le fenditure e aggirare gli ostacoli; con <strong>due fenditure</strong>
+      l'interferenza genera le <strong>frange</strong>, con i massimi dati da d · sin θ = m · λ.
     </p>
   </div>
 </LessonLayout>

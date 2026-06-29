@@ -59,7 +59,7 @@ formule-in-movimento/
 │   │   │       ├── index.astro       # Landing sezione fisica
 │   │   │       ├── gas-perfetto.astro  # Pagina lezione
 │   │   │       ├── onde.astro        # Pagina lezione
-│   │   │       └── rifrazione.astro  # Pagina lezione
+│   │   │       └── diffrazione.astro # Pagina lezione
 │   │   ├── components/               # Componenti Vue/Astro riutilizzabili
 │   │   ├── layouts/                  # Layout pagine
 │   │   └── styles/                   # Fogli di stile CSS
@@ -184,7 +184,7 @@ make setup
 
 - **Gas Perfetto** (`gas_perfetto`) - Equazione di stato, legge dei gas perfetti, trasformazioni termodinamiche
 - **Le Onde** (`onde`) - Onde trasversali e longitudinali, ampiezza e frequenza, corde/suono/terremoti, onde periodiche, impulsive e complesse, equazione dell'onda e calcolo della fase
-- **Interferenza e Rifrazione** (`rifrazione`) - Principio di sovrapposizione, effetto della fase, interferenza costruttiva e distruttiva, fronti d'onda, rifrazione e legge di Snell
+- **Interferenza e Diffrazione** (`diffrazione`) - Principio di sovrapposizione, effetto della fase, interferenza costruttiva e distruttiva, diffrazione (Huygens) e doppia fenditura di Young
 
 ## Makefile: Il Centro di Comando del Progetto
 
@@ -419,7 +419,7 @@ make deploy-animations
 
 ## Changelog
 
-Lo storico delle modifiche è in [CHANGELOG.md](CHANGELOG.md). Versione corrente: **0.3.0**.
+Lo storico delle modifiche è in [CHANGELOG.md](CHANGELOG.md). Versione corrente: **0.4.0**.
 
 ## Contribuire
 
