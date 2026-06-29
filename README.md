@@ -88,15 +88,11 @@ formule-in-movimento/
 │               └── [quality]/
 │                   └── [Scene].mp4
 ├── docs/                              # Documentazione
-│   ├── ARCHITECTURE.md               # Architettura del progetto
-│   ├── DEPLOY-MODES.md               # Modalità deployment
-│   └── PODMAN.md                     # Guida Podman
+│   └── ARCHITECTURE.md               # Architettura del progetto e deploy
 ├── Makefile                           # Comando centrale per tutte le operazioni
-├── Dockerfile                         # Build Docker per produzione
-├── docker-compose.local.yml          # Config Docker/Podman per test locale
-├── nginx.conf                         # Config nginx per deployment diretto
 ├── .python-version                    # Versione Python (3.12)
 ├── .github/workflows/                 # GitHub Actions (genera animazioni + deploy Vercel)
+├── DEPLOYMENT.md                       # Guida deploy (Vercel) e manutenzione
 ├── CLAUDE.md                          # Linee guida per lo sviluppo
 ├── CONTRIBUTING.md                    # Linee guida contributi
 └── CHANGELOG.md                       # Storico delle modifiche
@@ -165,11 +161,11 @@ make setup
    # Naviga a http://localhost:4321/fisica/entropia
    ```
 
-5. **Deploy in produzione**:
-   ```bash
-   make deploy-full
-   ```
-   Questo compila le animazioni in alta qualità e deploya tutto automaticamente.
+5. **Pubblica in produzione**:
+   Il deploy è automatizzato da GitHub Actions → Vercel. Avvialo da
+   **GitHub → Actions → "Genera animazioni e deploy Vercel" → Run workflow**.
+   Il workflow genera le animazioni, costruisce il frontend e pubblica il sito
+   (vedi [DEPLOYMENT.md](DEPLOYMENT.md)).
 
 **Fatto! Non serve mai toccare il Makefile - tutto è auto-discovered.**
 
@@ -199,8 +195,11 @@ make <animation>       # Renderizza un'animazione specifica
 make build-dev         # Compila tutte le animazioni (dev, bassa qualità)
 make build-prod        # Compila tutte le animazioni (prod, alta qualità)
 make frontend-dev      # Avvia server di sviluppo frontend
-make deploy-full       # Deploy completo su produzione
+make frontend-build    # Build statica del frontend (frontend/dist/)
 ```
+
+Il deploy in produzione è gestito da GitHub Actions → Vercel (vedi
+[DEPLOYMENT.md](DEPLOYMENT.md)).
 
 ### Creare una Nuova Animazione
 
@@ -231,126 +230,50 @@ make build-animation-prod ANIM=derivate
 
 **Non serve mai modificare il Makefile!** Tutte le animazioni sono auto-discovered.
 
-## Development vs Production
+## Sviluppo locale
 
-The project distinguishes between **development** (fast iteration) and **production** (high quality):
-
-### Development Workflow
+Per iterare in locale (non serve Vercel):
 
 ```bash
-# Build animations for local testing (low quality, fast)
-make build-dev
-
-# Or build specific animation
+# Genera un'animazione in bassa qualità (veloce)
 make gas_perfetto QUALITY=ql
+make build-dev                 # tutte le animazioni, bassa qualità
 
-# Start frontend dev server
+# Frontend con hot reload
 make frontend-dev
-# Access at http://localhost:4321
-```
+# http://localhost:4321
 
-### Production Workflow
-
-```bash
-# Build animations for production (high quality)
-make build-prod                        # All animations
-make build-animation-prod ANIM=gas_perfetto  # Specific animation
-
-# Build frontend
-make frontend-build
-
-# Deploy to production
-make deploy-full                       # Deploy frontend + animations
-make deploy                            # Deploy frontend only
-make deploy-animations                 # Deploy animations only
-```
-
-## Deployment
-
-### Deploy to Production
-
-The project uses a custom deployment script at `/home/gu/sites/deploy.sh` and rsync for media files:
-
-**Full deployment (recommended):**
-```bash
-# Builds high-quality animations + frontend, then deploys everything
-make deploy-full
-```
-
-**Partial deployments:**
-```bash
-# Deploy only frontend (code/HTML changes)
-make deploy
-
-# Deploy only animations (new/updated videos)
-make deploy-animations
-```
-
-**Note**: The `deploy.sh` script must be present at `/home/gu/sites/deploy.sh` and the production path `/home/gu/sites/formule-in-movimento/media/` must exist for deployment to work.
-
-### Local Testing with Docker/Podman
-
-**IMPORTANTE: Solo per test locale, non per produzione.**
-
-For local testing with containers:
-
-```bash
-# Using Podman (recommended)
-make deploy-podman-local    # Build and start local test container
-make stop-podman-local      # Stop local test container
-make restart-podman-local   # Restart after changes
-
-# Using Docker
-make deploy-docker-local    # Build and start local test container
-make stop-docker-local      # Stop local test container
-make restart-docker-local   # Restart after changes
-```
-
-The site will be available at `http://localhost:8080`.
-
-**For production deployment, use:**
-```bash
-make deploy-production      # Deploy to production via nginx-proxy
-```
-
-### Frontend Development
-
-For rapid iteration during development:
-
-```bash
-# Start development server with hot reload
-make frontend-dev
-# Access at http://localhost:4321
-
-# Build for production (without deploying)
+# Build statica del frontend (output in frontend/dist/)
 make frontend-build
 ```
 
-## Generazione automatica e Deploy su Vercel (CI/CD)
+## Deploy: GitHub Actions → Vercel
 
-Oltre al deploy manuale, il progetto include un workflow **GitHub Actions**
-(`.github/workflows/genera-animazioni.yml`) che genera le animazioni e pubblica
-il sito su **Vercel**.
+Il sito è statico e viene pubblicato su **Vercel** tramite un workflow
+**GitHub Actions** (`.github/workflows/genera-animazioni.yml`). È l'**unico**
+processo di deploy supportato.
 
 **Come funziona:**
 
 1. **Discover** - scopre automaticamente le animazioni (come il Makefile).
-2. **Build** (una in parallelo per ogni animazione) - usa una cache basata
-   sull'hash dei sorgenti: un'animazione viene rigenerata **solo quando non è
-   già stata generata** per quel contenuto. Manim/LaTeX vengono installati solo
-   in caso di cache-miss, poi gira `make <animazione>`.
+2. **Build** - una per ogni animazione, con cache basata sull'hash dei sorgenti:
+   un'animazione viene rigenerata **solo quando il suo contenuto è cambiato**.
+   Manim/LaTeX si installano solo in caso di cache-miss, poi gira
+   `make <animazione>`.
 3. **Deploy** - costruisce il frontend, include i video e pubblica il sito
-   statico su Vercel tramite Vercel CLI.
+   statico su Vercel tramite Vercel CLI (HTTPS automatico).
 
-**Avvio:** è manuale, da *Actions → "Genera animazioni e deploy Vercel" →
+**Avvio:** manuale, da *GitHub → Actions → "Genera animazioni e deploy Vercel" →
 Run workflow* (si può scegliere la qualità, default `qm`).
-
-**Secret richiesti** (Settings → Secrets and variables → Actions):
-`VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID`.
 
 > Nota: il deploy **non** usa l'integrazione Git di Vercel ma la CLI, perché
 > Vercel non può eseguire Manim/LaTeX: i video vengono prebuildati in CI e poi
 > caricati già pronti.
+
+Il sito è servito sul dominio **`formule-in-movimento.celata.com`** (HTTPS via
+Vercel). Per i secret richiesti, la configurazione del dominio custom e le
+procedure di **manutenzione/cleanup** (deployment Vercel, cache GitHub, branch
+mergiati), vedi **[DEPLOYMENT.md](DEPLOYMENT.md)**.
 
 ## Comandi Comuni (tutti via Makefile)
 
@@ -392,16 +315,9 @@ make frontend-build
 
 ### Deployment
 
-```bash
-# Deploy completo (frontend + animazioni)
-make deploy-full
-
-# Deploy solo frontend
-make deploy
-
-# Deploy solo animazioni
-make deploy-animations
-```
+Il deploy è gestito da GitHub Actions → Vercel: avvialo da
+*GitHub → Actions → "Genera animazioni e deploy Vercel" → Run workflow*.
+Dettagli, dominio custom e manutenzione in [DEPLOYMENT.md](DEPLOYMENT.md).
 
 ### Qualità Disponibili
 - `QUALITY=ql`: 480x854, 15fps (preview veloce)

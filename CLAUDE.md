@@ -33,7 +33,7 @@ All content (animations, web pages, documentation) is in **Italian**.
 1. **Always use Makefile commands** - Never suggest or use raw `manim` or `npm` commands
 2. **Create animations with make** - Use `make new-animation` to create new animations
 3. **Test with make** - Use `make <animation> QUALITY=ql` to test animations
-4. **Deploy with make** - Use `make deploy-full` or related targets for deployment
+4. **Deploy via CI** - Deploy is handled by GitHub Actions → Vercel (see `DEPLOYMENT.md`), not by `make`
 5. **Suggest make commands** - When the user asks to do something, propose the make command first
 
 **Examples of correct responses:**
@@ -92,10 +92,9 @@ formule-in-movimento/
 │           └── videos/
 │               └── [quality]/         # e.g., 854p15, 1920p60
 │                   └── [Scene].mp4
-├── nginx.conf                         # nginx config for direct deployment
-├── docker-compose.yml                 # Docker Compose configuration
-├── Dockerfile                         # Docker build for production
-└── DEPLOYMENT.md                      # Deployment guide
+├── .github/workflows/                 # GitHub Actions (genera animazioni + deploy Vercel)
+├── frontend/vercel.json               # Vercel config (cleanUrls, trailingSlash)
+└── DEPLOYMENT.md                      # Deploy (Vercel) e manutenzione
 
 Shared virtual environment: ~/.virtualenvs/manim (used across all Manim projects)
 ```
@@ -193,14 +192,10 @@ make frontend-build
 ```
 
 **Deployment:**
-```bash
-# Full deployment (frontend + animations)
-make deploy-full
 
-# Partial deployments
-make deploy              # Frontend only
-make deploy-animations   # Animations only
-```
+Il deploy è gestito da GitHub Actions → Vercel (vedi `DEPLOYMENT.md`): si avvia
+da *GitHub → Actions → "Genera animazioni e deploy Vercel" → Run workflow*.
+Non ci sono comandi `make deploy*`.
 
 ### DO NOT Use Direct Manim Commands
 
@@ -319,13 +314,12 @@ make setup
    # Test frontend locally
    make frontend-dev
 
-   # Build for production
+   # Build for production (di norma lo fa la CI)
    make build-animation-prod ANIM=derivate
    make frontend-build
-
-   # Deploy
-   make deploy-full
    ```
+   Il deploy avviene via GitHub Actions → Vercel (vedi `DEPLOYMENT.md`):
+   avvia il workflow da *Actions → "Genera animazioni e deploy Vercel"*.
 
 **Never manually create directories or use raw Manim commands!** The Makefile ensures consistency.
 
@@ -380,7 +374,7 @@ cd frontend && npm run preview  # (no make target for this, rarely used)
 2. **Make changes** to `.astro` or `.vue` files
 3. **View changes** at `http://localhost:4321` (auto-reloads)
 4. **Build for production** when ready: `make frontend-build`
-5. **Deploy**: `make deploy` or `make deploy-full`
+5. **Deploy**: via GitHub Actions → Vercel (vedi `DEPLOYMENT.md`)
 
 ### Adding New Pages
 
@@ -598,219 +592,89 @@ make frontend-dev
 
 ### Production Environment
 
-For high-quality public deployment:
+Production builds run **in CI** (GitHub Actions), not on your machine. Localmente
+servono solo per verificare la resa in alta qualità:
 
 ```bash
-# Build animations (high quality for production)
+# Build animations (high quality) — di norma lo fa la CI
 make build-prod                        # All animations
 make build-animation-prod ANIM=gas_perfetto  # Specific animation
 
-# Build frontend
+# Build frontend (output in frontend/dist/)
 make frontend-build
-
-# Deploy to production server
-make deploy-full                       # Full site (frontend + animations)
-make deploy                            # Frontend only
-make deploy-animations                 # Animations only (rsync media/)
 ```
+
+Il **deploy** vero e proprio è gestito dal workflow GitHub Actions → Vercel
+(vedi più sotto e in `DEPLOYMENT.md`). Non esistono comandi `make deploy*`.
 
 **Production characteristics:**
 - High quality rendering (1080x1920, 60fps)
 - Longer render times (~5-10 minutes per scene)
 - Optimized for public consumption
-- Deployed to production server
+- Built and deployed by CI to Vercel
 
 ## Deployment Architecture
 
-**CRITICAL: This project uses TWO different deployment modes:**
+**Il sito è statico e viene pubblicato su Vercel tramite GitHub Actions. È
+l'unico processo di deploy supportato.** (Non esistono `make deploy*`, né
+deploy self-hosted con Docker/Podman/nginx: quei file sono stati rimossi.)
 
-### 1. Local Testing (Standalone)
+Perché via CI e non con l'integrazione Git di Vercel? Perché Vercel non può
+eseguire Manim/LaTeX per generare i video: vengono **prebuildati in CI** e
+caricati su Vercel già pronti, tramite Vercel CLI.
 
-For quick local testing on `http://localhost:8080`:
+### Pipeline (`.github/workflows/genera-animazioni.yml`)
 
-```bash
-# Use these commands for local testing ONLY
-make deploy-podman-local    # Start local test server
-make stop-podman-local      # Stop local test server
-```
+1. **discover** — scopre le animazioni (auto-discovery, come il Makefile).
+2. **build** — una matrice per animazione, con cache sull'hash dei sorgenti:
+   rigenera **solo** ciò che è cambiato; in cache-miss installa Manim/LaTeX ed
+   esegue `make <topic>`.
+3. **deploy** — `make frontend-build`, include i video nella `dist/` e pubblica
+   su Vercel in produzione (`vercel deploy --prod`). HTTPS automatico.
 
-**Files used:**
-- `docker-compose.local.yml` (in project directory)
-- Exposes port 8080 directly
-- Self-contained, no proxy needed
-- **NOT for production use**
+**Avvio:** manuale, da *GitHub → Actions → "Genera animazioni e deploy Vercel" →
+Run workflow* (qualità a scelta, default `qm`).
 
-### 2. Production Deployment (via nginx-proxy)
+**Secret richiesti** (Settings → Secrets and variables → Actions):
+`VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID`.
 
-For production deployment with SSL certificates and domain routing:
+### Dominio e HTTPS
 
-```bash
-# Use this command for production deployment
-make deploy-production      # Deploy to production via proxy
-make status-production      # Check production status
-make logs-production        # View production logs
-```
+Il sito è servito su **`formule-in-movimento.celata.com`** con HTTPS automatico
+(Let's Encrypt gestito da Vercel). Il dominio custom è configurato nel progetto
+Vercel; sul DNS di `celata.com` esiste un record CNAME
+`formule-in-movimento → cname.vercel-dns.com`.
 
-**Architecture:**
-```
-Internet (80/443)
-    ↓
-nginx-proxy + acme-companion (at /home/gu/sites/proxy/)
-    ↓
-formule-in-movimento container (no exposed ports)
-```
+### Manutenzione / Cleanup
 
-**Files used:**
-- `/home/gu/sites/formule-in-movimento/docker-compose.yml` (production config)
-- Connects to shared `proxy-network`
-- No port exposure (proxy handles routing)
-- Automatic SSL certificates via Let's Encrypt
+Periodicamente conviene ripulire gli artefatti che si accumulano:
 
-**Directory structure:**
-```
-/home/gu/projects/formule-in-movimento/  # Source code
-├── animations/              # Manim animations
-├── frontend/                # Astro frontend
-├── docker-compose.local.yml # Local testing only
-└── Makefile                 # Build & deploy commands
+- **Deployment Vercel** — solo l'ultimo è in produzione. Elimina i vecchi dalla
+  dashboard (Deployments → `…` → Delete) o con `npx vercel remove <progetto>
+  --safe --yes` (`--safe` preserva produzione/alias).
+- **Cache GitHub Actions** — le cache `media-*` si accumulano (una per
+  animazione × qualità). Eliminale da *Actions → Caches* o con
+  `gh cache delete --all`. Gli artifact hanno già `retention-days: 1`.
+- **Branch git mergiati** — dopo il merge, cancella il branch:
+  `git push origin --delete <branch>` (o il pulsante "Delete branch" sulla PR).
+  Valuta di attivare *Settings → General → Automatically delete head branches*.
 
-/home/gu/sites/                          # Production deployment
-├── proxy/                   # Shared proxy stack (starts first)
-│   └── docker-compose.yml
-└── formule-in-movimento/    # Site container config
-    ├── docker-compose.yml   # Production config
-    ├── Dockerfile
-    └── .env                 # Domain & email
-```
-
-**Important:**
-- `/home/gu/projects/` is for development and source code
-- `/home/gu/sites/` is for production deployment configuration
-- The proxy must be running before deploying sites
-- `make deploy-production` automatically starts the proxy if needed
-
-### Deploy to Production
-
-The project uses a custom deployment script at `/home/gu/sites/deploy.sh` for the frontend and `rsync` for media files.
-
-**Recommended: Full deployment**
-```bash
-# Builds everything and deploys to production
-make deploy-full
-```
-
-This will:
-1. Build all animations in high quality (`make build-prod`)
-2. Build the frontend (`npm run build`)
-3. Execute `/home/gu/sites/deploy.sh` to deploy the frontend
-4. Rsync media files to `/home/gu/sites/formule-in-movimento/media/`
-
-**Partial deployments:**
-```bash
-# Deploy only frontend (for code/HTML changes)
-make deploy
-
-# Deploy only animations (for new/updated videos)
-make deploy-animations
-
-# Build specific animation for production
-make build-animation-prod ANIM=gas_perfetto
-make deploy-animations
-```
-
-**Requirements:**
-- `/home/gu/sites/deploy.sh` must exist
-- `/home/gu/sites/formule-in-movimento/media/` directory must exist on the server
-- `rsync` must be installed
-
-### Local Testing with Docker Compose / Podman Compose
-
-**IMPORTANT: For local testing only! Not for production.**
-
-**With Podman (Recommended):**
-```bash
-# Build and start local test server
-make deploy-podman-local
-
-# Stop local test server
-make stop-podman-local
-
-# Restart after changes
-make restart-podman-local
-
-# Access at http://localhost:8080
-```
-
-**With Docker:**
-```bash
-# Build and start local test server
-make deploy-docker-local
-
-# Stop local test server
-make stop-docker-local
-
-# Restart after changes
-make restart-docker-local
-
-# Access at http://localhost:8080
-```
-
-**Legacy aliases (deprecated, show warnings):**
-- `make deploy-podman` → redirects to `deploy-podman-local`
-- `make deploy-docker` → redirects to `deploy-docker-local`
-
-**For production deployment, use:**
-```bash
-make deploy-production
-```
-
-### Frontend Development Server
-
-For rapid iteration during development:
+### Sviluppo locale (senza deploy)
 
 ```bash
-# Start development server with hot reload
-make frontend-dev
-# Access at http://localhost:4321
-
-# Build for production (without deploying)
-make frontend-build
+make <topic> QUALITY=ql     # genera un'animazione in bassa qualità (veloce)
+make frontend-dev           # frontend con hot reload su http://localhost:4321
+make frontend-build         # build statica in frontend/dist/
 ```
 
-### Direct nginx Deployment
+### Checklist per una nuova animazione
 
-```bash
-# Build the Astro site
-cd frontend && npm run build
+1. ✅ Crea: `make new-animation DISCIPLINE=<discipline> TOPIC=<topic>`
+2. ✅ Testa: `make <topic> QUALITY=ql`
+3. ✅ Crea/aggiorna le pagine Astro in `frontend/src/pages/`
+4. ✅ Testa il frontend: `make frontend-dev`
+5. ✅ Apri una PR (una PR per ogni cambiamento, vedi sopra)
+6. ✅ Dopo il merge, pubblica: avvia il workflow GitHub Actions → Vercel
 
-# Copy nginx config
-sudo cp nginx.conf /etc/nginx/sites-available/formule-in-movimento
-
-# Enable site
-sudo ln -s /etc/nginx/sites-available/formule-in-movimento \
-            /etc/nginx/sites-enabled/
-
-# Test and reload
-sudo nginx -t
-sudo systemctl reload nginx
-```
-
-### Deployment Checklist
-
-1. ✅ Create animation: `make new-animation DISCIPLINE=<discipline> TOPIC=<topic>`
-2. ✅ Test animation: `make <topic> QUALITY=ql`
-3. ✅ Create/update Astro pages in `frontend/src/pages/`
-4. ✅ Test frontend locally: `make frontend-dev`
-5. ✅ Build for production: `make build-animation-prod ANIM=<topic>` and `make frontend-build`
-6. ✅ Deploy to production: `make deploy-full`
-
-**Alternative: Quick frontend-only deploy:**
-1. ✅ Edit Astro pages
-2. ✅ Test: `make frontend-dev`
-3. ✅ Deploy: `make deploy`
-
-**Alternative: Quick animation-only deploy:**
-1. ✅ Build animation: `make build-animation-prod ANIM=<topic>`
-2. ✅ Deploy: `make deploy-animations`
-
-For detailed deployment instructions, SSL setup, troubleshooting, and CI/CD integration, see **[DEPLOYMENT.md](DEPLOYMENT.md)**.
+Per la guida operativa completa (secret, dominio custom, cleanup) vedi
+**[DEPLOYMENT.md](DEPLOYMENT.md)**.

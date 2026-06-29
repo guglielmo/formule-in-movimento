@@ -114,26 +114,15 @@ help:
 	@echo "  make build-prod               Build all animations (high quality, prod)"
 	@echo "  make build-animation-prod     Build specific animation for prod (ANIM=name)"
 	@echo ""
-	@echo "$(YELLOW)Frontend & Deployment:$(NC)"
+	@echo "$(YELLOW)Frontend:$(NC)"
 	@echo "  make frontend-install         Install frontend dependencies"
-	@echo "  make frontend-build           Build frontend for production"
+	@echo "  make frontend-build           Build frontend (output in frontend/dist/)"
 	@echo "  make frontend-dev             Start frontend dev server"
 	@echo ""
-	@echo "$(YELLOW)Production Deployment:$(NC)"
-	@echo "  make deploy                   Deploy frontend only"
-	@echo "  make deploy-animations        Deploy animations only (rsync media/)"
-	@echo "  make deploy-full              Deploy frontend + animations (full site)"
-	@echo ""
-	@echo "$(YELLOW)Local Testing (Standalone):$(NC)"
-	@echo "  make deploy-podman-local      Deploy with Podman Compose (localhost:8080)"
-	@echo "  make deploy-docker-local      Deploy with Docker Compose (localhost:8080)"
-	@echo "  make stop-podman-local        Stop local Podman deployment"
-	@echo "  make stop-docker-local        Stop local Docker deployment"
-	@echo ""
-	@echo "$(YELLOW)Production Deployment (via nginx-proxy):$(NC)"
-	@echo "  make deploy-production        Deploy to production (with auto proxy start)"
-	@echo "  make status-production        Check production status"
-	@echo "  make logs-production          View production logs"
+	@echo "$(YELLOW)Deployment:$(NC)"
+	@echo "  Il deploy è gestito da GitHub Actions -> Vercel."
+	@echo "  Avvialo da GitHub: Actions -> 'Genera animazioni e deploy Vercel' -> Run workflow"
+	@echo "  Dettagli e dominio custom: vedi DEPLOYMENT.md"
 	@echo ""
 	@echo "$(YELLOW)Variables:$(NC)"
 	@echo "  QUALITY=<ql|qm|qh|qk>         Set quality (default: ql)"
@@ -151,8 +140,7 @@ help:
 	@echo "  make gas_perfetto QUALITY=qh                     # Build gas_perfetto (high quality)"
 	@echo "  make build-animation-prod ANIM=gas_perfetto      # Build for production"
 	@echo "  make build-prod                                  # Build all for production"
-	@echo "  make deploy-full                                 # Deploy everything"
-	@echo "  make deploy-animations                           # Deploy only animations"
+	@echo "  (il deploy avviene via GitHub Actions -> Vercel, vedi DEPLOYMENT.md)"
 	@echo ""
 	@echo "$(YELLOW)Available animations (auto-discovered):$(NC)"
 	@echo "  $(YELLOW)Matematica ($(words $(MATEMATICA_ANIMATIONS))):$(NC) $(MATEMATICA_ANIMATIONS)"
@@ -419,13 +407,13 @@ new-animation:
 	echo "  3. Modifica: frontend/src/pages/$(DISCIPLINE)/$$TOPIC_URL.astro"; \
 	echo "  4. Aggiorna: frontend/src/pages/$(DISCIPLINE)/index.astro"; \
 	echo "  5. Test frontend: make frontend-dev"; \
-	echo "  6. Deploy: make deploy-full"
+	echo "  6. Pubblica: avvia il workflow GitHub Actions (deploy su Vercel, vedi DEPLOYMENT.md)"
 
 # ============================================================================
 # FRONTEND AND DEPLOYMENT
 # ============================================================================
 
-.PHONY: frontend-install frontend-build frontend-dev deploy-podman-local deploy-docker-local stop-podman-local stop-docker-local restart-podman-local restart-docker-local deploy-podman deploy-docker stop-podman stop-docker restart-podman restart-docker deploy-production status-production logs-production build-dev build-prod build-animation-prod deploy-animations deploy-full deploy
+.PHONY: frontend-install frontend-build frontend-dev build-dev build-prod build-animation-prod
 
 # Install frontend dependencies
 frontend-install:
@@ -446,120 +434,18 @@ frontend-dev:
 	cd frontend && npm run dev
 
 # ============================================================================
-# LOCAL TESTING DEPLOYMENT (Standalone)
+# DEPLOYMENT
 # ============================================================================
-
-# Deploy with Podman Compose (LOCAL TESTING ONLY)
-deploy-podman-local: frontend-build
-	@echo "$(GREEN)Deploying LOCAL TEST server with Podman Compose...$(NC)"
-	@echo "$(YELLOW)⚠️  This is for LOCAL TESTING ONLY, not production!$(NC)"
-	@echo "$(YELLOW)⚠️  For production, use: make deploy-production$(NC)"
-	podman-compose -f docker-compose.local.yml up -d --build
-	@echo "$(GREEN)Local deployment complete!$(NC)"
-	@echo "$(YELLOW)Access at http://localhost:8080$(NC)"
-	@echo ""
-	@echo "$(YELLOW)Useful commands:$(NC)"
-	@echo "  make stop-podman-local    # Stop the container"
-	@echo "  podman ps                 # List running containers"
-	@echo "  podman logs -f formule-in-movimento  # View logs"
-
-# Deploy with Docker Compose (LOCAL TESTING ONLY)
-deploy-docker-local: frontend-build
-	@echo "$(GREEN)Deploying LOCAL TEST server with Docker Compose...$(NC)"
-	@echo "$(YELLOW)⚠️  This is for LOCAL TESTING ONLY, not production!$(NC)"
-	@echo "$(YELLOW)⚠️  For production, use: make deploy-production$(NC)"
-	docker-compose -f docker-compose.local.yml up -d --build
-	@echo "$(GREEN)Local deployment complete!$(NC)"
-	@echo "$(YELLOW)Access at http://localhost:8080$(NC)"
-	@echo ""
-	@echo "$(YELLOW)Useful commands:$(NC)"
-	@echo "  make stop-docker-local    # Stop the container"
-	@echo "  docker ps                 # List running containers"
-	@echo "  docker logs -f formule-in-movimento  # View logs"
-
-# Stop Podman local deployment
-stop-podman-local:
-	@echo "$(YELLOW)Stopping local Podman deployment...$(NC)"
-	podman-compose -f docker-compose.local.yml down
-	@echo "$(GREEN)Stopped!$(NC)"
-
-# Stop Docker local deployment
-stop-docker-local:
-	@echo "$(YELLOW)Stopping local Docker deployment...$(NC)"
-	docker-compose -f docker-compose.local.yml down
-	@echo "$(GREEN)Stopped!$(NC)"
-
-# Restart Podman local deployment (after changes)
-restart-podman-local: frontend-build
-	@echo "$(YELLOW)Restarting local Podman deployment...$(NC)"
-	podman-compose -f docker-compose.local.yml restart
-	@echo "$(GREEN)Restarted!$(NC)"
-
-# Restart Docker local deployment (after changes)
-restart-docker-local: frontend-build
-	@echo "$(YELLOW)Restarting local Docker deployment...$(NC)"
-	docker-compose -f docker-compose.local.yml restart
-	@echo "$(GREEN)Restarted!$(NC)"
-
-# Legacy aliases (kept for backward compatibility, but show warnings)
-deploy-podman: deploy-podman-local
-deploy-docker: deploy-docker-local
-stop-podman: stop-podman-local
-stop-docker: stop-docker-local
-restart-podman: restart-podman-local
-restart-docker: restart-docker-local
+#
+# Il deploy è gestito da GitHub Actions -> Vercel
+# (.github/workflows/genera-animazioni.yml): il workflow genera le animazioni
+# con `make`, costruisce il frontend e pubblica il sito statico su Vercel.
+#
+# Avvio: GitHub -> Actions -> "Genera animazioni e deploy Vercel" -> Run workflow.
+# Dettagli, dominio custom e manutenzione: vedi DEPLOYMENT.md.
 
 # ============================================================================
-# PRODUCTION DEPLOYMENT (via nginx-proxy)
-# ============================================================================
-
-# Deploy to production (uses /home/gu/sites/ architecture)
-deploy-production: frontend-build
-	@echo "$(GREEN)========================================$(NC)"
-	@echo "$(GREEN)  PRODUCTION DEPLOYMENT$(NC)"
-	@echo "$(GREEN)========================================$(NC)"
-	@echo ""
-	@echo "$(YELLOW)Step 1: Checking proxy stack...$(NC)"
-	@if ! podman ps | grep -q nginx-proxy; then \
-		echo "$(RED)⚠️  nginx-proxy is not running!$(NC)"; \
-		echo "$(YELLOW)Starting proxy stack...$(NC)"; \
-		cd /home/gu/sites/proxy && podman-compose up -d; \
-		echo "$(GREEN)✓ Proxy stack started$(NC)"; \
-		sleep 3; \
-	else \
-		echo "$(GREEN)✓ Proxy stack is running$(NC)"; \
-	fi
-	@echo ""
-	@echo "$(YELLOW)Step 2: Deploying site via proxy...$(NC)"
-	@cd /home/gu/sites && ./deploy.sh formule deploy
-	@echo ""
-	@echo "$(GREEN)========================================$(NC)"
-	@echo "$(GREEN)  PRODUCTION DEPLOYMENT COMPLETE!$(NC)"
-	@echo "$(GREEN)========================================$(NC)"
-	@echo ""
-	@echo "$(YELLOW)Site URL:$(NC) https://$$(grep DOMAIN /home/gu/sites/formule-in-movimento/.env | cut -d= -f2)"
-	@echo ""
-	@echo "$(YELLOW)Check status:$(NC)"
-	@echo "  cd /home/gu/sites && ./deploy.sh status"
-	@echo ""
-	@echo "$(YELLOW)View logs:$(NC)"
-	@echo "  cd /home/gu/sites && ./deploy.sh logs formule"
-	@echo "  cd /home/gu/sites && ./deploy.sh logs proxy"
-	@echo "  cd /home/gu/sites && ./deploy.sh logs acme"
-
-# Check production deployment status
-status-production:
-	@echo "$(GREEN)Production Deployment Status$(NC)"
-	@echo ""
-	@cd /home/gu/sites && ./deploy.sh status
-
-# View production logs
-logs-production:
-	@echo "$(GREEN)Viewing production logs...$(NC)"
-	@cd /home/gu/sites && ./deploy.sh logs formule
-
-# ============================================================================
-# ANIMATION DEPLOYMENT
+# ANIMATION BUILD
 # ============================================================================
 
 # Build animations for development (low quality)
@@ -584,41 +470,3 @@ build-animation-prod:
 	@echo "$(GREEN)Building $(ANIM) for PRODUCTION (high quality)...$(NC)"
 	$(MAKE) $(ANIM) QUALITY=qh
 	@echo "$(GREEN)Production build of $(ANIM) complete!$(NC)"
-
-# Deploy ONLY animations (media files) to production
-deploy-animations:
-	@echo "$(GREEN)Deploying animations to production server...$(NC)"
-	@if [ ! -f /home/gu/sites/deploy.sh ]; then \
-		echo "$(RED)Error: deploy.sh not found at /home/gu/sites/deploy.sh$(NC)"; \
-		exit 1; \
-	fi
-	@if [ ! -d media ]; then \
-		echo "$(RED)Error: media directory not found. Run 'make build-prod' first.$(NC)"; \
-		exit 1; \
-	fi
-	@echo "$(YELLOW)Syncing media directory to production...$(NC)"
-	rsync -avz --progress media/ /home/gu/sites/formule-in-movimento/media/
-	@echo "$(GREEN)Animation deployment complete!$(NC)"
-
-# Deploy frontend AND animations to production
-deploy-full: build-prod frontend-build
-	@echo "$(GREEN)Deploying FULL site to production (frontend + animations)...$(NC)"
-	@if [ ! -f /home/gu/sites/deploy.sh ]; then \
-		echo "$(RED)Error: deploy.sh not found at /home/gu/sites/deploy.sh$(NC)"; \
-		exit 1; \
-	fi
-	/home/gu/sites/deploy.sh
-	@echo "$(YELLOW)Syncing media directory to production...$(NC)"
-	rsync -avz --progress media/ /home/gu/sites/formule-in-movimento/media/
-	@echo "$(GREEN)Full deployment complete!$(NC)"
-
-# Deploy to production server (frontend only, using deploy.sh script)
-deploy: frontend-build
-	@echo "$(GREEN)Deploying FRONTEND to production server...$(NC)"
-	@if [ ! -f /home/gu/sites/deploy.sh ]; then \
-		echo "$(RED)Error: deploy.sh not found at /home/gu/sites/deploy.sh$(NC)"; \
-		exit 1; \
-	fi
-	/home/gu/sites/deploy.sh
-	@echo "$(GREEN)Frontend deployment complete!$(NC)"
-	@echo "$(YELLOW)Note: To deploy animations, run 'make deploy-animations' or 'make deploy-full'$(NC)"
