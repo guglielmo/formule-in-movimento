@@ -14,6 +14,11 @@ vedere il risultato, es. il rendering delle animazioni). Di conseguenza:
   modifiche successive già aperte in PR).
 - Se un cambiamento dipende da una PR non ancora mergiata, segnala la dipendenza e
   l'ordine di merge consigliato.
+- **Prima di iniziare un nuovo cambiamento, verifica se la PR precedente è stata
+  mergiata** (es. `git fetch origin main` e controlla i commit di merge, oppure chiedi
+  conferma). Se è già in `main`, crea il nuovo branch da `main` aggiornato; se non lo è
+  e il nuovo cambiamento tocca gli stessi file, costruisci sopra quel branch e segnala
+  la dipendenza.
 
 ## Project Overview
 
