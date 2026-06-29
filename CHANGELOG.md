@@ -19,6 +19,9 @@ e il progetto adotta il [Versionamento Semantico](https://semver.org/lang/it/).
   5 scene verticali: somma di onde, effetto della fase, interferenza costruttiva e distruttiva,
   diffrazione (principio di Huygens) e doppia fenditura di Young (frange, `d sin θ = m λ`).
   - Pagina lezione `frontend/src/pages/fisica/diffrazione.astro` e card nell'indice di fisica.
+- **Tool interattivo "distanze reali"** (`CalcolatoreDiffrazione.vue`): si sceglie il colore
+  (lunghezza d'onda) e, a fenditure fisse, si vede come varia la distanza dello schermo necessaria
+  per osservare le frange (Δy = λL/d), con verdetto pratico e anteprima delle frange.
 
 ### Rimosso
 - Animazione `rifrazione` (sostituita da `diffrazione`).

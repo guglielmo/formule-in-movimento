@@ -1,6 +1,7 @@
 ---
 import LessonLayout from '../../layouts/LessonLayout.astro';
 import VideoPlayer from '../../components/VideoPlayer.astro';
+import CalcolatoreDiffrazione from '../../components/CalcolatoreDiffrazione.vue';
 ---
 
 <LessonLayout
@@ -93,6 +94,26 @@ import VideoPlayer from '../../components/VideoPlayer.astro';
       È l'esperimento di Young, prova storica della natura ondulatoria della luce.
     </div>
   </div>
+
+  <h2>6. Le distanze reali: quanto lontano lo schermo?</h2>
+  <div class="intro-section">
+    <p>
+      Perché il fenomeno sia <strong>osservabile</strong>, le frange devono essere abbastanza distanziate
+      da poterle distinguere a occhio (qualche millimetro). La loro spaziatura è
+      <strong>Δy = λL/d</strong>, dove <strong>λ</strong> è la lunghezza d'onda, <strong>d</strong> la
+      distanza tra le fenditure e <strong>L</strong> la distanza dello schermo. Per la
+      <strong>luce visibile</strong> (λ ≈ 0,4–0,7 µm), con fenditure molto vicine
+      (d ≈ 0,1–0,5 mm) basta uno schermo a circa <strong>1–3 metri</strong>. Se invece le fenditure
+      fossero distanti 1 cm, servirebbe uno schermo a <strong>decine di metri</strong>: ecco perché, per la
+      luce, le fenditure devono essere strettissime e ravvicinate.
+    </p>
+    <p>
+      Usa lo strumento qui sotto: scegli il <strong>colore</strong> (cioè la lunghezza d'onda) e, tenendo
+      fissa la distanza tra le fenditure, osserva come cambia la <strong>distanza dello schermo</strong>
+      necessaria per ottenere frange ben visibili.
+    </p>
+  </div>
+  <CalcolatoreDiffrazione client:load />
 
   <h2>Riepilogo</h2>
   <div class="intro-section">
