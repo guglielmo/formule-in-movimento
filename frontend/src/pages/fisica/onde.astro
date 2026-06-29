@@ -1,0 +1,134 @@
+---
+import LessonLayout from '../../layouts/LessonLayout.astro';
+import VideoPlayer from '../../components/VideoPlayer.astro';
+---
+
+<LessonLayout
+  title="Le Onde"
+  subtitle="Dalle corde al suono, dai terremoti all'equazione dell'onda"
+  description="Le Onde - Onde trasversali e longitudinali, ampiezza e frequenza, onde periodiche, impulsive e complesse, equazione generale dell'onda e calcolo della fase | Formule in Movimento"
+  theme="fisica"
+  breadcrumbs={[
+    { label: 'Home', href: '/' },
+    { label: 'Fisica', href: '/fisica' },
+    { label: 'Le Onde' }
+  ]}
+>
+  <div class="intro-section">
+    <h2 style="margin-top: 0;">Che cos'è un'onda?</h2>
+    <p>
+      Un'<strong>onda</strong> è una <em>perturbazione che si propaga nello spazio e nel tempo</em>,
+      trasportando <strong>energia</strong> senza trasportare materia. Le particelle del mezzo oscillano
+      attorno alla loro posizione di equilibrio, ma non si spostano insieme all'onda.
+    </p>
+
+    <div class="key-concept">
+      <strong>Concetto Chiave:</strong>
+      <p style="margin-top: 10px;">
+        Un tappo che galleggia sull'acqua sale e scende al passaggio delle onde, ma non viene
+        trascinato via: è l'<strong>energia</strong> a viaggiare, non l'acqua. Questo distingue
+        un'onda dal trasporto di materia.
+      </p>
+    </div>
+  </div>
+
+  <h2>1. Introduzione: che cos'è un'onda</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/fisica/videos/onde/IntroOnde.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> Un'onda trasversale viaggia verso destra, mentre un punto del mezzo
+      (in rosso) oscilla <strong>solo in verticale</strong>: si vede chiaramente che la perturbazione
+      avanza ma la materia resta sul posto. L'onda trasporta energia, non materia.
+    </div>
+  </div>
+
+  <h2>2. Onde trasversali e longitudinali</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/fisica/videos/onde/OndeTrasversaliLongitudinali.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> Due famiglie di onde a confronto.
+      <ul>
+        <li><strong>Trasversali:</strong> le particelle oscillano <em>perpendicolarmente</em> alla direzione
+          di propagazione (es. una corda).</li>
+        <li><strong>Longitudinali:</strong> le particelle oscillano <em>parallelamente</em> alla propagazione,
+          creando zone di compressione e rarefazione (es. il suono).</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>3. Ampiezza, lunghezza d'onda e frequenza</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/fisica/videos/onde/AmpiezzaFrequenza.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> Le grandezze che descrivono un'onda periodica:
+      <strong>ampiezza A</strong> (massimo spostamento dall'equilibrio), <strong>lunghezza d'onda λ</strong>
+      (distanza tra due creste), <strong>periodo T</strong> e <strong>frequenza f = 1/T</strong>.
+      Sono legate dalla relazione fondamentale:
+      <div class="example" style="margin-top: 15px;">
+        v = λ · f = λ / T
+      </div>
+    </div>
+  </div>
+
+  <h2>4. Onde tutto intorno a noi: corde, suono, terremoti</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/fisica/videos/onde/EsempiOnde.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> Esempi reali di onde.
+      <ul>
+        <li><strong>Corde</strong> (chitarra, violino): onde trasversali su un mezzo elastico.</li>
+        <li><strong>Suono</strong>: onde longitudinali, compressioni e rarefazioni dell'aria.</li>
+        <li><strong>Terremoti</strong>: onde sismiche <strong>P</strong> (longitudinali, più veloci) e
+          <strong>S</strong> (trasversali).</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>5. Onde periodiche e impulsive</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/fisica/videos/onde/OndePeriodicheImpulsive.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> Un'<strong>onda periodica</strong> si ripete regolarmente nel tempo
+      e nello spazio (una sinusoide continua), mentre un'<strong>onda impulsiva</strong> è una singola
+      perturbazione che viaggia una volta sola (un impulso).
+    </div>
+  </div>
+
+  <h2>6. Onde complesse</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/fisica/videos/onde/OndeComplesse.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> Un'onda complessa nasce dalla <strong>somma di onde semplici</strong>
+      (sinusoidi) con diverse frequenze e ampiezze. È il principio alla base dell'analisi di Fourier:
+      qualsiasi onda, per quanto irregolare, può essere scomposta in sinusoidi.
+    </div>
+  </div>
+
+  <h2>7. L'equazione dell'onda e il calcolo della fase</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/fisica/videos/onde/EquazioneOnda.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> L'equazione dell'onda armonica descrive lo spostamento in ogni
+      punto e istante:
+      <div class="example" style="margin-top: 15px;">
+        y(x, t) = A · sin(kx − ωt + φ₀)
+      </div>
+      dove <strong>k = 2π/λ</strong> è il numero d'onda, <strong>ω = 2πf</strong> la pulsazione e
+      <strong>φ₀</strong> la fase iniziale. La <strong>fase</strong> è φ(x, t) = kx − ωt + φ₀.
+      Nell'esempio numerico si calcola la fase in un punto e istante dati, ottenendo lo spostamento y.
+    </div>
+  </div>
+
+  <h2>Riepilogo</h2>
+  <div class="intro-section">
+    <p>
+      Le onde trasportano energia senza trasportare materia. Possono essere
+      <strong>trasversali</strong> o <strong>longitudinali</strong>, <strong>periodiche</strong> o
+      <strong>impulsive</strong>, semplici o <strong>complesse</strong> (somma di sinusoidi). Sono
+      descritte da <strong>ampiezza</strong>, <strong>lunghezza d'onda</strong>, <strong>periodo</strong>
+      e <strong>frequenza</strong>, legate da v = λf. L'<strong>equazione dell'onda</strong>
+      y(x, t) = A·sin(kx − ωt + φ₀) e il concetto di <strong>fase</strong> permettono di prevedere lo
+      stato dell'onda in ogni punto e in ogni istante.
+    </p>
+  </div>
+</LessonLayout>
