@@ -1,25 +1,21 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
 import '../../styles/fisica-section.css';
 ---
 
 <BaseLayout
   title="Fisica | Formule in Movimento"
   description="Sezione Fisica - Formule in Movimento. Animazioni per visualizzare i fenomeni fisici e le leggi della natura."
+  theme="fisica"
 >
+  <Header
+    title="Fisica"
+    subtitle="Animazioni per visualizzare i fenomeni fisici e le leggi della natura"
+    variant="bar"
+  />
+
   <div class="container">
-    <div class="logo-section">
-      <a href="/">
-        <img src="/logo-icon.svg" alt="Formule in Movimento" class="section-logo" />
-      </a>
-    </div>
-
-    <div class="header">
-      <div class="emoji">⚡</div>
-      <h1>Fisica</h1>
-      <p>Animazioni per visualizzare i fenomeni fisici e le leggi della natura</p>
-    </div>
-
     <div class="content">
       <h2>Animazioni Disponibili</h2>
 

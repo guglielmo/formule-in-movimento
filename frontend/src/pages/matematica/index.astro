@@ -1,25 +1,21 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
 import '../../styles/matematica-section.css';
 ---
 
 <BaseLayout
   title="Matematica | Formule in Movimento"
   description="Sezione Matematica - Formule in Movimento. Animazioni per comprendere visivamente i concetti matematici."
+  theme="matematica"
 >
+  <Header
+    title="Matematica"
+    subtitle="Animazioni per comprendere visivamente i concetti matematici"
+    variant="bar"
+  />
+
   <div class="container">
-    <div class="logo-section">
-      <a href="/">
-        <img src="/logo-icon.svg" alt="Formule in Movimento" class="section-logo" />
-      </a>
-    </div>
-
-    <div class="header">
-      <div class="emoji">📊</div>
-      <h1>Matematica</h1>
-      <p>Animazioni per comprendere visivamente i concetti matematici</p>
-    </div>
-
     <div class="content">
       <h2>Animazioni Disponibili</h2>
 
