@@ -25,7 +25,7 @@ const L_calc = computed(() => (dy_mm.value * 1e-3 * d_m.value) / lambda_m.value)
 // Modo 'dy': Δy = λ · L / d   (in mm)
 const dy_calc = computed(() => (lambda_m.value * L_m_in.value / d_m.value) * 1e3);
 
-// Spaziatura frange "effettiva" (input nel modo L, calcolata nel modo dy) per l'anteprima
+// Spaziatura frange "effettiva" (input nel modo L, calcolata nel modo dy)
 const dy_eff = computed(() => (modo.value === 'L' ? dy_mm.value : dy_calc.value));
 
 const L_testo = computed(() => {
@@ -52,9 +52,30 @@ const verdetto = computed(() => {
   }
 });
 
-// Anteprima frange: distanza tra le bande proporzionale a Δy
-const gapPx = computed(() => Math.min(28, Math.max(3, dy_eff.value * 5)));
-const frange = [-4, -3, -2, -1, 0, 1, 2, 3, 4];
+// --- Anteprima in scala reale (righello in mm) ---
+const UPM = 20;     // unità SVG per millimetro
+const HALF = 6;     // mezza larghezza del righello in mm (da -6 a +6)
+const CX = 120;     // centro in unità SVG (larghezza viewBox = 240)
+
+const ticks = computed(() => {
+  const t = [];
+  for (let mm = -HALF; mm <= HALF; mm++) t.push({ x: CX + mm * UPM, mm });
+  return t;
+});
+const labelTicks = computed(() => ticks.value.filter((t) => t.mm % 2 === 0));
+const frangeReali = computed(() => {
+  const out = [];
+  const dy = dy_eff.value;
+  if (!(dy > 0)) return out;
+  const mMax = Math.min(90, Math.floor(HALF / dy));
+  for (let m = -mMax; m <= mMax; m++) {
+    out.push({
+      x: CX + m * dy * UPM,
+      op: m === 0 ? 1 : Math.max(0.22, 1 - Math.abs(m) * 0.16),
+    });
+  }
+  return out;
+});
 </script>
 
 <template>
@@ -138,14 +159,39 @@ const frange = [-4, -3, -2, -1, 0, 1, 2, 3, 4];
       <div class="verdetto" :class="verdetto.classe">{{ verdetto.testo }}</div>
     </div>
 
-    <!-- Anteprima frange nel colore scelto (spaziatura proporzionale a Δy) -->
-    <div class="frange" :style="{ gap: gapPx + 'px' }" aria-hidden="true">
-      <div
-        v-for="i in frange"
-        :key="i"
-        class="banda"
-        :style="{ background: selezionato.hex, opacity: i === 0 ? 1 : Math.max(0.2, 1 - Math.abs(i) * 0.18) }"
-      ></div>
+    <!-- Anteprima delle frange in scala reale (righello in mm) -->
+    <div class="scala-wrap">
+      <div class="scala-tit">Anteprima sullo schermo — scala reale (mm)</div>
+      <svg class="scala" viewBox="0 0 240 78" preserveAspectRatio="xMidYMid meet">
+        <rect x="0" y="0" width="240" height="56" rx="4" fill="#1a1a1a" />
+        <!-- frange chiare alla loro vera posizione -->
+        <rect
+          v-for="(f, idx) in frangeReali"
+          :key="'f' + idx"
+          :x="f.x - 2"
+          y="6"
+          width="4"
+          height="44"
+          rx="1.2"
+          :fill="selezionato.hex"
+          :opacity="f.op"
+        />
+        <!-- tacche del righello -->
+        <g stroke="#777" stroke-width="0.8">
+          <line
+            v-for="(t, idx) in ticks"
+            :key="'t' + idx"
+            :x1="t.x"
+            y1="58"
+            :x2="t.x"
+            :y2="t.mm % 2 === 0 ? 66 : 62"
+          />
+        </g>
+        <!-- etichette in mm -->
+        <g fill="#555" font-size="7" text-anchor="middle">
+          <text v-for="(t, idx) in labelTicks" :key="'l' + idx" :x="t.x" y="76">{{ t.mm }}</text>
+        </g>
+      </svg>
     </div>
 
     <p class="nota">
@@ -291,23 +337,18 @@ input[type='range'] {
   background: #fde2e2;
   color: #b42323;
 }
-.frange {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.scala-wrap {
   margin-top: 18px;
-  padding: 14px;
-  background: #1a1a1a;
-  border-radius: 8px;
-  min-height: 46px;
 }
-.banda {
-  width: 12px;
-  height: 46px;
-  border-radius: 3px;
-  flex: none;
+.scala-tit {
+  font-size: 0.82em;
+  color: #777;
+  margin-bottom: 6px;
+  text-align: center;
 }
-@media (max-width: 520px) {
-  .banda { width: 9px; height: 38px; }
+.scala {
+  width: 100%;
+  height: auto;
+  display: block;
 }
 </style>
