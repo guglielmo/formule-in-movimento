@@ -2,6 +2,19 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## CRITICAL: Una PR per ogni cambiamento
+
+Il manutentore revisiona i cambiamenti **solo mergiando** (non ha altro modo di
+vedere il risultato, es. il rendering delle animazioni). Di conseguenza:
+
+- **Ogni cambiamento va in una Pull Request nuova e separata**, anche se piccolo.
+- **Non impilare** più cambiamenti sullo stesso branch/PR: dopo aver aperto una PR,
+  non aggiungere altri commit non correlati a quel branch.
+- Usa **un branch dedicato per ogni cambiamento** (non riusare lo stesso branch per
+  modifiche successive già aperte in PR).
+- Se un cambiamento dipende da una PR non ancora mergiata, segnala la dipendenza e
+  l'ordine di merge consigliato.
+
 ## Project Overview
 
 **Formule in Movimento** creates mathematical and physics animations using Manim (Community Edition), a Python library for creating educational animations. The project is designed to make complex concepts accessible to students through visual storytelling, optimized for mobile devices and social media sharing.
