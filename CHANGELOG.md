@@ -7,6 +7,19 @@ e il progetto adotta il [Versionamento Semantico](https://semver.org/lang/it/).
 
 ## [Non rilasciato]
 
+### Modificato
+- **Documentazione di deploy allineata al processo reale (GitHub Actions → Vercel).**
+  `CLAUDE.md`, `README.md` e `docs/ARCHITECTURE.md` ora descrivono solo questo
+  flusso; nuova guida operativa `DEPLOYMENT.md` con secret, dominio custom
+  (`formule-in-movimento.celata.com`, HTTPS via Vercel) e procedure di cleanup
+  (deployment Vercel, cache GitHub Actions, branch mergiati).
+
+### Rimosso
+- File e target del vecchio deploy self-hosted, non più usati: `Dockerfile`,
+  `docker-compose.local.yml`, `nginx.conf`, `nginx-docker.conf`, `404.html`,
+  `docs/PODMAN.md`, `docs/DEPLOY-MODES.md` e i target `make deploy*`
+  (podman/docker/nginx-proxy, `/home/gu/sites`).
+
 ## [0.4.0] - 2026-06-29
 
 ### Modificato

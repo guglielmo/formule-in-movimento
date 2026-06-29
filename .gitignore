@@ -30,7 +30,5 @@ Thumbs.db
 *.tar.gz
 *.zip
 
-# Deployment (infrastructure lives in /home/gu/sites/)
-docker/
-deploy.sh
-DEPLOYMENT.md
+# Deployment (Vercel CLI local state)
+.vercel/
