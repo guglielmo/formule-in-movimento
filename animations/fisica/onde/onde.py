@@ -628,8 +628,11 @@ class FaseComeAngolo(Scene):
         arco = always_redraw(lambda: Arc(radius=0.45, arc_center=C, start_angle=0,
                                          angle=th.get_value(), color=DARK_BLUE, stroke_width=4))
         lab_phi = MathTex(r"\varphi", color=DARK_BLUE, font_size=34).move_to(C + np.array([0.9, 0.35, 0]))
-        # Collegamento esplicito: è il tempo a far crescere l'angolo (la fase)
-        rel_fase = fit(MathTex(r"\varphi = \omega t + \varphi_0", color=DARK_GRAY, font_size=34))
+        # Collegamento esplicito: è il tempo a far crescere l'angolo (la fase).
+        # Spezzata in parti per poter evidenziare il termine omega*t.
+        rel_fase = MathTex(r"\varphi =", r"\omega t", r"+ \varphi_0",
+                           color=DARK_GRAY, font_size=34)
+        fit(rel_fase)
         rel_fase.move_to([-2.4, 4.8, 0])
 
         def scia():
@@ -648,7 +651,12 @@ class FaseComeAngolo(Scene):
         self.play(Create(cerchio), FadeIn(centro), Create(baseline))
         self.add(raggio, punto, arco, onda, connettore)
         self.play(Write(lab_phi), Write(rel_fase))
-        self.play(th.animate.set_value(2 * PI), run_time=6, rate_func=linear)
+        # Mentre l'angolo cresce, evidenzia in rosso il termine omega*t
+        self.play(
+            th.animate.set_value(2 * PI),
+            rel_fase[1].animate.set_color(RED_D),
+            run_time=6, rate_func=linear,
+        )
         self.wait(0.5)
 
         # Messaggio chiave
