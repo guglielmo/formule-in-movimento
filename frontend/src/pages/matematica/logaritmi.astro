@@ -1,0 +1,144 @@
+---
+import LessonLayout from '../../layouts/LessonLayout.astro';
+import VideoPlayer from '../../components/VideoPlayer.astro';
+---
+
+<LessonLayout
+  title="Logaritmi"
+  subtitle="Definizione, funzione inversa dell'esponenziale e proprietà"
+  description="Logaritmi - Definizione, la funzione logaritmica come inversa dell'esponenziale, proprietà e cambiamento di base | Formule in Movimento"
+  theme="matematica"
+>
+  <div class="intro-section">
+    <h2 style="margin-top: 0;">Che cos'è un logaritmo?</h2>
+    <p>
+      Il <strong>logaritmo</strong> risponde a una domanda semplice: <em>a quale esponente
+      devo elevare una base per ottenere un certo numero?</em> È quindi l'operazione che
+      "estrae l'esponente" da una potenza, ed è l'inverso dell'elevamento a potenza.
+    </p>
+    <div class="example">
+      log<sub>a</sub> b = c &nbsp;⟺&nbsp; a<sup>c</sup> = b
+    </div>
+    <p>
+      Si legge: «il logaritmo in base <strong>a</strong> di <strong>b</strong> è <strong>c</strong>».
+      Il numero <strong>a</strong> è la <em>base</em>, <strong>b</strong> è l'<em>argomento</em>.
+    </p>
+
+    <div class="key-concept">
+      <strong>Condizioni di esistenza:</strong>
+      <ul>
+        <li>La base deve essere positiva e diversa da 1: <strong>a &gt; 0</strong>, <strong>a ≠ 1</strong></li>
+        <li>L'argomento deve essere positivo: <strong>b &gt; 0</strong></li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>1. La Definizione</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/matematica/videos/logaritmi/DefinizioneLogaritmo.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> Partiamo da una domanda concreta — «a quale esponente elevare 2
+      per ottenere 8?» — per arrivare alla definizione di logaritmo.
+
+      <div class="steps">
+        <strong>Dall'esponenziale al logaritmo:</strong>
+        <ol>
+          <li>La domanda è: 2<sup>?</sup> = 8</li>
+          <li>La risposta è l'esponente: 2<sup>3</sup> = 8</li>
+          <li>Quell'esponente <em>è</em> il logaritmo: log<sub>2</sub> 8 = 3</li>
+        </ol>
+      </div>
+
+      <div class="key-concept">
+        <strong>Idea chiave:</strong> il logaritmo è l'<em>esponente</em> da dare alla base per
+        ottenere l'argomento. Ricordare questa frase risolve metà degli esercizi sui logaritmi.
+      </div>
+    </div>
+  </div>
+
+  <h2>2. L'Inversa dell'Esponenziale</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/matematica/videos/logaritmi/LogaritmoInversaEsponenziale.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> La funzione logaritmica <em>annulla</em> l'esponenziale: se
+      l'esponenziale trasforma l'esponente nel valore della potenza, il logaritmo fa il percorso inverso.
+
+      <div class="key-concept">
+        <strong>Sul grafico:</strong> le curve di <strong>y = 2<sup>x</sup></strong> e
+        <strong>y = log<sub>2</sub> x</strong> sono <em>simmetriche rispetto alla retta y = x</em>:
+        una è il riflesso dell'altra. Questa è la firma visiva di due funzioni inverse.
+      </div>
+
+      <p>
+        Di conseguenza, dominio e codominio si scambiano: l'esponenziale ha per dominio tutto ℝ e
+        valori sempre positivi; il logaritmo ha per dominio i soli numeri positivi e valori in tutto ℝ.
+      </p>
+    </div>
+  </div>
+
+  <h2>3. Le Proprietà</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/matematica/videos/logaritmi/ProprietaLogaritmi.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> Le proprietà dei logaritmi discendono direttamente da quelle delle
+      potenze e sono lo strumento per semplificare espressioni e risolvere equazioni.
+      <ul>
+        <li><strong>Logaritmo del prodotto:</strong> log<sub>a</sub>(x·y) = log<sub>a</sub> x + log<sub>a</sub> y</li>
+        <li><strong>Logaritmo del quoziente:</strong> log<sub>a</sub>(x/y) = log<sub>a</sub> x − log<sub>a</sub> y</li>
+        <li><strong>Logaritmo della potenza:</strong> log<sub>a</sub>(x<sup>n</sup>) = n · log<sub>a</sub> x</li>
+        <li><strong>Casi particolari:</strong> log<sub>a</sub> 1 = 0 &nbsp;e&nbsp; log<sub>a</sub> a = 1</li>
+      </ul>
+
+      <div class="key-concept">
+        <strong>Perché funzionano:</strong> il logaritmo trasforma <em>prodotti in somme</em> e
+        <em>potenze in prodotti</em>. È esattamente l'idea che, prima delle calcolatrici, rendeva i
+        logaritmi così utili per i calcoli.
+      </div>
+    </div>
+  </div>
+
+  <h2>4. Il Cambiamento di Base</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/matematica/videos/logaritmi/CambiamentoDiBase.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> La calcolatrice conosce solo i logaritmi in base 10 (tasto
+      <code>log</code>) e in base <em>e</em> (tasto <code>ln</code>). Per calcolare un logaritmo in
+      qualsiasi altra base si usa la <strong>formula del cambiamento di base</strong>:
+
+      <div class="example">
+        log<sub>a</sub> b = log<sub>c</sub> b / log<sub>c</sub> a
+      </div>
+
+      <div class="steps">
+        <strong>Esempio — calcolare log<sub>2</sub> 8 con i logaritmi in base 10:</strong>
+        <ol>
+          <li>Applico la formula: log<sub>2</sub> 8 = log 8 / log 2</li>
+          <li>Sostituisco i valori: ≈ 0,903 / 0,301</li>
+          <li>Ottengo: = 3</li>
+          <li>Verifica: 2<sup>3</sup> = 8 ✓</li>
+        </ol>
+      </div>
+
+      <div class="key-concept">
+        <strong>Nota:</strong> la base <strong>c</strong> è a nostra scelta — il risultato non cambia.
+        In pratica si sceglie 10 oppure <em>e</em>, perché sono le basi disponibili sulla calcolatrice.
+      </div>
+    </div>
+  </div>
+
+  <h2>Riepilogo</h2>
+  <div class="intro-section">
+    <p>I logaritmi sono l'operazione inversa dell'esponenziale e uno strumento fondamentale in
+    matematica e nelle scienze. I punti chiave sono:</p>
+    <ol>
+      <li><strong>Definizione:</strong> log<sub>a</sub> b è l'esponente da dare ad <em>a</em> per ottenere <em>b</em></li>
+      <li><strong>Funzione inversa:</strong> il grafico è simmetrico a quello dell'esponenziale rispetto a y = x</li>
+      <li><strong>Proprietà:</strong> trasformano prodotti in somme, quozienti in differenze e potenze in prodotti</li>
+      <li><strong>Cambiamento di base:</strong> permette di calcolare un logaritmo in qualsiasi base</li>
+    </ol>
+    <p>
+      Con queste basi siamo pronti ad affrontare le <strong>equazioni e disequazioni logaritmiche</strong>,
+      la prossima tappa del percorso.
+    </p>
+  </div>
+</LessonLayout>
