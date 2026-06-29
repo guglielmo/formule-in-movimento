@@ -50,6 +50,22 @@ def titolo(testo, sottotitolo=None):
     return VGroup(t)
 
 
+def onda_quadra_parziale(n_armoniche, ampiezza=1.0):
+    """Somma parziale della serie di Fourier dell'onda quadra.
+
+    L'onda quadra dispari vale (4/π)·Σ_{k dispari} sin(kx)/k. Usando solo le
+    prime ``n_armoniche`` armoniche dispari si ottiene un'approssimazione che
+    migliora all'aumentare dei termini.
+    """
+    def f(x):
+        s = 0.0
+        for i in range(n_armoniche):
+            k = 2 * i + 1
+            s += np.sin(k * x) / k
+        return ampiezza * (4.0 / PI) * s
+    return f
+
+
 # ============================================================================
 # 1. SOMMA DI ONDE: principio di sovrapposizione
 # ============================================================================
@@ -369,3 +385,195 @@ class DoppiaFenditura(Scene):
         self.play(Write(formula), Create(box))
         self.play(FadeIn(m_nota))
         self.wait(2)
+
+
+# ============================================================================
+# 6. TEOREMA DI FOURIER: ogni onda periodica è una somma di armoniche
+# ============================================================================
+
+class TeoremaFourier(Scene):
+    """Un'onda periodica qualsiasi si scompone in una somma di sinusoidi."""
+
+    def construct(self):
+        self.camera.background_color = WHITE
+        intestazione = titolo("Il teorema di Fourier", "Onde armoniche e periodiche")
+        self.play(Write(intestazione))
+        self.wait(0.3)
+
+        # Onda complessa ma periodica: somma di tre armoniche
+        def complessa(x):
+            return 1.0 * np.sin(x) + 0.5 * np.sin(2 * x) + 0.33 * np.sin(3 * x)
+
+        cy_top = 3.3
+        onda = FunctionGraph(complessa, x_range=[-3.4, 3.4, 0.02],
+                             color=RED_D, stroke_width=6).move_to(UP * cy_top)
+        lab_onda = fit(Text("un'onda periodica qualsiasi", font_size=24, color=RED_D))
+        lab_onda.next_to(onda, DOWN, buff=0.3)
+        self.play(Create(onda), run_time=2)
+        self.play(FadeIn(lab_onda))
+        self.wait(0.5)
+
+        # Si scompone in onde semplici (armoniche): fondamentale + multipli
+        uguale = MathTex(r"=", color=BLACK, font_size=60).move_to([0, 1.1, 0])
+        self.play(Write(uguale))
+
+        a1 = FunctionGraph(lambda x: 1.0 * np.sin(x), x_range=[-3.4, 3.4, 0.02],
+                           color=BLUE_D, stroke_width=4).move_to([0, -0.6, 0])
+        lab_a1 = fit(MathTex(r"f_1", color=BLUE_D, font_size=30)).next_to(a1, LEFT, buff=0.2)
+        a2 = FunctionGraph(lambda x: 0.5 * np.sin(2 * x), x_range=[-3.4, 3.4, 0.02],
+                           color=GREEN_D, stroke_width=4).move_to([0, -2.6, 0])
+        lab_a2 = fit(MathTex(r"2f_1", color=GREEN_D, font_size=30)).next_to(a2, LEFT, buff=0.2)
+        a3 = FunctionGraph(lambda x: 0.33 * np.sin(3 * x), x_range=[-3.4, 3.4, 0.02],
+                           color=DARK_BLUE, stroke_width=4).move_to([0, -4.6, 0])
+        lab_a3 = fit(MathTex(r"3f_1", color=DARK_BLUE, font_size=30)).next_to(a3, LEFT, buff=0.2)
+        plus1 = MathTex(r"+", color=BLACK, font_size=44).move_to([0, -1.6, 0])
+        plus2 = MathTex(r"+", color=BLACK, font_size=44).move_to([0, -3.6, 0])
+
+        self.play(TransformFromCopy(onda, a1), FadeIn(lab_a1))
+        self.play(Write(plus1), TransformFromCopy(onda, a2), FadeIn(lab_a2))
+        self.play(Write(plus2), TransformFromCopy(onda, a3), FadeIn(lab_a3))
+        self.wait(0.5)
+
+        msg = VGroup(
+            Text("Armoniche: la fondamentale e i suoi multipli", font_size=22, color=BLACK),
+            Text("ricostruiscono qualsiasi onda periodica", font_size=22, color=GREEN_D, weight=BOLD),
+        ).arrange(DOWN, buff=0.2)
+        fit(msg)
+        msg.move_to(DOWN * 6.2)
+        self.play(Write(msg))
+        self.wait(1.5)
+
+
+# ============================================================================
+# 7. SINTESI: costruire un'onda quadra sommando le armoniche
+# ============================================================================
+
+class SintesiOndaQuadra(Scene):
+    """Sommando sempre più armoniche dispari ci si avvicina a un'onda quadra."""
+
+    def construct(self):
+        self.camera.background_color = WHITE
+        intestazione = titolo("Costruire un'onda quadra", "Sommando le armoniche")
+        self.play(Write(intestazione))
+        self.wait(0.3)
+
+        A = 1.3
+        cy = 2.4
+        x_rng = [-3.4, 3.4, 0.01]
+
+        asse = Line([-3.4, cy, 0], [3.4, cy, 0], color=DARK_GRAY, stroke_width=2)
+        self.play(Create(asse))
+
+        # Bersaglio: l'onda quadra (tratteggiata, fissa)
+        bersaglio = DashedVMobject(
+            FunctionGraph(onda_quadra_parziale(60, A), x_range=x_rng,
+                          color=DARK_GRAY, stroke_width=3).move_to(UP * cy),
+            num_dashes=120,
+        )
+        lab_bersaglio = fit(Text("onda quadra (obiettivo)", font_size=22, color=DARK_GRAY))
+        lab_bersaglio.move_to([0, cy + 2.0, 0])
+        self.play(Create(bersaglio), FadeIn(lab_bersaglio))
+        self.wait(0.3)
+
+        # Contatore del numero di armoniche sommate
+        n_lbl = Text("Armoniche sommate:", font_size=26, color=BLACK)
+        n_num = Integer(1, color=RED_D, font_size=40)
+        contatore = VGroup(n_lbl, n_num).arrange(RIGHT, buff=0.25)
+        fit(contatore)
+        contatore.move_to([0, -1.3, 0])
+
+        # Formula della serie
+        formula = fit(MathTex(
+            r"y = \frac{4}{\pi}\left(\sin x + \tfrac{1}{3}\sin 3x + \tfrac{1}{5}\sin 5x + \dots\right)",
+            color=DARK_BLUE, font_size=32))
+        formula.move_to([0, -3.0, 0])
+
+        # Prima approssimazione: una sola armonica (la fondamentale)
+        approx = FunctionGraph(onda_quadra_parziale(1, A), x_range=x_rng,
+                               color=RED_D, stroke_width=6).move_to(UP * cy)
+        self.play(Create(approx), FadeIn(contatore))
+        self.play(Write(formula))
+        self.wait(0.5)
+
+        # Aggiunge armoniche dispari, una alla volta
+        for n in (2, 3, 4, 6, 10):
+            nuova = FunctionGraph(onda_quadra_parziale(n, A), x_range=x_rng,
+                                  color=RED_D, stroke_width=6).move_to(UP * cy)
+            self.play(
+                Transform(approx, nuova),
+                n_num.animate.set_value(n),
+                run_time=1.2,
+            )
+            self.wait(0.3)
+
+        nota = fit(Text("Più armoniche sommi, più la forma è esatta",
+                        font_size=22, color=GREEN_D, weight=BOLD))
+        nota.move_to([0, -5.0, 0])
+        self.play(FadeIn(nota))
+        self.wait(1.5)
+
+
+# ============================================================================
+# 8. LO SPETTRO: dal dominio del tempo a quello delle frequenze
+# ============================================================================
+
+class SpettroFrequenze(Scene):
+    """Lo spettro: quanto pesa ciascuna armonica nell'onda quadra."""
+
+    def construct(self):
+        self.camera.background_color = WHITE
+        intestazione = titolo("Lo spettro", "Il peso di ogni armonica")
+        self.play(Write(intestazione))
+        self.wait(0.3)
+
+        # --- BLOCCO ALTO: l'onda nel tempo ---
+        cy_top = 3.6
+        onda = FunctionGraph(onda_quadra_parziale(10, 1.0), x_range=[-3.4, 3.4, 0.01],
+                             color=RED_D, stroke_width=5).move_to(UP * cy_top)
+        lab_tempo = fit(Text("Dominio del tempo", font_size=24, color=RED_D, weight=BOLD))
+        lab_tempo.move_to([0, cy_top + 1.6, 0])
+        self.play(FadeIn(lab_tempo), Create(onda), run_time=1.5)
+        self.wait(0.3)
+
+        # --- BLOCCO BASSO: spettro a barre ---
+        lab_freq = fit(Text("Dominio delle frequenze", font_size=24, color=DARK_BLUE, weight=BOLD))
+        lab_freq.move_to([0, 0.9, 0])
+        self.play(FadeIn(lab_freq))
+
+        base_y = -4.6
+        asse_x = Line([-3.0, base_y, 0], [3.2, base_y, 0], color=DARK_GRAY, stroke_width=2)
+        asse_y = Line([-3.0, base_y, 0], [-3.0, base_y + 4.2, 0], color=DARK_GRAY, stroke_width=2)
+        lab_ax_x = Text("frequenza", font_size=20, color=DARK_GRAY).next_to(asse_x, RIGHT, buff=0.1)
+        lab_ax_y = Text("ampiezza", font_size=20, color=DARK_GRAY).rotate(PI / 2).next_to(asse_y, LEFT, buff=0.1)
+        self.play(Create(asse_x), Create(asse_y), FadeIn(lab_ax_x), FadeIn(lab_ax_y))
+
+        # Armoniche dispari: ampiezza ∝ 1/n
+        armoniche = [1, 3, 5, 7, 9]
+        larghezza = 0.5
+        passo = 1.15
+        x0 = -2.3
+        altezza_max = 3.6  # corrisponde all'armonica n = 1
+        barre = VGroup()
+        etichette = VGroup()
+        for i, n in enumerate(armoniche):
+            h = altezza_max / n
+            x = x0 + i * passo
+            barra = Rectangle(width=larghezza, height=h, color=DARK_BLUE,
+                              fill_color=DARK_BLUE, fill_opacity=0.7, stroke_width=2)
+            barra.move_to([x, base_y + h / 2, 0])
+            et = MathTex(rf"{n}f_1", color=DARK_BLUE, font_size=26)
+            et.next_to(barra, DOWN, buff=0.12)
+            barre.add(barra)
+            etichette.add(et)
+
+        self.play(
+            LaggedStart(*[GrowFromEdge(b, DOWN) for b in barre], lag_ratio=0.2),
+            LaggedStart(*[FadeIn(e) for e in etichette], lag_ratio=0.2),
+        )
+        self.wait(0.5)
+
+        nota = fit(Text("Solo armoniche dispari, ampiezza ∝ 1/n",
+                        font_size=22, color=BLACK))
+        nota.next_to(asse_x, DOWN, buff=0.7)
+        self.play(FadeIn(nota))
+        self.wait(1.5)
