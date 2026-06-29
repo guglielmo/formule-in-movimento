@@ -7,6 +7,16 @@ e il progetto adotta il [Versionamento Semantico](https://semver.org/lang/it/).
 
 ## [Non rilasciato]
 
+### Aggiunto
+- **Deploy di preview automatico a ogni push** (qualsiasi branch): il workflow
+  GitHub Actions fa `vercel deploy` senza `--prod` a qualità `ql` e stampa l'URL
+  temporaneo nel riepilogo della run; la produzione non viene toccata. Il deploy
+  manuale ora offre l'input `target` (`production`/`preview`).
+- **Immagine CI con Manim + LaTeX preinstallati** (`docker/Dockerfile.ci`):
+  in cache-miss il rendering gira dentro l'immagine, senza reinstallare apt/pip
+  a ogni run. L'immagine è costruita e pubblicata su GHCR dal job `ci-image`
+  dello stesso workflow (auto-bootstrap, tag = hash di Dockerfile+requirements).
+
 ### Modificato
 - **Documentazione di deploy allineata al processo reale (GitHub Actions → Vercel).**
   `CLAUDE.md`, `README.md` e `docs/ARCHITECTURE.md` ora descrivono solo questo

@@ -632,8 +632,14 @@ caricati su Vercel già pronti, tramite Vercel CLI.
 3. **deploy** — `make frontend-build`, include i video nella `dist/` e pubblica
    su Vercel in produzione (`vercel deploy --prod`). HTTPS automatico.
 
-**Avvio:** manuale, da *GitHub → Actions → "Genera animazioni e deploy Vercel" →
-Run workflow* (qualità a scelta, default `qm`).
+**Avvio:**
+- **Automatico** a ogni push (qualsiasi branch) → deploy di **preview** (URL
+  temporaneo, qualità `ql`); la produzione non viene toccata.
+- **Manuale** da *GitHub → Actions → "Genera animazioni e deploy Vercel" → Run
+  workflow*: scegli `quality` e `target` (`production`/`preview`).
+
+Il rendering in cache-miss gira dentro l'immagine CI con Manim/LaTeX
+preinstallati (`docker/Dockerfile.ci`, vedi `DEPLOYMENT.md` §2.2).
 
 **Secret richiesti** (Settings → Secrets and variables → Actions):
 `VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID`.

@@ -1,14 +1,27 @@
 # Genera animazioni (Manim) e rilascia su Vercel
 #
 # Architettura:
+#   0) setup     -> determina qualità e ambiente di deploy (vedi sotto)
 #   1) discover  -> scopre le animazioni (come fa il Makefile, auto-discovery)
 #   2) build     -> una matrice per animazione. Cache con chiave = hash del
 #                   sorgente dell'animazione: se la cache c'è, NON si rigenera
 #                   (questo realizza "genera solo quando non già generate").
-#                   Solo in caso di cache MISS si installano Manim/LaTeX e si
-#                   esegue `make <topic>`.
+#                   In caso di cache MISS l'animazione viene renderizzata
+#                   eseguendo `make <topic>` DENTRO l'immagine CI con Manim e
+#                   LaTeX preinstallati (ghcr.io/<owner>/<repo>-ci), così non si
+#                   reinstalla nulla a ogni run.
 #   3) deploy    -> raccoglie tutti i media, fa `make frontend-build` e pubblica
 #                   il sito statico (con i video) su Vercel via Vercel CLI.
+#
+# Quando gira e cosa fa:
+#   - push su un qualsiasi branch -> deploy di PREVIEW (URL temporaneo),
+#     qualità `ql` (render veloce). La produzione non viene toccata.
+#   - workflow_dispatch (manuale)  -> qualità e ambiente a scelta (input
+#     `quality` e `target`); con target=production aggiorna la produzione.
+#
+# L'immagine CI (Manim + LaTeX) è costruita e pubblicata su GHCR dal job
+# "ci-image" di questo stesso workflow, solo se manca per l'hash corrente di
+# docker/Dockerfile.ci + requirements.txt (auto-bootstrap, nessun passo manuale).
 #
 # Secret richiesti (Settings -> Secrets and variables -> Actions):
 #   VERCEL_TOKEN       -> token personale Vercel (Account Settings -> Tokens)
@@ -21,6 +34,9 @@
 name: Genera animazioni e deploy Vercel
 
 on:
+  push:
+    branches:
+      - '**'
   workflow_dispatch:
     inputs:
       quality:
@@ -32,15 +48,86 @@ on:
           - qm
           - qh
           - qk
+      target:
+        description: "Ambiente di deploy su Vercel"
+        type: choice
+        default: production
+        options:
+          - production   # pubblica in produzione (dominio custom + .vercel.app)
+          - preview      # crea un deploy di anteprima con URL temporaneo
 
 concurrency:
   group: animazioni-${{ github.ref }}
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 permissions:
   contents: read
+  packages: write
 
 jobs:
+  # --------------------------------------------------------------------------
+  # 0) Determina qualità e ambiente in base all'evento.
+  #    - push        -> quality=ql, target=preview
+  #    - dispatch     -> usa gli input scelti (default quality=qm, target=production)
+  # --------------------------------------------------------------------------
+  setup:
+    name: Configura run
+    runs-on: ubuntu-latest
+    outputs:
+      quality: ${{ steps.cfg.outputs.quality }}
+      target: ${{ steps.cfg.outputs.target }}
+      image: ${{ steps.cfg.outputs.image }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: cfg
+        run: |
+          QUALITY="${{ inputs.quality || 'ql' }}"
+          TARGET="${{ inputs.target || 'preview' }}"
+          # Tag immagine = hash di Dockerfile.ci + requirements.txt: cambia solo
+          # quando cambiano gli ingredienti, così l'immagine si ricostruisce da
+          # sola quando serve (e resta in cache su GHCR negli altri casi).
+          REPO="$(echo '${{ github.repository }}' | tr '[:upper:]' '[:lower:]')"
+          IMAGE="ghcr.io/${REPO}-ci:${{ hashFiles('docker/Dockerfile.ci', 'requirements.txt') }}"
+          echo "quality=$QUALITY" >> "$GITHUB_OUTPUT"
+          echo "target=$TARGET" >> "$GITHUB_OUTPUT"
+          echo "image=$IMAGE" >> "$GITHUB_OUTPUT"
+          echo "Evento: ${{ github.event_name }} | quality=$QUALITY | target=$TARGET"
+          echo "Immagine CI: $IMAGE"
+
+  # --------------------------------------------------------------------------
+  # 0b) Assicura l'immagine CI (Manim + LaTeX) su GHCR: la costruisce e pubblica
+  #     SOLO se non esiste già per quell'hash. Rende il workflow auto-bootstrap
+  #     (niente passi manuali, nessuna corsa con i job di build).
+  # --------------------------------------------------------------------------
+  ci-image:
+    name: Prepara immagine CI
+    needs: setup
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Login a GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Costruisci e pubblica l'immagine se mancante
+        env:
+          IMAGE: ${{ needs.setup.outputs.image }}
+        run: |
+          if docker manifest inspect "$IMAGE" >/dev/null 2>&1; then
+            echo "Immagine già presente, salto la build: $IMAGE"
+          else
+            echo "Immagine assente: la costruisco e pubblico ($IMAGE)…"
+            docker build -f docker/Dockerfile.ci -t "$IMAGE" .
+            docker push "$IMAGE"
+          fi
+
   # --------------------------------------------------------------------------
   # 1) Scopre le animazioni disponibili (matematica/* e fisica/*)
   # --------------------------------------------------------------------------
@@ -78,7 +165,7 @@ jobs:
   # --------------------------------------------------------------------------
   build:
     name: Genera ${{ matrix.discipline }}/${{ matrix.topic }}
-    needs: discover
+    needs: [setup, discover, ci-image]
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -88,49 +175,32 @@ jobs:
 
       # Cache dei media renderizzati. La chiave dipende dalla qualità e
       # dall'hash dei sorgenti dell'animazione: se nulla è cambiato, la cache
-      # viene ripristinata e i passi di build vengono saltati.
+      # viene ripristinata e il rendering viene saltato (nessun pull immagine).
       - name: Cache animazione renderizzata
         id: cache
         uses: actions/cache@v4
         with:
           path: media
-          key: media-${{ inputs.quality }}-${{ matrix.discipline }}-${{ matrix.topic }}-${{ hashFiles(format('animations/{0}/{1}/**', matrix.discipline, matrix.topic)) }}
+          key: media-${{ needs.setup.outputs.quality }}-${{ matrix.discipline }}-${{ matrix.topic }}-${{ hashFiles(format('animations/{0}/{1}/**', matrix.discipline, matrix.topic)) }}
 
-      - name: Setup Python
+      # Solo in caso di cache MISS: login a GHCR e rendering dentro l'immagine
+      # CI (Manim + LaTeX già installati). Niente apt/pip qui.
+      - name: Login a GHCR
         if: steps.cache.outputs.cache-hit != 'true'
-        uses: actions/setup-python@v5
+        uses: docker/login-action@v3
         with:
-          python-version: "3.12"
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Cache pip
-        if: steps.cache.outputs.cache-hit != 'true'
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/pip
-          key: pip-manim-${{ runner.os }}
-
-      - name: Installa dipendenze di sistema (ffmpeg + LaTeX + cairo/pango)
+      - name: Genera l'animazione con make (immagine Manim/LaTeX)
         if: steps.cache.outputs.cache-hit != 'true'
         run: |
-          sudo apt-get update
-          sudo apt-get install -y --no-install-recommends \
-            ffmpeg build-essential pkg-config python3-dev \
-            libcairo2-dev libpango1.0-dev \
-            texlive texlive-latex-recommended texlive-latex-extra \
-            texlive-fonts-recommended texlive-fonts-extra texlive-science \
-            dvisvgm
-
-      - name: Crea virtualenv Manim condiviso e installa Manim
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: |
-          # Stesso path che si aspetta il Makefile: ~/.virtualenvs/manim
-          python3 -m venv "$HOME/.virtualenvs/manim"
-          "$HOME/.virtualenvs/manim/bin/pip" install --upgrade pip
-          "$HOME/.virtualenvs/manim/bin/pip" install manim
-
-      - name: Genera l'animazione con make
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: make ${{ matrix.topic }} QUALITY=${{ inputs.quality }}
+          docker run --rm -v "$PWD":/work -w /work \
+            "${{ needs.setup.outputs.image }}" \
+            make ${{ matrix.topic }} \
+              QUALITY=${{ needs.setup.outputs.quality }} \
+              MANIM=/opt/manim-venv/bin/manim
 
       - name: Carica i media generati come artifact
         uses: actions/upload-artifact@v4
@@ -145,7 +215,7 @@ jobs:
   # --------------------------------------------------------------------------
   deploy:
     name: Build frontend e deploy su Vercel
-    needs: [discover, build]
+    needs: [setup, discover, build]
     runs-on: ubuntu-latest
     env:
       VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
@@ -182,9 +252,34 @@ jobs:
           cp -RL media frontend/dist/media
           cp frontend/vercel.json frontend/dist/vercel.json
 
+      # Deploy su Vercel. In base a target (preview/production):
+      #   - production -> `vercel deploy --prod` (aggiorna il dominio custom e il
+      #     dominio .vercel.app di produzione).
+      #   - preview    -> `vercel deploy` (senza --prod): crea un deployment di
+      #     anteprima con un URL temporaneo univoco (es.
+      #     formule-in-movimento-<hash>-<scope>.vercel.app), senza toccare la
+      #     produzione. L'URL viene stampato e messo nel riepilogo della run.
       - name: Deploy su Vercel
         run: |
           npm install -g vercel@latest
-          vercel deploy frontend/dist \
-            --prod --yes --archive=tgz \
-            --token="${{ secrets.VERCEL_TOKEN }}"
+          TARGET="${{ needs.setup.outputs.target }}"
+          if [ "$TARGET" = "production" ]; then
+            echo "Deploy di PRODUZIONE…"
+            URL=$(vercel deploy frontend/dist \
+              --prod --yes --archive=tgz \
+              --token="${{ secrets.VERCEL_TOKEN }}")
+          else
+            echo "Deploy di PREVIEW (URL temporaneo, la produzione non cambia)…"
+            URL=$(vercel deploy frontend/dist \
+              --yes --archive=tgz \
+              --token="${{ secrets.VERCEL_TOKEN }}")
+          fi
+          echo "Deployment URL: $URL"
+          {
+            echo "## Deploy Vercel — $TARGET"
+            echo ""
+            echo "- **URL deployment**: $URL"
+            if [ "$TARGET" = "production" ]; then
+              echo "- Produzione: https://formule-in-movimento.celata.com"
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"

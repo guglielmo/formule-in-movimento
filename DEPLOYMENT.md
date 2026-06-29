@@ -9,26 +9,35 @@ tramite **GitHub Actions**. Questo è l'unico processo di deploy supportato.
 
 ## 1. Come fare un deploy
 
-Il deploy è **manuale**, da interfaccia GitHub:
+Il workflow `.github/workflows/genera-animazioni.yml` gira in due modi:
 
-1. Vai su **GitHub → Actions**.
-2. Seleziona il workflow **"Genera animazioni e deploy Vercel"**.
-3. **Run workflow** → scegli la qualità di rendering (`ql`/`qm`/`qh`/`qk`,
-   default `qm`) → conferma.
+- **Automatico a ogni push** (qualsiasi branch) → **deploy di preview** con un
+  URL temporaneo, a qualità `ql` (render veloce). La produzione **non** viene
+  toccata. L'URL del deploy è nel riepilogo della run (*Actions → run → Summary*).
+- **Manuale** (*Actions → "Genera animazioni e deploy Vercel" → Run workflow*) →
+  scegli `quality` (`ql`/`qm`/`qh`/`qk`) e `target`:
+  - `production` → pubblica in produzione (`vercel deploy --prod`);
+  - `preview` → solo anteprima.
 
-Il workflow (`.github/workflows/genera-animazioni.yml`):
+Fasi del workflow:
 
-1. **discover** — scopre le animazioni (auto-discovery, come il Makefile).
-2. **build** — genera ogni animazione con `make <topic>`. Usa una cache basata
-   sull'hash dei sorgenti: rigenera **solo** ciò che è cambiato.
-3. **deploy** — `make frontend-build`, include i video nella `dist/` e pubblica
-   su Vercel in produzione (`vercel deploy --prod`).
+1. **setup** — determina qualità e ambiente in base all'evento.
+2. **discover** — scopre le animazioni (auto-discovery, come il Makefile).
+3. **build** — genera ogni animazione con `make <topic>`. Usa una cache basata
+   sull'hash dei sorgenti: rigenera **solo** ciò che è cambiato; in cache-hit
+   non rirenderizza e non scarica nemmeno l'immagine. In cache-miss il rendering
+   gira **dentro l'immagine CI** con Manim/LaTeX preinstallati (vedi §2.2).
+4. **deploy** — `make frontend-build`, include i video nella `dist/` e pubblica
+   su Vercel.
 
 HTTPS e certificati sono gestiti automaticamente da Vercel.
 
+> **Nota sui preview Vercel:** ogni push crea un deployment di anteprima che si
+> accumula nello storico. Ripuliscili periodicamente (vedi §4).
+
 ## 2. Configurazione una tantum
 
-### Secret GitHub (Settings → Secrets and variables → Actions)
+### 2.1 Secret GitHub (Settings → Secrets and variables → Actions)
 
 | Secret              | Dove trovarlo                                            |
 |---------------------|---------------------------------------------------------|
@@ -45,6 +54,29 @@ cat .vercel/project.json
 ```
 
 (`.vercel/` è in `.gitignore` e non va committato.)
+
+### 2.2 Immagine CI con Manim + LaTeX
+
+Per non reinstallare apt/pip a ogni rendering, le animazioni vengono generate
+dentro un'immagine Docker con Manim e LaTeX preinstallati, pubblicata su **GHCR**
+come `ghcr.io/guglielmo/formule-in-movimento-ci:<hash>` (definizione in
+`docker/Dockerfile.ci`).
+
+L'immagine è gestita dal job **`ci-image`** dentro lo stesso workflow di deploy,
+in modo **auto-bootstrap**:
+
+- il tag è l'hash di `docker/Dockerfile.ci` + `requirements.txt`;
+- a ogni run il job controlla se l'immagine per quell'hash esiste già su GHCR:
+  se sì la riusa, se no la costruisce e la pubblica (succede solo la prima volta
+  o quando cambiano Dockerfile/requirements);
+- i job di build dipendono da `ci-image`, quindi non serve nessun passo manuale
+  e non c'è rischio che renderizzino prima che l'immagine sia pronta.
+
+Il rendering usa l'immagine solo in **cache-miss**: se i sorgenti di
+un'animazione non cambiano, non viene renderizzata.
+
+> Le vecchie immagini taggate per hash si accumulano su GHCR: ogni tanto si
+> possono eliminare le versioni non più usate dalla pagina *Packages* del repo.
 
 ## 3. Dominio custom: formule-in-movimento.celata.com (HTTPS)
 
