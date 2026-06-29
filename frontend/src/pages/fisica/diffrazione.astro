@@ -1,0 +1,129 @@
+---
+import LessonLayout from '../../layouts/LessonLayout.astro';
+import VideoPlayer from '../../components/VideoPlayer.astro';
+import CalcolatoreDiffrazione from '../../components/CalcolatoreDiffrazione.vue';
+---
+
+<LessonLayout
+  title="Interferenza e Diffrazione"
+  subtitle="Dalla somma delle onde alle frange della doppia fenditura"
+  description="Interferenza e Diffrazione delle onde - Principio di sovrapposizione, effetto della fase, interferenza costruttiva e distruttiva, diffrazione (Huygens) e doppia fenditura | Formule in Movimento"
+  theme="fisica"
+  breadcrumbs={[
+    { label: 'Home', href: '/' },
+    { label: 'Fisica', href: '/fisica' },
+    { label: 'Interferenza e Diffrazione' }
+  ]}
+>
+  <div class="intro-section">
+    <h2 style="margin-top: 0;">Quando due onde si incontrano</h2>
+    <p>
+      Quando due o più onde si propagano nello stesso punto, i loro effetti si
+      <strong>sommano</strong>: è il <em>principio di sovrapposizione</em>. Il risultato dipende dalla
+      <strong>fase</strong> relativa delle onde: possono rinforzarsi o annullarsi a vicenda
+      (<strong>interferenza</strong>). Da qui nasce la <strong>diffrazione</strong>: le onde aggirano gli
+      ostacoli e, oltre una fenditura, si allargano dando luogo a <strong>frange</strong> di interferenza.
+    </p>
+
+    <div class="key-concept">
+      <strong>Concetto Chiave:</strong>
+      <p style="margin-top: 10px;">
+        La <strong>fase</strong> decide tutto: dove le onde arrivano in fase si rinforzano (massimo,
+        zona chiara), dove arrivano in opposizione di fase si annullano (minimo, zona scura). È così che
+        due fenditure producono una figura di frange alternate.
+      </p>
+    </div>
+  </div>
+
+  <h2>1. Somma di onde</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/fisica/videos/diffrazione/SommaDiOnde.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> Il <strong>principio di sovrapposizione</strong>: quando due onde si
+      incontrano, gli spostamenti si sommano punto per punto. La risultante y = y₁ + y₂ dipende da come
+      le due onde sono allineate (cioè dalla loro fase).
+    </div>
+  </div>
+
+  <h2>2. L'effetto della fase</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/fisica/videos/diffrazione/EffettoFase.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> Due onde identiche, sfasate di <strong>Δφ</strong>. Variando lo
+      sfasamento da 0 a 2π si vede l'<strong>ampiezza della risultante</strong> crescere e poi annullarsi:
+      è la fase relativa a determinare il risultato della sovrapposizione.
+    </div>
+  </div>
+
+  <h2>3. Interferenza costruttiva e distruttiva</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/fisica/videos/diffrazione/CostruttivaDistruttiva.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> I due casi limite.
+      <ul>
+        <li><strong>In fase</strong> (Δφ = 0): le ampiezze si sommano → <strong>interferenza costruttiva</strong>
+          (onda più intensa).</li>
+        <li><strong>In opposizione</strong> (Δφ = π): le onde si elidono → <strong>interferenza distruttiva</strong>
+          (annullamento).</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>4. La diffrazione</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/fisica/videos/diffrazione/Diffrazione.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> Quando un fronte d'onda piano attraversa una <strong>fenditura stretta</strong>,
+      oltre l'apertura si <strong>allarga</strong> in fronti circolari: è la <strong>diffrazione</strong>.
+      Si spiega col <strong>principio di Huygens</strong> — ogni punto di un fronte d'onda è sorgente di
+      onde secondarie — ed è il motivo per cui le onde aggirano gli ostacoli.
+    </div>
+  </div>
+
+  <h2>5. La doppia fenditura</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/fisica/videos/diffrazione/DoppiaFenditura.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> Con <strong>due fenditure</strong>, le onde diffratte si sovrappongono:
+      dove arrivano in fase si rinforzano (massimo, frangia chiara), dove arrivano in opposizione si
+      annullano (minimo, frangia scura). I massimi si trovano dove la differenza di cammino è un multiplo
+      della lunghezza d'onda:
+      <div class="example" style="margin-top: 15px;">
+        d · sin θ = m · λ
+      </div>
+      È l'esperimento di Young, prova storica della natura ondulatoria della luce.
+    </div>
+  </div>
+
+  <h2>6. Le distanze reali: quanto lontano lo schermo?</h2>
+  <div class="intro-section">
+    <p>
+      Perché il fenomeno sia <strong>osservabile</strong>, le frange devono essere abbastanza distanziate
+      da poterle distinguere a occhio (qualche millimetro). La loro spaziatura è
+      <strong>Δy = λL/d</strong>, dove <strong>λ</strong> è la lunghezza d'onda, <strong>d</strong> la
+      distanza tra le fenditure e <strong>L</strong> la distanza dello schermo. Per la
+      <strong>luce visibile</strong> (λ ≈ 0,4–0,7 µm), con fenditure molto vicine
+      (d ≈ 0,1–0,5 mm) basta uno schermo a circa <strong>1–3 metri</strong>. Se invece le fenditure
+      fossero distanti 1 cm, servirebbe uno schermo a <strong>decine di metri</strong>: ecco perché, per la
+      luce, le fenditure devono essere strettissime e ravvicinate.
+    </p>
+    <p>
+      Usa lo strumento qui sotto: scegli il <strong>colore</strong> (cioè la lunghezza d'onda) e passa tra
+      le due letture — trovare la <strong>distanza dello schermo</strong> necessaria per una certa
+      spaziatura, oppure, a <strong>schermo fisso</strong>, vedere come cambia la <strong>spaziatura delle
+      frange</strong> al variare del colore.
+    </p>
+  </div>
+  <CalcolatoreDiffrazione client:load />
+
+  <h2>Riepilogo</h2>
+  <div class="intro-section">
+    <p>
+      La <strong>sovrapposizione</strong> fa sommare gli spostamenti delle onde; la <strong>fase</strong>
+      relativa determina un'<strong>interferenza costruttiva</strong> (rinforzo) o
+      <strong>distruttiva</strong> (annullamento). La <strong>diffrazione</strong> (principio di Huygens)
+      fa allargare le onde oltre le fenditure e aggirare gli ostacoli; con <strong>due fenditure</strong>
+      l'interferenza genera le <strong>frange</strong>, con i massimi dati da d · sin θ = m · λ.
+    </p>
+  </div>
+</LessonLayout>
