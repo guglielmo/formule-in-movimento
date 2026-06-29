@@ -497,3 +497,166 @@ class EquazioneOnda(Scene):
         box_ris = SurroundingRectangle(ris, color=GREEN_D, buff=0.25, corner_radius=0.15)
         self.play(Write(ris), Create(box_ris))
         self.wait(2)
+
+
+# ============================================================================
+# 8. LA FASE NEL TEMPO: interpretazione grafica
+# ============================================================================
+
+class FaseNelTempo(Scene):
+    """Grafici animati per capire la fase: evoluzione nel tempo e sfasamento iniziale."""
+
+    def construct(self):
+        self.camera.background_color = WHITE
+        intestazione = titolo("La fase nel tempo", "Cosa significano -ωt e φ₀")
+        self.play(Write(intestazione))
+        self.wait(0.3)
+
+        # Equazione della fase, in evidenza
+        fase_eq = fit(MathTex(r"\varphi(x,t) = kx - \omega t + \varphi_0",
+                              color=DARK_BLUE, font_size=42))
+        fase_eq.next_to(intestazione, DOWN, buff=0.4)
+        box_fase = SurroundingRectangle(fase_eq, color=DARK_BLUE, buff=0.2, corner_radius=0.12)
+        self.play(Write(fase_eq), Create(box_fase))
+        self.wait(0.5)
+
+        # ---------------------------------------------------------------
+        # GRAFICO 1: evoluzione nel tempo (termine -omega t)
+        # ---------------------------------------------------------------
+        t = ValueTracker(0)
+        A1, k1, w1 = 0.7, 2.0, 2.0
+        cy1 = 2.3
+
+        lab_tempo = fit(Text("Nel tempo: l'onda avanza", font_size=24, color=BLACK))
+        lab_tempo.move_to([0, 3.7, 0])
+
+        onda1 = always_redraw(
+            lambda: FunctionGraph(
+                lambda x: A1 * np.sin(k1 * x - w1 * t.get_value()),
+                x_range=[-3.4, 3.4, 0.02], color=BLUE_D, stroke_width=5,
+            ).move_to(UP * cy1)
+        )
+        # Cresta = punto di fase costante: kx - wt = pi/2  ->  x avanza nel tempo
+        def cresta():
+            xc = (PI / 2 + w1 * t.get_value()) / k1
+            return Dot([xc, cy1 + A1, 0], color=RED_D, radius=0.11)
+
+        punto_cresta = always_redraw(cresta)
+        lab_cresta = fit(Text("cresta = fase costante", font_size=20, color=RED_D))
+        lab_cresta.move_to([0, cy1 - 1.25, 0])
+        vrel = fit(MathTex(r"v = \frac{\omega}{k}", color=DARK_GRAY, font_size=36))
+        vrel.move_to([0, cy1 - 2.1, 0])
+
+        self.play(FadeIn(lab_tempo))
+        self.add(onda1, punto_cresta)
+        self.play(FadeIn(lab_cresta), Write(vrel))
+        self.play(t.animate.set_value(2.0), run_time=5, rate_func=linear)
+
+        # Separatore
+        sep = Line([-3.4, -0.4, 0], [3.4, -0.4, 0], color=DARK_GRAY, stroke_width=2)
+        self.play(Create(sep))
+
+        # ---------------------------------------------------------------
+        # GRAFICO 2: sfasamento iniziale (termine phi0)
+        # ---------------------------------------------------------------
+        phi0 = ValueTracker(0)
+        A2, k2 = 0.7, 2.0
+        cy2 = -3.1
+
+        lab_phi = fit(Text("Sfasamento iniziale: φ₀ trasla l'onda", font_size=24, color=BLACK))
+        lab_phi.move_to([0, -1.4, 0])
+
+        # Riferimento a phi0 = 0 (tratteggiato, fisso)
+        rif = DashedVMobject(
+            FunctionGraph(lambda x: A2 * np.sin(k2 * x),
+                          x_range=[-3.4, 3.4, 0.02], color=DARK_GRAY, stroke_width=3).move_to(UP * cy2),
+            num_dashes=40,
+        )
+        onda2 = always_redraw(
+            lambda: FunctionGraph(
+                lambda x: A2 * np.sin(k2 * x + phi0.get_value()),
+                x_range=[-3.4, 3.4, 0.02], color=GREEN_D, stroke_width=5,
+            ).move_to(UP * cy2)
+        )
+        # Valore di phi0 che si aggiorna (DecimalNumber: niente ricompilazione LaTeX)
+        phi_lbl = MathTex(r"\varphi_0 =", color=GREEN_D, font_size=34)
+        phi_num = DecimalNumber(0, num_decimal_places=1, color=GREEN_D, font_size=34)
+        phi_unit = MathTex(r"\mathrm{rad}", color=GREEN_D, font_size=34)
+        val_phi = VGroup(phi_lbl, phi_num, phi_unit).arrange(RIGHT, buff=0.15)
+        val_phi.move_to([0, cy2 - 1.7, 0])
+        phi_num.add_updater(lambda m: m.set_value(phi0.get_value()))
+
+        self.play(FadeIn(lab_phi))
+        self.play(Create(rif))
+        self.add(onda2, val_phi)
+        self.play(phi0.animate.set_value(2 * PI), run_time=5, rate_func=linear)
+        phi_num.clear_updaters()
+        self.wait(1)
+
+
+# ============================================================================
+# 9. LA FASE COME ANGOLO: cerchio di riferimento
+# ============================================================================
+
+class FaseComeAngolo(Scene):
+    """La fase è l'angolo del moto circolare uniforme proiettato sulla sinusoide."""
+
+    def construct(self):
+        self.camera.background_color = WHITE
+        intestazione = titolo("La fase è un angolo", "y = A·sin(φ)")
+        self.play(Write(intestazione))
+        self.wait(0.3)
+
+        th = ValueTracker(0.0001)
+        cy = 2.8
+        C = np.array([-2.4, cy, 0])
+        r = 1.1
+        x0 = -1.1
+        s = 0.62  # scala angolo -> ascissa sullo schermo
+
+        def punto_cerchio(angle):
+            return C + r * np.array([np.cos(angle), np.sin(angle), 0])
+
+        cerchio = Circle(radius=r, color=DARK_GRAY, stroke_width=3).move_to(C)
+        centro = Dot(C, color=DARK_GRAY, radius=0.04)
+        baseline = Line([x0, cy, 0], [3.4, cy, 0], color=DARK_GRAY, stroke_width=1.5)
+
+        raggio = always_redraw(lambda: Line(C, punto_cerchio(th.get_value()),
+                                            color=RED_D, stroke_width=4))
+        punto = always_redraw(lambda: Dot(punto_cerchio(th.get_value()),
+                                          color=RED_D, radius=0.09))
+        arco = always_redraw(lambda: Arc(radius=0.45, arc_center=C, start_angle=0,
+                                         angle=th.get_value(), color=DARK_BLUE, stroke_width=4))
+        lab_phi = MathTex(r"\varphi", color=DARK_BLUE, font_size=34).move_to(C + np.array([0.9, 0.35, 0]))
+
+        def scia():
+            a = max(th.get_value(), 0.0001)
+            return ParametricFunction(
+                lambda u: [x0 + s * u, cy + r * np.sin(u), 0],
+                t_range=[0, a, 0.02], color=BLUE_D, stroke_width=5)
+
+        onda = always_redraw(scia)
+        # Connettore orizzontale: l'altezza sul cerchio = altezza dell'onda
+        connettore = always_redraw(lambda: DashedLine(
+            punto_cerchio(th.get_value()),
+            [x0 + s * th.get_value(), cy + r * np.sin(th.get_value()), 0],
+            color=GREEN_D, stroke_width=2))
+
+        self.play(Create(cerchio), FadeIn(centro), Create(baseline))
+        self.add(raggio, punto, arco, onda, connettore)
+        self.play(Write(lab_phi))
+        self.play(th.animate.set_value(2 * PI), run_time=6, rate_func=linear)
+        self.wait(0.5)
+
+        # Messaggio chiave
+        eqy = fit(MathTex(r"y = A\,\sin(\varphi)", color=BLACK, font_size=44))
+        eqy.move_to([0, 0.6, 0])
+        boxy = SurroundingRectangle(eqy, color=DARK_BLUE, buff=0.2, corner_radius=0.12)
+        nota1 = fit(Text("La fase φ è l'angolo che ruota", font_size=24, color=BLACK))
+        nota1.move_to([0, -0.6, 0])
+        nota2 = fit(Text("un giro (2π) = un periodo dell'onda", font_size=24, color=DARK_GRAY))
+        nota2.move_to([0, -1.6, 0])
+        self.play(Write(eqy), Create(boxy))
+        self.play(FadeIn(nota1))
+        self.play(FadeIn(nota2))
+        self.wait(2)
