@@ -19,7 +19,9 @@
 #   - workflow_dispatch (manuale)  -> qualità e ambiente a scelta (input
 #     `quality` e `target`); con target=production aggiorna la produzione.
 #
-# L'immagine CI è costruita dal workflow build-ci-image.yml.
+# L'immagine CI (Manim + LaTeX) è costruita e pubblicata su GHCR dal job
+# "ci-image" di questo stesso workflow, solo se manca per l'hash corrente di
+# docker/Dockerfile.ci + requirements.txt (auto-bootstrap, nessun passo manuale).
 #
 # Secret richiesti (Settings -> Secrets and variables -> Actions):
 #   VERCEL_TOKEN       -> token personale Vercel (Account Settings -> Tokens)
@@ -60,7 +62,7 @@ concurrency:
 
 permissions:
   contents: read
-  packages: read
+  packages: write
 
 jobs:
   # --------------------------------------------------------------------------
@@ -74,14 +76,57 @@ jobs:
     outputs:
       quality: ${{ steps.cfg.outputs.quality }}
       target: ${{ steps.cfg.outputs.target }}
+      image: ${{ steps.cfg.outputs.image }}
     steps:
+      - uses: actions/checkout@v4
       - id: cfg
         run: |
           QUALITY="${{ inputs.quality || 'ql' }}"
           TARGET="${{ inputs.target || 'preview' }}"
+          # Tag immagine = hash di Dockerfile.ci + requirements.txt: cambia solo
+          # quando cambiano gli ingredienti, così l'immagine si ricostruisce da
+          # sola quando serve (e resta in cache su GHCR negli altri casi).
+          REPO="$(echo '${{ github.repository }}' | tr '[:upper:]' '[:lower:]')"
+          IMAGE="ghcr.io/${REPO}-ci:${{ hashFiles('docker/Dockerfile.ci', 'requirements.txt') }}"
           echo "quality=$QUALITY" >> "$GITHUB_OUTPUT"
           echo "target=$TARGET" >> "$GITHUB_OUTPUT"
+          echo "image=$IMAGE" >> "$GITHUB_OUTPUT"
           echo "Evento: ${{ github.event_name }} | quality=$QUALITY | target=$TARGET"
+          echo "Immagine CI: $IMAGE"
+
+  # --------------------------------------------------------------------------
+  # 0b) Assicura l'immagine CI (Manim + LaTeX) su GHCR: la costruisce e pubblica
+  #     SOLO se non esiste già per quell'hash. Rende il workflow auto-bootstrap
+  #     (niente passi manuali, nessuna corsa con i job di build).
+  # --------------------------------------------------------------------------
+  ci-image:
+    name: Prepara immagine CI
+    needs: setup
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Login a GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Costruisci e pubblica l'immagine se mancante
+        env:
+          IMAGE: ${{ needs.setup.outputs.image }}
+        run: |
+          if docker manifest inspect "$IMAGE" >/dev/null 2>&1; then
+            echo "Immagine già presente, salto la build: $IMAGE"
+          else
+            echo "Immagine assente: la costruisco e pubblico ($IMAGE)…"
+            docker build -f docker/Dockerfile.ci -t "$IMAGE" .
+            docker push "$IMAGE"
+          fi
 
   # --------------------------------------------------------------------------
   # 1) Scopre le animazioni disponibili (matematica/* e fisica/*)
@@ -120,7 +165,7 @@ jobs:
   # --------------------------------------------------------------------------
   build:
     name: Genera ${{ matrix.discipline }}/${{ matrix.topic }}
-    needs: [setup, discover]
+    needs: [setup, discover, ci-image]
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -152,7 +197,7 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
         run: |
           docker run --rm -v "$PWD":/work -w /work \
-            "ghcr.io/${{ github.repository }}-ci:latest" \
+            "${{ needs.setup.outputs.image }}" \
             make ${{ matrix.topic }} \
               QUALITY=${{ needs.setup.outputs.quality }} \
               MANIM=/opt/manim-venv/bin/manim

@@ -59,22 +59,24 @@ cat .vercel/project.json
 
 Per non reinstallare apt/pip a ogni rendering, le animazioni vengono generate
 dentro un'immagine Docker con Manim e LaTeX preinstallati, pubblicata su **GHCR**
-come `ghcr.io/guglielmo/formule-in-movimento-ci:latest`.
+come `ghcr.io/guglielmo/formule-in-movimento-ci:<hash>` (definizione in
+`docker/Dockerfile.ci`).
 
-- Definizione: `docker/Dockerfile.ci`.
-- Build/push: workflow **`.github/workflows/build-ci-image.yml`**, che gira
-  automaticamente quando cambiano `docker/Dockerfile.ci` o `requirements.txt`
-  (oppure a mano da *Actions → "Build immagine CI" → Run workflow*).
+L'immagine è gestita dal job **`ci-image`** dentro lo stesso workflow di deploy,
+in modo **auto-bootstrap**:
 
-> **Bootstrap (prima volta):** l'immagine deve esistere **prima** che il
-> workflow di deploy provi a renderizzare. Dopo aver mergiato in `main`, il push
-> crea `docker/Dockerfile.ci` e fa partire "Build immagine CI"; attendi che
-> finisca prima di affidarti ai render. Se un primo run di preview parte prima
-> che l'immagine sia pronta, basta rilanciarlo.
+- il tag è l'hash di `docker/Dockerfile.ci` + `requirements.txt`;
+- a ogni run il job controlla se l'immagine per quell'hash esiste già su GHCR:
+  se sì la riusa, se no la costruisce e la pubblica (succede solo la prima volta
+  o quando cambiano Dockerfile/requirements);
+- i job di build dipendono da `ci-image`, quindi non serve nessun passo manuale
+  e non c'è rischio che renderizzino prima che l'immagine sia pronta.
 
-Il workflow usa l'immagine solo in **cache-miss**: se i sorgenti di
-un'animazione non cambiano, non viene renderizzata e l'immagine non viene
-nemmeno scaricata.
+Il rendering usa l'immagine solo in **cache-miss**: se i sorgenti di
+un'animazione non cambiano, non viene renderizzata.
+
+> Le vecchie immagini taggate per hash si accumulano su GHCR: ogni tanto si
+> possono eliminare le versioni non più usate dalla pagina *Packages* del repo.
 
 ## 3. Dominio custom: formule-in-movimento.celata.com (HTTPS)
 
