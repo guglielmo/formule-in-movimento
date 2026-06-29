@@ -278,15 +278,21 @@ class DoppiaFenditura(Scene):
         massimi = VGroup(*[Dot([3.1, ymid + kk * 0.8, 0], color=RED_D, radius=0.09)
                            for kk in (-2, -1, 0, 1, 2)])
         lab_frange = fit(Text("frange: massimi e minimi", font_size=22, color=DARK_GRAY))
-        lab_frange.move_to([0, -2.2, 0])
+        lab_frange.move_to([0, -1.4, 0])
+        # La legge che governa le frange: mostrata PRIMA del dettaglio
+        formula_intro = fit(MathTex(r"d\,\sin\theta = m\,\lambda", color=BLACK, font_size=46))
+        formula_intro.move_to([0, -2.7, 0])
+        box_intro = SurroundingRectangle(formula_intro, color=DARK_BLUE, buff=0.2, corner_radius=0.12)
 
-        fase1 = VGroup(sorg1, sorg2, onde1, onde2, schermo, massimi, lab_frange)
+        fase1 = VGroup(sorg1, sorg2, onde1, onde2, schermo, massimi, lab_frange,
+                       formula_intro, box_intro)
         self.play(FadeIn(sorg1), FadeIn(sorg2))
         self.play(LaggedStart(*[Create(a) for a in onde1], lag_ratio=0.1),
                   LaggedStart(*[Create(a) for a in onde2], lag_ratio=0.1), run_time=2)
         self.play(Create(schermo), LaggedStart(*[GrowFromCenter(m) for m in massimi], lag_ratio=0.12))
         self.play(FadeIn(lab_frange))
-        self.wait(1)
+        self.play(Write(formula_intro), Create(box_intro))
+        self.wait(1.2)
         self.play(FadeOut(fase1))
 
         # ---------- FASE 2: da dove viene d·sinθ = m·λ ----------
