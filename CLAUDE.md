@@ -633,8 +633,10 @@ caricati su Vercel già pronti, tramite Vercel CLI.
    su Vercel in produzione (`vercel deploy --prod`). HTTPS automatico.
 
 **Avvio:**
-- **Automatico** a ogni push (qualsiasi branch) → deploy di **preview** (URL
-  temporaneo, qualità `ql`); la produzione non viene toccata.
+- **push/merge su `main`** → deploy in **produzione** (qualità `qh`); aggiorna
+  `formule-in-movimento.celata.com`.
+- **push su un altro branch** → deploy di **preview** (URL temporaneo, qualità
+  `ql`); la produzione non viene toccata.
 - **Manuale** da *GitHub → Actions → "Genera animazioni e deploy Vercel" → Run
   workflow*: scegli `quality` e `target` (`production`/`preview`).
 

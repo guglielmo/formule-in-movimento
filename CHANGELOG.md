@@ -8,10 +8,11 @@ e il progetto adotta il [Versionamento Semantico](https://semver.org/lang/it/).
 ## [Non rilasciato]
 
 ### Aggiunto
-- **Deploy di preview automatico a ogni push** (qualsiasi branch): il workflow
-  GitHub Actions fa `vercel deploy` senza `--prod` a qualità `ql` e stampa l'URL
-  temporaneo nel riepilogo della run; la produzione non viene toccata. Il deploy
-  manuale ora offre l'input `target` (`production`/`preview`).
+- **Deploy automatico per evento:** push/merge su `main` → **produzione** in
+  qualità `qh` (aggiorna `formule-in-movimento.celata.com`); push su un altro
+  branch → **preview** a qualità `ql`, con URL temporaneo nel riepilogo della
+  run. L'avvio manuale resta disponibile con input `quality` e `target`
+  (`production`/`preview`).
 - **Immagine CI con Manim + LaTeX preinstallati** (`docker/Dockerfile.ci`):
   in cache-miss il rendering gira dentro l'immagine, senza reinstallare apt/pip
   a ogni run. L'immagine è costruita e pubblicata su GHCR dal job `ci-image`

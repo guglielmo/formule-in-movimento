@@ -14,10 +14,12 @@
 #                   il sito statico (con i video) su Vercel via Vercel CLI.
 #
 # Quando gira e cosa fa:
-#   - push su un qualsiasi branch -> deploy di PREVIEW (URL temporaneo),
+#   - push/merge su main          -> deploy in PRODUZIONE, qualità `qh`
+#     (qualità di pubblicazione). Aggiorna formule-in-movimento.celata.com.
+#   - push su un altro branch      -> deploy di PREVIEW (URL temporaneo),
 #     qualità `ql` (render veloce). La produzione non viene toccata.
 #   - workflow_dispatch (manuale)  -> qualità e ambiente a scelta (input
-#     `quality` e `target`); con target=production aggiorna la produzione.
+#     `quality` e `target`).
 #
 # L'immagine CI (Manim + LaTeX) è costruita e pubblicata su GHCR dal job
 # "ci-image" di questo stesso workflow, solo se manca per l'hash corrente di
@@ -67,8 +69,9 @@ permissions:
 jobs:
   # --------------------------------------------------------------------------
   # 0) Determina qualità e ambiente in base all'evento.
-  #    - push        -> quality=ql, target=preview
-  #    - dispatch     -> usa gli input scelti (default quality=qm, target=production)
+  #    - push su main        -> production, qualità qh (pubblicazione)
+  #    - push su altri branch -> preview, qualità ql (anteprima veloce)
+  #    - dispatch manuale     -> usa gli input scelti (default qm / production)
   # --------------------------------------------------------------------------
   setup:
     name: Configura run
@@ -81,8 +84,19 @@ jobs:
       - uses: actions/checkout@v4
       - id: cfg
         run: |
-          QUALITY="${{ inputs.quality || 'ql' }}"
-          TARGET="${{ inputs.target || 'preview' }}"
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            # Avvio manuale: rispetta gli input scelti.
+            QUALITY="${{ inputs.quality }}"
+            TARGET="${{ inputs.target }}"
+          elif [ "${{ github.ref }}" = "refs/heads/main" ]; then
+            # Push/merge su main -> pubblicazione in produzione.
+            QUALITY="qh"
+            TARGET="production"
+          else
+            # Push su qualunque altro branch -> anteprima veloce.
+            QUALITY="ql"
+            TARGET="preview"
+          fi
           # Tag immagine = hash di Dockerfile.ci + requirements.txt: cambia solo
           # quando cambiano gli ingredienti, così l'immagine si ricostruisce da
           # sola quando serve (e resta in cache su GHCR negli altri casi).
