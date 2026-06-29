@@ -21,7 +21,9 @@ e il progetto adotta il [Versionamento Semantico](https://semver.org/lang/it/).
   - Pagina lezione `frontend/src/pages/fisica/diffrazione.astro` e card nell'indice di fisica.
 - **Tool interattivo "distanze reali"** (`CalcolatoreDiffrazione.vue`): si sceglie il colore
   (lunghezza d'onda) e, a fenditure fisse, si vede come varia la distanza dello schermo necessaria
-  per osservare le frange (Δy = λL/d), con verdetto pratico e anteprima delle frange.
+  per osservare le frange (Δy = λL/d), con doppia lettura (trova L / trova Δy), verdetto pratico e
+  anteprima delle frange su righello in scala reale (mm).
+- Header di licenza Apache-2.0 nei file sorgente (Python e Vue); copyright aggiornato a 2025–2026.
 
 ### Rimosso
 - Animazione `rifrazione` (sostituita da `diffrazione`).

@@ -431,7 +431,7 @@ Per dettagli tecnici sullo sviluppo, vedi [CLAUDE.md](CLAUDE.md).
 
 Questo progetto è rilasciato sotto [Apache License 2.0](LICENSE).
 
-Copyright 2025 Guglielmo Celata
+Copyright 2025–2026 Guglielmo Celata
 
 ## Contatti
 
