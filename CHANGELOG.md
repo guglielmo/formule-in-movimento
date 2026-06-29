@@ -7,6 +7,14 @@ e il progetto adotta il [Versionamento Semantico](https://semver.org/lang/it/).
 
 ## [Non rilasciato]
 
+## [0.3.0] - 2026-06-29
+
+### Aggiunto
+- **Animazione di fisica "Interferenza e Rifrazione"** (`animations/fisica/rifrazione/`) —
+  5 scene verticali: somma di onde (principio di sovrapposizione), effetto della fase,
+  interferenza costruttiva e distruttiva, fronti d'onda e raggi, rifrazione (legge di Snell).
+  - Pagina lezione `frontend/src/pages/fisica/rifrazione.astro` e card nell'indice di fisica.
+
 ## [0.2.0] - 2026-06-29
 
 ### Aggiunto
@@ -49,7 +57,8 @@ e il progetto adotta il [Versionamento Semantico](https://semver.org/lang/it/).
 ### Aggiunto
 - Commit iniziale del progetto **Formule in Movimento**.
 
-[Non rilasciato]: https://github.com/guglielmo/formule-in-movimento/compare/v0.2.0...HEAD
+[Non rilasciato]: https://github.com/guglielmo/formule-in-movimento/compare/v0.3.0...HEAD
+[0.3.0]: https://github.com/guglielmo/formule-in-movimento/releases/tag/v0.3.0
 [0.2.0]: https://github.com/guglielmo/formule-in-movimento/releases/tag/v0.2.0
 [0.1.0]: https://github.com/guglielmo/formule-in-movimento/releases/tag/v0.1.0
 [0.0.1]: https://github.com/guglielmo/formule-in-movimento/releases/tag/v0.0.1
