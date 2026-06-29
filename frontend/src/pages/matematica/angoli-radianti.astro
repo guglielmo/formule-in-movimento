@@ -1,0 +1,136 @@
+---
+import LessonLayout from '../../layouts/LessonLayout.astro';
+import VideoPlayer from '../../components/VideoPlayer.astro';
+---
+
+<LessonLayout
+  title="Angoli in Radianti"
+  subtitle="La misura naturale degli angoli, dalle conversioni all'arco circolare"
+  description="Angoli in Radianti - Definizione di radiante, conversione gradi/radianti, arco e settore circolare, determinazione principale | Formule in Movimento"
+  theme="matematica"
+  breadcrumbs={[
+    { label: 'Home', href: '/' },
+    { label: 'Matematica', href: '/matematica' },
+    { label: 'Angoli in Radianti' }
+  ]}
+>
+  <div class="intro-section">
+    <h2 style="margin-top: 0;">Perché misurare gli angoli in radianti?</h2>
+    <p>
+      Siamo abituati a misurare gli angoli in <strong>gradi</strong>, ma in goniometria
+      e in tutta la matematica superiore si usa quasi sempre il <strong>radiante</strong>.
+      Non è un capriccio: il radiante lega direttamente l'angolo alla lunghezza dell'arco
+      che esso sottende, e questo rende le formule molto più semplici.
+    </p>
+
+    <div class="key-concept">
+      <strong>L'idea di fondo:</strong>
+      <p style="margin-top: 10px;">
+        Un <strong>radiante</strong> è l'angolo al centro che sottende un arco lungo
+        esattamente quanto il raggio. Poiché l'intera circonferenza misura 2&pi;r,
+        a un giro completo corrispondono <strong>2&pi; radianti</strong>:
+        cioè 360° = 2&pi; rad.
+      </p>
+    </div>
+  </div>
+
+  <h2>1. Che cos'è un Radiante</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/matematica/videos/angoli_radianti/DefinizioneRadiante.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> partiamo dal raggio e &quot;avvolgiamo&quot; un arco lungo
+      quanto il raggio sulla circonferenza: l'angolo al centro così ottenuto vale,
+      per definizione, <strong>1 radiante</strong>.
+      <ul>
+        <li>Arco lungo come il raggio &rarr; angolo di <strong>1 rad</strong></li>
+        <li>L'intera circonferenza misura 2&pi;r &rarr; un giro completo vale <strong>2&pi; rad</strong></li>
+        <li>Quindi <strong>360° = 2&pi; rad</strong> e <strong>180° = &pi; rad</strong></li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>2. Conversione Gradi &harr; Radianti</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/matematica/videos/angoli_radianti/ConversioneGradiRadianti.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> dalla relazione fondamentale 180° = &pi; rad si ricavano,
+      con una semplice proporzione, le due formule di conversione.
+
+      <div class="steps">
+        <strong>Le due conversioni:</strong>
+        <ol>
+          <li><strong>Da gradi a radianti:</strong> &alpha;<sub>rad</sub> = &alpha;<sub>gradi</sub> &middot; &pi;/180°</li>
+          <li><strong>Da radianti a gradi:</strong> &alpha;<sub>gradi</sub> = &alpha;<sub>rad</sub> &middot; 180°/&pi;</li>
+        </ol>
+        <strong>Esempio:</strong> 60° &middot; &pi;/180° = &pi;/3.
+      </div>
+
+      <div class="key-concept">
+        <strong>Angoli notevoli da ricordare:</strong> 30° = &pi;/6, 45° = &pi;/4,
+        60° = &pi;/3, 90° = &pi;/2, 180° = &pi;, 360° = 2&pi;.
+      </div>
+    </div>
+  </div>
+
+  <h2>3. Arco e Settore Circolare</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/matematica/videos/angoli_radianti/ArcoESettore.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> ecco il vero vantaggio dei radianti. Con l'angolo &theta;
+      espresso in radianti, lunghezza dell'arco e area del settore hanno formule
+      immediate, senza fattori di conversione.
+
+      <div class="steps">
+        <strong>Con &theta; in radianti:</strong>
+        <ol>
+          <li><strong>Lunghezza dell'arco:</strong> &#8467; = r &middot; &theta;</li>
+          <li><strong>Area del settore:</strong> A = &frac12; &middot; r² &middot; &theta;</li>
+        </ol>
+      </div>
+
+      <div class="key-concept">
+        <strong>Attenzione:</strong> queste formule valgono <em>solo</em> se &theta; è in radianti.
+        Con i gradi servirebbero le proporzioni con 360°, molto più scomode.
+      </div>
+    </div>
+  </div>
+
+  <h2>4. Determinazione Principale</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/matematica/videos/angoli_radianti/DeterminazionePrincipale.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> due angoli che differiscono di un numero intero di giri
+      (cioè di multipli di 2&pi;) individuano la <em>stessa</em> posizione sulla circonferenza.
+      La <strong>determinazione principale</strong> è l'angolo equivalente compreso in [0, 2&pi;).
+
+      <div class="steps">
+        <strong>Esempio: ridurre 7&pi;/3</strong>
+        <ol>
+          <li><strong>Tolgo un giro intero:</strong> 7&pi;/3 = 2&pi; + &pi;/3</li>
+          <li><strong>Determinazione principale:</strong> &pi;/3</li>
+        </ol>
+      </div>
+
+      <div class="key-concept">
+        <strong>Regola operativa:</strong> si aggiunge o si toglie 2&pi; (un giro) tante volte
+        quante servono, finché l'angolo non cade nell'intervallo [0, 2&pi;). Se l'angolo è
+        negativo si <em>aggiunge</em> 2&pi;; se è maggiore di 2&pi; lo si <em>toglie</em>.
+      </div>
+    </div>
+  </div>
+
+  <h2>Riepilogo</h2>
+  <div class="intro-section">
+    <p>Il radiante è la chiave d'ingresso alla goniometria:</p>
+    <ol>
+      <li><strong>Definizione:</strong> 1 radiante = arco lungo come il raggio; un giro = 2&pi; rad</li>
+      <li><strong>Conversioni:</strong> dalla relazione 180° = &pi; rad, gradi e radianti si scambiano con un fattore &pi;/180°</li>
+      <li><strong>Arco e settore:</strong> con &theta; in radianti, &#8467; = r&theta; e A = ½r²&theta;</li>
+      <li><strong>Determinazione principale:</strong> si riporta ogni angolo in [0, 2&pi;) aggiungendo o togliendo giri interi</li>
+    </ol>
+    <p>
+      Con gli angoli in radianti abbiamo gli strumenti di base: la prossima tappa sarà lo studio
+      delle <strong>funzioni goniometriche</strong> — seno, coseno e tangente.
+    </p>
+  </div>
+</LessonLayout>
