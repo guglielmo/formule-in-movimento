@@ -635,8 +635,9 @@ caricati su Vercel già pronti, tramite Vercel CLI.
 **Avvio:**
 - **push/merge su `main`** → deploy in **produzione** (qualità `qh`); aggiorna
   `formule-in-movimento.celata.com`.
-- **push su un altro branch** → deploy di **preview** (URL temporaneo, qualità
-  `ql`); la produzione non viene toccata.
+- **push su un altro branch** → deploy di **preview** (qualità `ql`),
+  raggiungibile sull'alias stabile `anteprima.formule-in-movimento.celata.com`
+  (vedi `DEPLOYMENT.md` §3.1); la produzione non viene toccata.
 - **Manuale** da *GitHub → Actions → "Genera animazioni e deploy Vercel" → Run
   workflow*: scegli `quality` e `target` (`production`/`preview`).
 

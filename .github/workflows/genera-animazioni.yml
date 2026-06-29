@@ -270,10 +270,13 @@ jobs:
       #   - production -> `vercel deploy --prod` (aggiorna il dominio custom e il
       #     dominio .vercel.app di produzione).
       #   - preview    -> `vercel deploy` (senza --prod): crea un deployment di
-      #     anteprima con un URL temporaneo univoco (es.
-      #     formule-in-movimento-<hash>-<scope>.vercel.app), senza toccare la
-      #     produzione. L'URL viene stampato e messo nel riepilogo della run.
+      #     anteprima con un URL temporaneo univoco, e poi gli assegna un alias
+      #     STABILE (anteprima.formule-in-movimento.celata.com) così l'anteprima
+      #     è sempre allo stesso indirizzo (vale "l'ultimo preview vince").
+      #     La produzione non viene toccata.
       - name: Deploy su Vercel
+        env:
+          PREVIEW_ALIAS: anteprima.formule-in-movimento.celata.com
         run: |
           npm install -g vercel@latest
           TARGET="${{ needs.setup.outputs.target }}"
@@ -287,6 +290,12 @@ jobs:
             URL=$(vercel deploy frontend/dist \
               --yes --archive=tgz \
               --token="${{ secrets.VERCEL_TOKEN }}")
+            echo "Assegno l'alias stabile $PREVIEW_ALIAS all'ultimo preview…"
+            # Non bloccante: se il dominio dell'anteprima non è ancora configurato
+            # su Vercel, l'alias fallisce ma il preview (URL con hash) resta valido.
+            vercel alias set "$URL" "$PREVIEW_ALIAS" \
+              --token="${{ secrets.VERCEL_TOKEN }}" \
+              || echo "::warning::Alias $PREVIEW_ALIAS non assegnato (dominio non ancora configurato su Vercel?)."
           fi
           echo "Deployment URL: $URL"
           {
@@ -295,5 +304,7 @@ jobs:
             echo "- **URL deployment**: $URL"
             if [ "$TARGET" = "production" ]; then
               echo "- Produzione: https://formule-in-movimento.celata.com"
+            else
+              echo "- Anteprima stabile: https://$PREVIEW_ALIAS"
             fi
           } >> "$GITHUB_STEP_SUMMARY"
