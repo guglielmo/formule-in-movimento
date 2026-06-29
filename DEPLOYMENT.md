@@ -32,7 +32,10 @@ Fasi del workflow:
    non rirenderizza e non scarica nemmeno l'immagine. In cache-miss il rendering
    gira **dentro l'immagine CI** con Manim/LaTeX preinstallati (vedi §2.2).
 4. **deploy** — `make frontend-build`, include i video nella `dist/` e pubblica
-   su Vercel.
+   su Vercel. I domini sono assegnati con **alias espliciti** (`vercel alias
+   set`) e l'assegnazione automatica è disattivata (`--skip-domain` in
+   produzione), così produzione e anteprima non si contendono i domini
+   (vedi §3 e §3.1).
 
 HTTPS e certificati sono gestiti automaticamente da Vercel.
 
@@ -108,6 +111,13 @@ HTTPS automatico (Let's Encrypt gestito da Vercel).
    emette automaticamente il certificato TLS. Da quel momento il sito è
    raggiungibile su `https://formule-in-movimento.celata.com`.
 
+> **Come viene assegnato il dominio.** Il workflow deploya la produzione con
+> `vercel deploy --prod --skip-domain` e poi assegna il dominio esplicitamente
+> con `vercel alias set`. Questo serve a non far "rubare" l'alias dell'anteprima
+> dai deploy di produzione (vedi §3.1). Effetto collaterale: il dominio di
+> default `*.vercel.app` di produzione **non** si auto-aggiorna; l'indirizzo
+> canonico di produzione è `formule-in-movimento.celata.com`.
+
 ### 3.1 Anteprima stabile: anteprima.formule-in-movimento.celata.com
 
 I deploy di **preview** (push su un branch ≠ `main`) ricevono un URL temporaneo
@@ -116,6 +126,10 @@ all'ultimo preview l'alias `anteprima.formule-in-movimento.celata.com`
 (`vercel alias set …`). Vale "**l'ultimo preview vince**": con più branch aperti
 contemporaneamente, l'alias punta all'anteprima deployata più di recente (gli
 altri restano raggiungibili al loro URL con hash).
+
+Poiché la produzione usa `--skip-domain` (vedi §3), un merge in `main` **non**
+ri-aggancia questo dominio alla produzione: l'anteprima resta puntata all'ultimo
+preview.
 
 Configurazione **una tantum**, identica alla produzione:
 
