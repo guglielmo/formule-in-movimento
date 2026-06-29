@@ -12,12 +12,28 @@ from animations.vertical_template import VerticalTemplate
 # Helper comuni
 # ============================================================================
 
+# Larghezza utile del frame verticale (frame_width = 8.0) con piccoli margini.
+USABLE_W = 7.2
+
+
+def fit(mobj, max_w=USABLE_W):
+    """Rimpicciolisce un mobject se supera la larghezza utile del frame.
+
+    Evita che testi/etichette/formule sbordino dai margini nel formato 9:16.
+    """
+    if mobj.width > max_w:
+        mobj.scale_to_fit_width(max_w)
+    return mobj
+
+
 def titolo(testo, sottotitolo=None):
     """Crea un titolo (e sottotitolo) standard in alto, tema chiaro."""
     t = Text(testo, font_size=40, color=BLACK, weight=BOLD)
+    fit(t)
     t.to_edge(UP, buff=0.3)
     if sottotitolo:
         s = Text(sottotitolo, font_size=26, color=DARK_BLUE)
+        fit(s)
         s.next_to(t, DOWN, buff=0.2)
         return VGroup(t, s)
     return VGroup(t)
@@ -87,12 +103,14 @@ class IntroOnde(Scene):
 
         self.play(t.animate.set_value(6), run_time=6, rate_func=linear)
 
-        # Messaggio chiave
+        # Messaggio chiave (righe corte che stanno nei margini)
         msg = VGroup(
-            Text("Un'onda è una perturbazione che si propaga", font_size=28, color=BLACK),
-            Text("trasportando ENERGIA, non materia.", font_size=28, color=GREEN_D, weight=BOLD),
-        ).arrange(DOWN, buff=0.25)
-        msg.move_to(DOWN * 3.5)
+            Text("Un'onda è una perturbazione", font_size=26, color=BLACK),
+            Text("che si propaga trasportando", font_size=26, color=BLACK),
+            Text("ENERGIA, non materia", font_size=30, color=GREEN_D, weight=BOLD),
+        ).arrange(DOWN, buff=0.22)
+        fit(msg)
+        msg.move_to(DOWN * 3.7)
         self.play(Write(msg))
         self.play(t.animate.set_value(10), run_time=4, rate_func=linear)
         self.wait(1)
@@ -107,9 +125,11 @@ class OndeTrasversaliLongitudinali(VerticalTemplate):
 
     def construct(self):
         self.setup_vertical_layout(
-            title_text="Trasversali e Longitudinali",
-            subtitle_text="Come oscillano le particelle?",
+            title_text="Tipi di onde",
+            subtitle_text="trasversali e longitudinali",
         )
+        fit(self.title)
+        fit(self.subtitle)
 
         t = ValueTracker(0)
         base_xs = np.linspace(-3.2, 3.2, 26)
@@ -126,9 +146,9 @@ class OndeTrasversaliLongitudinali(VerticalTemplate):
             return dots
 
         onda_t = always_redraw(trasversale)
-        lab_t = Text("Trasversale", font_size=26, color=RED_D, weight=BOLD)
+        lab_t = fit(Text("Trasversale", font_size=26, color=RED_D, weight=BOLD))
         lab_t.move_to([0, cy_top + 1.6, 0])
-        sub_t = Text("oscillazione perpendicolare", font_size=20, color=DARK_GRAY)
+        sub_t = fit(Text("oscillazione perpendicolare", font_size=20, color=DARK_GRAY))
         sub_t.move_to([0, cy_top - 1.5, 0])
         prop_t = Arrow([1.0, cy_top - 1.0, 0], [2.6, cy_top - 1.0, 0], color=DARK_GRAY, buff=0)
         osc_t = DoubleArrow([-2.6, cy_top - 0.7, 0], [-2.6, cy_top + 0.7, 0],
@@ -149,9 +169,9 @@ class OndeTrasversaliLongitudinali(VerticalTemplate):
             return dots
 
         onda_l = always_redraw(longitudinale)
-        lab_l = Text("Longitudinale", font_size=26, color=DARK_BLUE, weight=BOLD)
+        lab_l = fit(Text("Longitudinale", font_size=26, color=DARK_BLUE, weight=BOLD))
         lab_l.move_to([0, cy_bot + 1.4, 0])
-        sub_l = Text("oscillazione parallela (compressioni)", font_size=20, color=DARK_GRAY)
+        sub_l = fit(Text("oscillazione parallela", font_size=20, color=DARK_GRAY))
         sub_l.move_to([0, cy_bot - 1.4, 0])
         prop_l = Arrow([1.0, cy_bot - 0.8, 0], [2.6, cy_bot - 0.8, 0], color=DARK_GRAY, buff=0)
         osc_l = DoubleArrow([-2.9, cy_bot + 0.7, 0], [-1.9, cy_bot + 0.7, 0],
@@ -174,7 +194,7 @@ class AmpiezzaFrequenza(Scene):
 
     def construct(self):
         self.camera.background_color = WHITE
-        intestazione = titolo("Le grandezze di un'onda", "Ampiezza, lunghezza d'onda, frequenza")
+        intestazione = titolo("Le grandezze di un'onda", "Ampiezza e frequenza")
         self.play(Write(intestazione))
         self.wait(0.3)
 
@@ -218,11 +238,19 @@ class AmpiezzaFrequenza(Scene):
             MathTex(r"f = \frac{1}{T}\quad (\mathrm{Hz})", color=BLACK, font_size=40),
             MathTex(r"v = \lambda\, f = \frac{\lambda}{T}", color=DARK_BLUE, font_size=44),
         ).arrange(DOWN, buff=0.45)
+        for r in relazioni:
+            fit(r)
         relazioni.move_to(DOWN * 3.6)
         box = SurroundingRectangle(relazioni[2], color=DARK_BLUE, buff=0.2, corner_radius=0.15)
         self.play(Write(relazioni[0]))
         self.play(Write(relazioni[1]))
         self.play(Write(relazioni[2]), Create(box))
+
+        # Chiarisce il significato di v (velocità di propagazione dell'onda)
+        cap_v = fit(Text("v = velocità di propagazione dell'onda",
+                         font_size=22, color=DARK_BLUE))
+        cap_v.next_to(box, DOWN, buff=0.3)
+        self.play(FadeIn(cap_v))
         self.wait(1.5)
 
 
@@ -235,7 +263,7 @@ class EsempiOnde(Scene):
 
     def construct(self):
         self.camera.background_color = WHITE
-        intestazione = titolo("Onde tutto intorno a noi", "Corde, suono, terremoti")
+        intestazione = titolo("Onde intorno a noi", "Corde, suono, terremoti")
         self.play(Write(intestazione))
         self.wait(0.3)
 
@@ -245,8 +273,10 @@ class EsempiOnde(Scene):
         corda.move_to([0, 3.4, 0])
         txt_corda = VGroup(
             Text("Corde", font_size=28, color=RED_D, weight=BOLD),
-            Text("chitarra, violino — onde trasversali", font_size=22, color=DARK_GRAY),
-        ).arrange(DOWN, buff=0.1).move_to([0, 2.2, 0])
+            Text("chitarra, violino (trasversali)", font_size=22, color=DARK_GRAY),
+        ).arrange(DOWN, buff=0.1)
+        fit(txt_corda)
+        txt_corda.move_to([0, 2.2, 0])
         self.play(Create(corda), Write(txt_corda))
 
         # --- Suono: fronti d'onda circolari ---
@@ -259,8 +289,10 @@ class EsempiOnde(Scene):
         sorgente = Dot([0, -0.2, 0], color=DARK_BLUE, radius=0.1)
         txt_suono = VGroup(
             Text("Suono", font_size=28, color=DARK_BLUE, weight=BOLD),
-            Text("compressioni dell'aria — onde longitudinali", font_size=22, color=DARK_GRAY),
-        ).arrange(DOWN, buff=0.1).move_to([0, -1.9, 0])
+            Text("aria: compressioni (longitudinali)", font_size=22, color=DARK_GRAY),
+        ).arrange(DOWN, buff=0.1)
+        fit(txt_suono)
+        txt_suono.move_to([0, -1.9, 0])
         self.play(FadeIn(sorgente))
         self.play(LaggedStart(*[GrowFromCenter(c) for c in cerchi], lag_ratio=0.25))
         self.play(Write(txt_suono))
@@ -273,8 +305,10 @@ class EsempiOnde(Scene):
         sisma.move_to([0, -4.3, 0])
         txt_terr = VGroup(
             Text("Terremoti", font_size=28, color=GREEN_D, weight=BOLD),
-            Text("onde P (long.) e onde S (trasv.)", font_size=22, color=DARK_GRAY),
-        ).arrange(DOWN, buff=0.1).move_to([0, -5.6, 0])
+            Text("onde P e onde S", font_size=22, color=DARK_GRAY),
+        ).arrange(DOWN, buff=0.1)
+        fit(txt_terr)
+        txt_terr.move_to([0, -5.6, 0])
         self.play(FadeIn(suolo), Create(sisma))
         self.play(Write(txt_terr))
         self.wait(1.5)
@@ -290,8 +324,10 @@ class OndePeriodicheImpulsive(VerticalTemplate):
     def construct(self):
         self.setup_vertical_layout(
             title_text="Periodiche e Impulsive",
-            subtitle_text="Onda continua o singolo impulso",
+            subtitle_text="continua o singolo impulso",
         )
+        fit(self.title)
+        fit(self.subtitle)
 
         t = ValueTracker(0)
 
@@ -305,8 +341,10 @@ class OndePeriodicheImpulsive(VerticalTemplate):
                 stroke_width=5,
             ).move_to(UP * cy_top)
         )
-        lab_p = Text("Periodica", font_size=26, color=BLUE_D, weight=BOLD).move_to([0, cy_top + 1.6, 0])
-        sub_p = Text("si ripete nel tempo e nello spazio", font_size=20, color=DARK_GRAY).move_to([0, cy_top - 1.6, 0])
+        lab_p = fit(Text("Periodica", font_size=26, color=BLUE_D, weight=BOLD))
+        lab_p.move_to([0, cy_top + 1.6, 0])
+        sub_p = fit(Text("si ripete nel tempo", font_size=20, color=DARK_GRAY))
+        sub_p.move_to([0, cy_top - 1.6, 0])
         self.play(FadeIn(lab_p), FadeIn(sub_p))
         self.add(periodica)
 
@@ -326,8 +364,10 @@ class OndePeriodicheImpulsive(VerticalTemplate):
 
         onda_imp = always_redraw(impulso_y)
         linea_base = Line([-3.4, cy_bot, 0], [3.4, cy_bot, 0], color=DARK_GRAY, stroke_width=2)
-        lab_i = Text("Impulsiva", font_size=26, color=RED_D, weight=BOLD).move_to([0, cy_bot + 1.6, 0])
-        sub_i = Text("una singola perturbazione", font_size=20, color=DARK_GRAY).move_to([0, cy_bot - 1.4, 0])
+        lab_i = fit(Text("Impulsiva", font_size=26, color=RED_D, weight=BOLD))
+        lab_i.move_to([0, cy_bot + 1.6, 0])
+        sub_i = fit(Text("una singola perturbazione", font_size=20, color=DARK_GRAY))
+        sub_i.move_to([0, cy_bot - 1.4, 0])
         self.play(FadeIn(lab_i), FadeIn(sub_i), Create(linea_base))
         self.add(onda_imp)
 
@@ -355,9 +395,9 @@ class OndeComplesse(Scene):
             return g
 
         y1 = armonica(2.0, 0.7, BLUE_D, 3.3)
-        lab1 = MathTex(r"y_1 = A_1\sin(k_1 x)", color=BLUE_D, font_size=34).next_to(y1, UP, buff=0.15)
+        lab1 = fit(MathTex(r"y_1 = A_1\sin(k_1 x)", color=BLUE_D, font_size=34)).next_to(y1, UP, buff=0.15)
         y2 = armonica(4.0, 0.45, GREEN_D, 1.2)
-        lab2 = MathTex(r"y_2 = A_2\sin(k_2 x)", color=GREEN_D, font_size=34).next_to(y2, UP, buff=0.15)
+        lab2 = fit(MathTex(r"y_2 = A_2\sin(k_2 x)", color=GREEN_D, font_size=34)).next_to(y2, UP, buff=0.15)
 
         self.play(Create(y1), Write(lab1))
         self.play(Create(y2), Write(lab2))
@@ -368,15 +408,15 @@ class OndeComplesse(Scene):
             lambda x: 0.7 * np.sin(2.0 * x) + 0.45 * np.sin(4.0 * x),
             x_range=[-3.4, 3.4, 0.02], color=RED_D, stroke_width=6,
         ).move_to(DOWN * 2.6)
-        lab_s = MathTex(r"y = y_1 + y_2", color=RED_D, font_size=40).next_to(somma, UP, buff=0.2)
+        lab_s = fit(MathTex(r"y = y_1 + y_2", color=RED_D, font_size=40)).next_to(somma, UP, buff=0.2)
 
         self.play(
             TransformFromCopy(VGroup(y1, y2), somma),
             Write(lab_s),
             run_time=2,
         )
-        nota = Text("Qualsiasi onda complessa = somma di sinusoidi",
-                    font_size=24, color=BLACK).move_to(DOWN * 5.4)
+        nota = fit(Text("Onda complessa = somma di sinusoidi", font_size=24, color=BLACK))
+        nota.move_to(DOWN * 5.4)
         self.play(FadeIn(nota))
         self.wait(1.5)
 
@@ -395,8 +435,8 @@ class EquazioneOnda(Scene):
         self.wait(0.3)
 
         # Equazione generale
-        eq = MathTex(r"y(x,t) = A\,\sin(kx - \omega t + \varphi_0)",
-                     color=BLACK, font_size=46)
+        eq = fit(MathTex(r"y(x,t) = A\,\sin(kx - \omega t + \varphi_0)",
+                         color=BLACK, font_size=46))
         eq.next_to(intestazione, DOWN, buff=0.6)
         box_eq = SurroundingRectangle(eq, color=DARK_BLUE, buff=0.25, corner_radius=0.15)
         self.play(Write(eq), Create(box_eq))
@@ -408,13 +448,15 @@ class EquazioneOnda(Scene):
             MathTex(r"\omega = 2\pi f = \text{pulsazione}", color=BLACK, font_size=34),
             MathTex(r"\varphi_0 = \text{fase iniziale}", color=BLACK, font_size=34),
         ).arrange(DOWN, aligned_edge=LEFT, buff=0.3)
+        for r in legenda:
+            fit(r)
         legenda.next_to(box_eq, DOWN, buff=0.5)
         self.play(LaggedStart(*[Write(r) for r in legenda], lag_ratio=0.3))
         self.wait(1)
 
         # La fase
-        fase = MathTex(r"\varphi(x,t) = kx - \omega t + \varphi_0",
-                       color=DARK_BLUE, font_size=42)
+        fase = fit(MathTex(r"\varphi(x,t) = kx - \omega t + \varphi_0",
+                           color=DARK_BLUE, font_size=42))
         fase.next_to(legenda, DOWN, buff=0.5)
         self.play(Write(fase))
         self.wait(0.8)
@@ -425,28 +467,33 @@ class EquazioneOnda(Scene):
             fase.animate.next_to(intestazione, DOWN, buff=0.6),
         )
 
-        dati = MathTex(
+        dati = fit(MathTex(
             r"k=\pi\,\tfrac{\mathrm{rad}}{\mathrm{m}},\ "
             r"\omega=4\pi\,\tfrac{\mathrm{rad}}{\mathrm{s}},\ "
             r"\varphi_0=0",
             color=BLACK, font_size=34,
-        ).next_to(fase, DOWN, buff=0.5)
-        cond = MathTex(r"x = 0{,}5\ \mathrm{m}, \quad t = 0{,}25\ \mathrm{s}",
-                       color=BLACK, font_size=34).next_to(dati, DOWN, buff=0.3)
+        ))
+        dati.next_to(fase, DOWN, buff=0.5)
+        cond = fit(MathTex(r"x = 0{,}5\ \mathrm{m}, \quad t = 0{,}25\ \mathrm{s}",
+                           color=BLACK, font_size=34))
+        cond.next_to(dati, DOWN, buff=0.3)
         self.play(Write(dati), Write(cond))
         self.wait(0.5)
 
-        passo1 = MathTex(r"\varphi = \pi\cdot 0{,}5 - 4\pi\cdot 0{,}25 + 0",
-                         color=BLACK, font_size=38).next_to(cond, DOWN, buff=0.5)
-        passo2 = MathTex(r"\varphi = 0{,}5\pi - \pi = -\tfrac{\pi}{2}\ \mathrm{rad}",
-                         color=BLACK, font_size=38).next_to(passo1, DOWN, buff=0.35)
+        passo1 = fit(MathTex(r"\varphi = \pi\cdot 0{,}5 - 4\pi\cdot 0{,}25 + 0",
+                             color=BLACK, font_size=38))
+        passo1.next_to(cond, DOWN, buff=0.5)
+        passo2 = fit(MathTex(r"\varphi = 0{,}5\pi - \pi = -\tfrac{\pi}{2}\ \mathrm{rad}",
+                             color=BLACK, font_size=38))
+        passo2.next_to(passo1, DOWN, buff=0.35)
         self.play(Write(passo1))
         self.play(Write(passo2))
         self.wait(0.5)
 
         # Valore dello spostamento
-        ris = MathTex(r"y = A\sin\!\left(-\tfrac{\pi}{2}\right) = -A",
-                      color=GREEN_D, font_size=46).next_to(passo2, DOWN, buff=0.5)
+        ris = fit(MathTex(r"y = A\sin\!\left(-\tfrac{\pi}{2}\right) = -A",
+                          color=GREEN_D, font_size=46))
+        ris.next_to(passo2, DOWN, buff=0.5)
         box_ris = SurroundingRectangle(ris, color=GREEN_D, buff=0.25, corner_radius=0.15)
         self.play(Write(ris), Create(box_ris))
         self.wait(2)
