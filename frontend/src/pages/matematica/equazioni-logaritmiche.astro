@@ -1,0 +1,139 @@
+---
+import LessonLayout from '../../layouts/LessonLayout.astro';
+import VideoPlayer from '../../components/VideoPlayer.astro';
+---
+
+<LessonLayout
+  title="Equazioni Logaritmiche"
+  subtitle="Tutti i metodi di risoluzione, passo dopo passo"
+  description="Equazioni Logaritmiche - Caso elementare, metodo del confronto, uso delle proprietà e variabile ausiliaria, con le condizioni di esistenza | Formule in Movimento"
+  theme="matematica"
+>
+  <div class="intro-section">
+    <h2 style="margin-top: 0;">Che cos'è un'equazione logaritmica?</h2>
+    <p>
+      Un'<strong>equazione logaritmica</strong> è un'equazione in cui l'incognita compare
+      <em>nell'argomento</em> di uno o più logaritmi. Risolverla significa "liberare" l'incognita dal
+      logaritmo, sfruttando la definizione e le proprietà viste nella lezione sui logaritmi.
+    </p>
+
+    <div class="key-concept">
+      <strong>Prima regola, sempre:</strong> le <em>condizioni di esistenza</em> (C.E.).
+      <p style="margin-top: 10px;">
+        Poiché l'argomento di un logaritmo deve essere <strong>positivo</strong>, prima di risolvere si
+        impone che ogni argomento sia &gt; 0. Alla fine si <strong>scartano</strong> le soluzioni che non
+        rispettano le C.E.: è l'errore più comune da evitare!
+      </p>
+    </div>
+  </div>
+
+  <h2>1. Il Caso Elementare</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/matematica/videos/equazioni_logaritmiche/EquazioneElementare.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> Quando l'equazione ha la forma <strong>log<sub>a</sub> x = b</strong>,
+      basta applicare la definizione di logaritmo per trovare subito l'incognita.
+
+      <div class="steps">
+        <strong>Risolvere log<sub>2</sub> x = 3:</strong>
+        <ol>
+          <li><strong>Applico la definizione:</strong> x = 2<sup>3</sup></li>
+          <li><strong>Calcolo:</strong> x = 8</li>
+          <li><strong>Verifica C.E.:</strong> 8 &gt; 0 → soluzione accettabile</li>
+        </ol>
+        <div class="example">log<sub>a</sub> x = b &nbsp;⟹&nbsp; x = a<sup>b</sup></div>
+      </div>
+    </div>
+  </div>
+
+  <h2>2. Il Metodo del Confronto</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/matematica/videos/equazioni_logaritmiche/MetodoConfronto.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> Se l'equazione ha <em>un logaritmo per membro con la stessa base</em>,
+      i logaritmi si possono "togliere" confrontando direttamente gli argomenti:
+      <div class="example">
+        log<sub>a</sub> f(x) = log<sub>a</sub> g(x) &nbsp;⟹&nbsp; f(x) = g(x)
+      </div>
+
+      <div class="steps">
+        <strong>Risolvere log<sub>2</sub>(x+1) = log<sub>2</sub>(2x−3):</strong>
+        <ol>
+          <li><strong>C.E.:</strong> x+1 &gt; 0 e 2x−3 &gt; 0 ⟹ x &gt; 3/2</li>
+          <li><strong>Confronto gli argomenti:</strong> x+1 = 2x−3</li>
+          <li><strong>Risolvo:</strong> x = 4</li>
+          <li><strong>Verifica C.E.:</strong> 4 &gt; 3/2 → accettabile</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <h2>3. Con le Proprietà dei Logaritmi</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/matematica/videos/equazioni_logaritmiche/UsoProprieta.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> Quando compaiono <em>più logaritmi</em>, si usano le proprietà per
+      ridurli a uno solo, poi si applica la definizione. È il caso in cui la verifica delle C.E. è
+      davvero decisiva.
+
+      <div class="steps">
+        <strong>Risolvere log<sub>2</sub> x + log<sub>2</sub>(x−2) = 3:</strong>
+        <ol>
+          <li><strong>C.E.:</strong> x &gt; 0 e x−2 &gt; 0 ⟹ x &gt; 2</li>
+          <li><strong>Proprietà del prodotto:</strong> log<sub>2</sub>[x(x−2)] = 3</li>
+          <li><strong>Definizione:</strong> x(x−2) = 2<sup>3</sup> = 8</li>
+          <li><strong>Equazione di 2° grado:</strong> x² − 2x − 8 = 0 ⟹ x = 4 ∨ x = −2</li>
+          <li><strong>Scarto x = −2</strong> (non rispetta x &gt; 2): resta <strong>x = 4</strong></li>
+        </ol>
+      </div>
+
+      <div class="key-concept">
+        <strong>Attenzione:</strong> senza le condizioni di esistenza si rischia di accettare x = −2,
+        che però rende negativo l'argomento di un logaritmo. Sempre verificare!
+      </div>
+    </div>
+  </div>
+
+  <h2>4. La Variabile Ausiliaria</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/matematica/videos/equazioni_logaritmiche/VariabileAusiliaria.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> Se lo stesso logaritmo compare <em>al quadrato</em> e al primo grado,
+      una sostituzione trasforma l'equazione in una più semplice di secondo grado.
+
+      <div class="steps">
+        <strong>Risolvere (log x)² − log x − 2 = 0 (base 10):</strong>
+        <ol>
+          <li><strong>C.E.:</strong> x &gt; 0</li>
+          <li><strong>Sostituisco</strong> t = log x: &nbsp; t² − t − 2 = 0</li>
+          <li><strong>Risolvo in t:</strong> t = 2 ∨ t = −1</li>
+          <li><strong>Torno all'incognita:</strong> log x = 2 ∨ log x = −1</li>
+          <li><strong>Definizione (base 10):</strong> x = 100 ∨ x = 1/10</li>
+          <li><strong>Verifica C.E.:</strong> entrambe positive → entrambe accettabili</li>
+        </ol>
+      </div>
+
+      <div class="key-concept">
+        <strong>Nota:</strong> a differenza delle equazioni esponenziali, qui la variabile ausiliaria
+        <em>t = log x</em> può essere anche negativa (il logaritmo può valere meno di zero): nessuna
+        soluzione in t va scartata a priori.
+      </div>
+    </div>
+  </div>
+
+  <h2>Riepilogo</h2>
+  <div class="intro-section">
+    <p>Per risolvere un'equazione logaritmica conviene seguire sempre lo stesso schema:</p>
+    <ol>
+      <li><strong>Condizioni di esistenza:</strong> imporre che ogni argomento sia positivo</li>
+      <li><strong>Ridurre i logaritmi</strong> con le proprietà fino a un'unica struttura risolvibile</li>
+      <li><strong>Eliminare il logaritmo</strong> con la definizione o il confronto tra argomenti</li>
+      <li><strong>Risolvere</strong> l'equazione algebrica ottenuta (1° o 2° grado, o per sostituzione)</li>
+      <li><strong>Verificare</strong> le soluzioni con le C.E. e scartare quelle non accettabili</li>
+    </ol>
+    <p>
+      Lo stesso ragionamento, con il verso delle disuguaglianze e la monotonia del logaritmo, sarà la
+      chiave per le <strong>disequazioni logaritmiche</strong>, la prossima tappa.
+    </p>
+  </div>
+</LessonLayout>
