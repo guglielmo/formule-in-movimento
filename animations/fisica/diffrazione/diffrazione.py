@@ -262,51 +262,104 @@ class DoppiaFenditura(Scene):
         self.play(Write(intestazione))
         self.wait(0.3)
 
-        # Due sorgenti (le due fenditure)
-        S1 = np.array([-2.6, 2.7, 0])
-        S2 = np.array([-2.6, 0.7, 0])
-        sorg1 = Dot(S1, color=BLUE_D, radius=0.08)
-        sorg2 = Dot(S2, color=GREEN_D, radius=0.08)
+        # ---------- FASE 1: le frange (vista d'insieme) ----------
+        S1p = np.array([-2.7, 2.4, 0])
+        S2p = np.array([-2.7, 0.8, 0])
+        sorg1 = Dot(S1p, color=BLUE_D, radius=0.08)
+        sorg2 = Dot(S2p, color=GREEN_D, radius=0.08)
+        onde1 = VGroup(*[Arc(radius=r, arc_center=S1p, start_angle=-PI / 2, angle=PI,
+                             color=BLUE_D, stroke_width=2.5, stroke_opacity=0.6)
+                         for r in (0.9, 1.8, 2.7, 3.6)])
+        onde2 = VGroup(*[Arc(radius=r, arc_center=S2p, start_angle=-PI / 2, angle=PI,
+                             color=GREEN_D, stroke_width=2.5, stroke_opacity=0.6)
+                         for r in (0.9, 1.8, 2.7, 3.6)])
+        schermo = Line([3.1, -1.0, 0], [3.1, 4.2, 0], color=DARK_GRAY, stroke_width=4)
+        ymid = (S1p[1] + S2p[1]) / 2
+        massimi = VGroup(*[Dot([3.1, ymid + kk * 0.8, 0], color=RED_D, radius=0.09)
+                           for kk in (-2, -1, 0, 1, 2)])
+        lab_frange = fit(Text("frange: massimi e minimi", font_size=22, color=DARK_GRAY))
+        lab_frange.move_to([0, -2.2, 0])
 
-        onde1 = VGroup(*[Arc(radius=r, arc_center=S1, start_angle=-PI / 2, angle=PI,
-                             color=BLUE_D, stroke_width=2.5, stroke_opacity=0.7)
-                         for r in (0.8, 1.6, 2.4, 3.2, 4.0)])
-        onde2 = VGroup(*[Arc(radius=r, arc_center=S2, start_angle=-PI / 2, angle=PI,
-                             color=GREEN_D, stroke_width=2.5, stroke_opacity=0.7)
-                         for r in (0.8, 1.6, 2.4, 3.2, 4.0)])
-
-        # Schermo a destra
-        schermo = Line([3.1, -1.8, 0], [3.1, 4.0, 0], color=DARK_GRAY, stroke_width=4)
-        lab_schermo = fit(Text("schermo", font_size=20, color=DARK_GRAY)).next_to(schermo, DOWN, buff=0.1)
-
-        # Frange sullo schermo: massimi (rossi) alternati a minimi
-        ymid = (S1[1] + S2[1]) / 2
-        massimi = VGroup(*[Dot([3.1, ymid + k * 0.85, 0], color=RED_D, radius=0.1)
-                           for k in (-2, -1, 0, 1, 2)])
-        minimi = VGroup(*[Line([2.95, ymid + (k + 0.5) * 0.85, 0],
-                               [3.25, ymid + (k + 0.5) * 0.85, 0],
-                               color=DARK_GRAY, stroke_width=2)
-                          for k in (-2, -1, 0, 1)])
-
+        fase1 = VGroup(sorg1, sorg2, onde1, onde2, schermo, massimi, lab_frange)
         self.play(FadeIn(sorg1), FadeIn(sorg2))
-        self.play(LaggedStart(*[Create(a) for a in onde1], lag_ratio=0.12),
-                  LaggedStart(*[Create(a) for a in onde2], lag_ratio=0.12),
-                  run_time=2.5)
-        self.play(Create(schermo), FadeIn(lab_schermo))
-        self.play(LaggedStart(*[GrowFromCenter(m) for m in massimi], lag_ratio=0.15),
-                  *[Create(m) for m in minimi])
+        self.play(LaggedStart(*[Create(a) for a in onde1], lag_ratio=0.1),
+                  LaggedStart(*[Create(a) for a in onde2], lag_ratio=0.1), run_time=2)
+        self.play(Create(schermo), LaggedStart(*[GrowFromCenter(m) for m in massimi], lag_ratio=0.12))
+        self.play(FadeIn(lab_frange))
+        self.wait(1)
+        self.play(FadeOut(fase1))
 
-        # Condizione dei massimi
-        formula = fit(MathTex(r"d\,\sin\theta = m\,\lambda", color=BLACK, font_size=40))
-        formula.move_to([0, -2.6, 0])
-        box = SurroundingRectangle(formula, color=DARK_BLUE, buff=0.2, corner_radius=0.12)
-        nota = VGroup(
-            Text("In fase → massimo (chiaro)", font_size=22, color=RED_D),
-            Text("In opposizione → minimo (scuro)", font_size=22, color=DARK_GRAY),
+        # ---------- FASE 2: da dove viene d·sinθ = m·λ ----------
+        sotto = fit(Text("Da dove viene la formula?", font_size=24, color=DARK_BLUE))
+        sotto.next_to(intestazione, DOWN, buff=0.4)
+        self.play(FadeIn(sotto))
+
+        def nrm(v):
+            return v / np.linalg.norm(v)
+
+        th = 35 * DEGREES
+        u = np.array([np.cos(th), np.sin(th), 0])   # direzione (parallela) dei due raggi
+        S1 = np.array([-1.7, 1.5, 0])               # fenditura in alto
+        d_vis = 1.4
+        S2 = S1 + np.array([0, -d_vis, 0])          # fenditura in basso
+        R = 3.6
+        delta = d_vis * np.sin(th)
+        F = S2 + delta * u                          # piede della perpendicolare da S1 sul raggio di S2
+
+        s1 = Dot(S1, color=BLUE_D, radius=0.08)
+        s2 = Dot(S2, color=GREEN_D, radius=0.08)
+        # distanza tra le fenditure d
+        d_arrow = DoubleArrow(S1 + LEFT * 0.35, S2 + LEFT * 0.35, buff=0,
+                              color=DARK_GRAY, stroke_width=3, tip_length=0.16)
+        lab_d = MathTex(r"d", color=BLACK, font_size=34).next_to(d_arrow, LEFT, buff=0.12)
+        # i due raggi paralleli verso lo schermo lontano
+        ray1 = Arrow(S1, S1 + R * u, buff=0, color=BLUE_D, stroke_width=4)
+        ray2 = Arrow(S2, S2 + R * u, buff=0, color=GREEN_D, stroke_width=4)
+        lab_par = fit(Text("raggi paralleli (schermo lontano)", font_size=20, color=DARK_GRAY))
+        lab_par.move_to([0, 4.4, 0])
+
+        self.play(FadeIn(s1), FadeIn(s2), GrowArrow(d_arrow), Write(lab_d))
+        self.play(GrowArrow(ray1), GrowArrow(ray2), FadeIn(lab_par))
+
+        # fronte d'onda: perpendicolare ai raggi, da S1 fino al raggio di S2
+        fronte = DashedLine(S1, F, color=DARK_GRAY, stroke_width=2)
+        # marcatore di angolo retto in F
+        a = 0.2
+        dF1 = nrm(S1 - F)
+        dF2 = nrm(S2 - F)
+        angolo_retto = VGroup(
+            Line(F + a * dF1, F + a * dF1 + a * dF2, color=DARK_GRAY, stroke_width=2),
+            Line(F + a * dF2, F + a * dF1 + a * dF2, color=DARK_GRAY, stroke_width=2),
+        )
+        # differenza di cammino δ = tratto S2->F, evidenziato
+        delta_seg = Line(S2, F, color=RED_D, stroke_width=7)
+        lab_delta = MathTex(r"\delta = d\,\sin\theta", color=RED_D, font_size=34)
+        lab_delta.next_to(F, RIGHT, buff=0.25).shift(UP * 0.1)
+        # angolo θ presso S1 (tra la congiungente delle fenditure e il fronte)
+        ang = Angle(Line(S1, S2), Line(S1, F), radius=0.55, color=DARK_BLUE, stroke_width=3)
+        lab_th = MathTex(r"\theta", color=DARK_BLUE, font_size=30)
+        bis = nrm(nrm(S2 - S1) + nrm(F - S1))
+        lab_th.move_to(S1 + 0.85 * bis)
+
+        self.play(Create(fronte), Create(angolo_retto))
+        self.play(Create(delta_seg), Write(lab_delta))
+        self.play(Create(ang), Write(lab_th))
+        self.wait(0.5)
+
+        # conclusione: massimo quando δ = m·λ
+        cond = VGroup(
+            Text("Massimo (frangia chiara) quando", font_size=23, color=BLACK),
+            Text("la differenza di cammino è un multiplo di λ:", font_size=23, color=DARK_GRAY),
         ).arrange(DOWN, buff=0.15)
-        fit(nota)
-        nota.move_to([0, -4.0, 0])
+        fit(cond)
+        cond.move_to([0, -3.4, 0])
+        formula = fit(MathTex(r"d\,\sin\theta = m\,\lambda", color=BLACK, font_size=48))
+        formula.next_to(cond, DOWN, buff=0.4)
+        box = SurroundingRectangle(formula, color=DARK_BLUE, buff=0.22, corner_radius=0.14)
+        m_nota = fit(MathTex(r"m = 0,\ \pm 1,\ \pm 2,\ \dots", color=DARK_GRAY, font_size=30))
+        m_nota.next_to(box, DOWN, buff=0.3)
 
+        self.play(FadeIn(cond))
         self.play(Write(formula), Create(box))
-        self.play(FadeIn(nota))
+        self.play(FadeIn(m_nota))
         self.wait(2)
