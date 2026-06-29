@@ -7,6 +7,11 @@ export interface Props {
   showLogo?: boolean;
   useIconLogo?: boolean;
   logoSize?: 'large' | 'small';
+  /** 'hero' = grande intestazione centrata (home); 'bar' = barra compatta sticky (sezioni e lezioni) */
+  variant?: 'hero' | 'bar';
+  /** Solo per variant 'bar': mostra il menu a scomparsa con l'indice della pagina */
+  showToc?: boolean;
+  homeHref?: string;
 }
 
 const {
@@ -16,37 +21,346 @@ const {
   showBadges = false,
   showLogo = true,
   useIconLogo = false,
-  logoSize = 'large'
+  logoSize = 'large',
+  variant = 'hero',
+  showToc = false,
+  homeHref = '/'
 } = Astro.props;
 ---
 
-<header class="header">
-  {showLogo && (
-    <div class="logo-container">
-      <a href="/">
-        <img
-          src={useIconLogo ? "/logo-icon.svg" : "/logo-header.svg"}
-          alt="Formule in Movimento"
-          class="header-logo"
-          data-size={logoSize}
-        />
-      </a>
-    </div>
-  )}
+{variant === 'bar' ? (
+  <header class="site-bar">
+    <a class="site-bar__logo" href={homeHref} aria-label="Vai alla home">
+      <img src="/logo-icon.svg" alt="Formule in Movimento" />
+    </a>
 
-  {title && <h1>{title}</h1>}
-  {tagline && <p class="tagline">{tagline}</p>}
-  {subtitle && <p class="subtitle">{subtitle}</p>}
-  {showBadges && (
-    <div>
-      <span class="mobile-badge">📱 Mobile-First</span>
-      <span class="mobile-badge">🔗 Facile Condivisione</span>
-      <span class="mobile-badge">🎯 Per Studenti</span>
+    <div class="site-bar__titles">
+      {title && <span class="site-bar__title">{title}</span>}
+      {subtitle && <span class="site-bar__subtitle">{subtitle}</span>}
     </div>
-  )}
-</header>
+
+    {showToc && (
+      <button
+        class="site-bar__toc-toggle"
+        type="button"
+        aria-label="Apri l'indice della lezione"
+        aria-expanded="false"
+        aria-controls="lesson-toc"
+      >
+        <span class="site-bar__burger"></span>
+      </button>
+    )}
+
+    {showToc && (
+      <nav id="lesson-toc" class="lesson-toc" aria-label="Indice della lezione" hidden>
+        <p class="lesson-toc__heading">In questa lezione</p>
+        <ul class="lesson-toc__list"></ul>
+      </nav>
+    )}
+  </header>
+) : (
+  <header class="header">
+    {showLogo && (
+      <div class="logo-container">
+        <a href={homeHref}>
+          <img
+            src={useIconLogo ? "/logo-icon.svg" : "/logo-header.svg"}
+            alt="Formule in Movimento"
+            class="header-logo"
+            data-size={logoSize}
+          />
+        </a>
+      </div>
+    )}
+
+    {title && <h1>{title}</h1>}
+    {tagline && <p class="tagline">{tagline}</p>}
+    {subtitle && <p class="subtitle">{subtitle}</p>}
+    {showBadges && (
+      <div>
+        <span class="mobile-badge">📱 Mobile-First</span>
+        <span class="mobile-badge">🔗 Facile Condivisione</span>
+        <span class="mobile-badge">🎯 Per Studenti</span>
+      </div>
+    )}
+  </header>
+)}
+
+<script>
+  // Menu a scomparsa con l'indice della lezione (variant 'bar' + showToc).
+  // L'indice è generato dai titoli di sezione (<h2>) presenti nella pagina.
+  function initLessonToc() {
+    const toggle = document.querySelector('.site-bar__toc-toggle');
+    const panel = document.getElementById('lesson-toc');
+    if (!toggle || !panel) return;
+
+    const list = panel.querySelector('.lesson-toc__list');
+    const headings = Array.from(document.querySelectorAll('.container h2'));
+
+    // Niente sezioni da indicizzare: nascondo il pulsante.
+    if (!list || headings.length === 0) {
+      (toggle as HTMLElement).style.display = 'none';
+      return;
+    }
+
+    const slugify = (text: string) =>
+      text
+        .toLowerCase()
+        .replace(/[^\p{L}\p{N}]+/gu, '-')
+        .replace(/^-+|-+$/g, '');
+
+    const used = new Set<string>();
+    headings.forEach((h, i) => {
+      const base = h.id || slugify(h.textContent || '') || `sezione-${i + 1}`;
+      let unique = base;
+      let n = 2;
+      while (used.has(unique)) unique = `${base}-${n++}`;
+      used.add(unique);
+      h.id = unique;
+
+      const li = document.createElement('li');
+      const a = document.createElement('a');
+      a.href = `#${unique}`;
+      a.textContent = (h.textContent || '').trim();
+      li.appendChild(a);
+      list.appendChild(li);
+    });
+
+    const open = () => {
+      panel.hidden = false;
+      toggle.setAttribute('aria-expanded', 'true');
+    };
+    const close = () => {
+      panel.hidden = true;
+      toggle.setAttribute('aria-expanded', 'false');
+    };
+
+    toggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      panel.hidden ? open() : close();
+    });
+
+    list.addEventListener('click', (e) => {
+      if ((e.target as HTMLElement).closest('a')) close();
+    });
+
+    document.addEventListener('click', (e) => {
+      const target = e.target as Node;
+      if (!panel.hidden && !panel.contains(target) && !toggle.contains(target)) close();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !panel.hidden) {
+        close();
+        (toggle as HTMLElement).focus();
+      }
+    });
+  }
+
+  if (document.readyState !== 'loading') initLessonToc();
+  else document.addEventListener('DOMContentLoaded', initLessonToc);
+</script>
 
 <style>
+  /* ============================================================
+     Variante 'bar': barra compatta sticky (sezioni e lezioni)
+     ============================================================ */
+  .site-bar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 8px 16px;
+    background-color: rgba(255, 255, 255, 0.98);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    backdrop-filter: saturate(180%) blur(6px);
+  }
+
+  .site-bar__logo {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .site-bar__logo img {
+    height: 40px;
+    width: auto;
+    display: block;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+  }
+
+  .site-bar__logo:hover img {
+    transform: scale(1.05);
+    opacity: 0.9;
+  }
+
+  .site-bar__titles {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    line-height: 1.2;
+  }
+
+  .site-bar__title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .site-bar__subtitle {
+    font-size: 0.82rem;
+    color: #7f8c8d;
+    font-style: italic;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* Pulsante hamburger -> X (target touch 44px, mobile-first) */
+  .site-bar__toc-toggle {
+    flex: 0 0 auto;
+    width: 44px;
+    height: 44px;
+    margin-right: -6px; /* compensa il padding della barra per allineare il target al bordo */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .site-bar__toc-toggle:hover {
+    background: rgba(0, 0, 0, 0.05);
+  }
+
+  .site-bar__burger {
+    position: relative;
+  }
+
+  .site-bar__burger,
+  .site-bar__burger::before,
+  .site-bar__burger::after {
+    display: block;
+    width: 22px;
+    height: 2.5px;
+    border-radius: 2px;
+    background: var(--primary-color);
+    transition: transform 0.3s ease, opacity 0.3s ease, top 0.3s ease;
+  }
+
+  .site-bar__burger::before,
+  .site-bar__burger::after {
+    content: "";
+    position: absolute;
+    left: 0;
+  }
+
+  .site-bar__burger::before { top: -7px; }
+  .site-bar__burger::after { top: 7px; }
+
+  .site-bar__toc-toggle[aria-expanded="true"] .site-bar__burger {
+    background: transparent;
+  }
+  .site-bar__toc-toggle[aria-expanded="true"] .site-bar__burger::before {
+    top: 0;
+    transform: rotate(45deg);
+  }
+  .site-bar__toc-toggle[aria-expanded="true"] .site-bar__burger::after {
+    top: 0;
+    transform: rotate(-45deg);
+  }
+
+  /* Pannello indice a scomparsa.
+     Mobile-first: a tutta larghezza sotto la barra, voci ampie e comode da toccare. */
+  .lesson-toc {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    max-height: 70vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    background: #fff;
+    border-radius: 0 0 14px 14px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
+    padding: 6px 6px 10px;
+  }
+
+  /* Schermi larghi: diventa una tendina ancorata a destra, sotto l'hamburger. */
+  @media (min-width: 600px) {
+    .lesson-toc {
+      left: auto;
+      right: 8px;
+      width: 340px;
+      max-height: min(70vh, 520px);
+      border-radius: 0 0 12px 12px;
+    }
+  }
+
+  .lesson-toc[hidden] {
+    display: none;
+  }
+
+  .lesson-toc__heading {
+    margin: 0;
+    padding: 6px 14px 8px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #95a5a6;
+  }
+
+  .lesson-toc :global(ul) {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .lesson-toc :global(li) {
+    margin: 0;
+    padding: 0;
+  }
+
+  .lesson-toc :global(a) {
+    display: block;
+    padding: 12px 16px;
+    min-height: 44px; /* target touch comodo su mobile */
+    color: #2c3e50;
+    text-decoration: none;
+    font-size: 0.98rem;
+    line-height: 1.35;
+    border-radius: 8px;
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+
+  .lesson-toc :global(a:hover) {
+    background: var(--primary-bg-light);
+    color: var(--primary-color);
+  }
+
+  @media (max-width: 480px) {
+    .site-bar__subtitle {
+      display: none;
+    }
+    .site-bar__title {
+      font-size: 1.05rem;
+    }
+  }
+
+  /* ============================================================
+     Variante 'hero': intestazione grande centrata (home)
+     ============================================================ */
   .logo-container {
     text-align: center;
     margin-bottom: 20px;
