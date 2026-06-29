@@ -1,0 +1,190 @@
+# Genera animazioni (Manim) e rilascia su Vercel
+#
+# Architettura:
+#   1) discover  -> scopre le animazioni (come fa il Makefile, auto-discovery)
+#   2) build     -> una matrice per animazione. Cache con chiave = hash del
+#                   sorgente dell'animazione: se la cache c'è, NON si rigenera
+#                   (questo realizza "genera solo quando non già generate").
+#                   Solo in caso di cache MISS si installano Manim/LaTeX e si
+#                   esegue `make <topic>`.
+#   3) deploy    -> raccoglie tutti i media, fa `make frontend-build` e pubblica
+#                   il sito statico (con i video) su Vercel via Vercel CLI.
+#
+# Secret richiesti (Settings -> Secrets and variables -> Actions):
+#   VERCEL_TOKEN       -> token personale Vercel (Account Settings -> Tokens)
+#   VERCEL_ORG_ID      -> id team/organizzazione (file .vercel/project.json)
+#   VERCEL_PROJECT_ID  -> id del progetto Vercel  (file .vercel/project.json)
+#
+# Tutto passa da `make`: la generazione usa `make <topic>` e il frontend
+# `make frontend-install` / `make frontend-build`.
+
+name: Genera animazioni e deploy Vercel
+
+on:
+  workflow_dispatch:
+    inputs:
+      quality:
+        description: "Qualità di rendering Manim"
+        type: choice
+        default: qm
+        options:
+          - ql
+          - qm
+          - qh
+          - qk
+
+concurrency:
+  group: animazioni-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  # --------------------------------------------------------------------------
+  # 1) Scopre le animazioni disponibili (matematica/* e fisica/*)
+  # --------------------------------------------------------------------------
+  discover:
+    name: Scopri animazioni
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - id: set
+        name: Costruisci la matrice delle animazioni
+        run: |
+          matrix=$(python3 - <<'PY'
+          import json, os
+          items = []
+          for disc in ("matematica", "fisica"):
+              base = os.path.join("animations", disc)
+              if not os.path.isdir(base):
+                  continue
+              for name in sorted(os.listdir(base)):
+                  d = os.path.join(base, name)
+                  # un'animazione valida è una cartella con il file <topic>.py
+                  if os.path.isdir(d) and os.path.isfile(os.path.join(d, f"{name}.py")):
+                      items.append({"discipline": disc, "topic": name})
+          print(json.dumps({"include": items}))
+          PY
+          )
+          echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
+          echo "Animazioni trovate: $matrix"
+
+  # --------------------------------------------------------------------------
+  # 2) Genera ogni animazione (solo se non già in cache per quel contenuto)
+  # --------------------------------------------------------------------------
+  build:
+    name: Genera ${{ matrix.discipline }}/${{ matrix.topic }}
+    needs: discover
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.discover.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@v4
+
+      # Cache dei media renderizzati. La chiave dipende dalla qualità e
+      # dall'hash dei sorgenti dell'animazione: se nulla è cambiato, la cache
+      # viene ripristinata e i passi di build vengono saltati.
+      - name: Cache animazione renderizzata
+        id: cache
+        uses: actions/cache@v4
+        with:
+          path: media
+          key: media-${{ inputs.quality }}-${{ matrix.discipline }}-${{ matrix.topic }}-${{ hashFiles(format('animations/{0}/{1}/**', matrix.discipline, matrix.topic)) }}
+
+      - name: Setup Python
+        if: steps.cache.outputs.cache-hit != 'true'
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Cache pip
+        if: steps.cache.outputs.cache-hit != 'true'
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: pip-manim-${{ runner.os }}
+
+      - name: Installa dipendenze di sistema (ffmpeg + LaTeX + cairo/pango)
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            ffmpeg build-essential pkg-config python3-dev \
+            libcairo2-dev libpango1.0-dev \
+            texlive texlive-latex-recommended texlive-latex-extra \
+            texlive-fonts-recommended texlive-fonts-extra texlive-science \
+            dvisvgm
+
+      - name: Crea virtualenv Manim condiviso e installa Manim
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: |
+          # Stesso path che si aspetta il Makefile: ~/.virtualenvs/manim
+          python3 -m venv "$HOME/.virtualenvs/manim"
+          "$HOME/.virtualenvs/manim/bin/pip" install --upgrade pip
+          "$HOME/.virtualenvs/manim/bin/pip" install manim
+
+      - name: Genera l'animazione con make
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: make ${{ matrix.topic }} QUALITY=${{ inputs.quality }}
+
+      - name: Carica i media generati come artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: media-${{ matrix.discipline }}-${{ matrix.topic }}
+          path: media
+          if-no-files-found: error
+          retention-days: 1
+
+  # --------------------------------------------------------------------------
+  # 3) Build del frontend con i video e deploy su Vercel
+  # --------------------------------------------------------------------------
+  deploy:
+    name: Build frontend e deploy su Vercel
+    needs: [discover, build]
+    runs-on: ubuntu-latest
+    env:
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      # Raccoglie i media di tutte le animazioni in ./media (ricostruisce la
+      # struttura media/<disciplina>/...). Il symlink frontend/public/media
+      # punta a ../../media, quindi i video diventano visibili al frontend.
+      - name: Scarica tutti i media generati
+        uses: actions/download-artifact@v4
+        with:
+          pattern: media-*
+          path: media
+          merge-multiple: true
+
+      - name: Installa dipendenze frontend
+        run: make frontend-install
+
+      - name: Build frontend
+        run: make frontend-build
+
+      # Garantisce che i video (file reali, non symlink) siano nella dist da
+      # pubblicare, indipendentemente da come Astro tratta il symlink.
+      - name: Includi i media nella dist
+        run: |
+          rm -rf frontend/dist/media
+          cp -RL media frontend/dist/media
+          cp frontend/vercel.json frontend/dist/vercel.json
+
+      - name: Deploy su Vercel
+        run: |
+          npm install -g vercel@latest
+          vercel deploy frontend/dist \
+            --prod --yes --archive=tgz \
+            --token="${{ secrets.VERCEL_TOKEN }}"
