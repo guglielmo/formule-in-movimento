@@ -577,3 +577,104 @@ class SpettroFrequenze(Scene):
         nota.next_to(asse_x, DOWN, buff=0.7)
         self.play(FadeIn(nota))
         self.wait(1.5)
+
+
+# ============================================================================
+# 9. INTERFERENZA: descrizione geometrica (cammini ottici e differenza di percorso)
+# ============================================================================
+
+class InterferenzaGeometrica(Scene):
+    """I cammini ottici da due sorgenti a un punto: la differenza di percorso
+    decide se l'interferenza è costruttiva (massimo) o distruttiva (minimo)."""
+
+    def construct(self):
+        self.camera.background_color = WHITE
+        intestazione = titolo("La geometria dell'interferenza", "I cammini ottici")
+        self.play(Write(intestazione))
+        self.wait(0.3)
+
+        def nrm(v):
+            return v / np.linalg.norm(v)
+
+        # Due sorgenti coerenti a sinistra e un punto di osservazione P a destra
+        S1 = np.array([-2.8, 2.8, 0])
+        S2 = np.array([-2.8, 0.4, 0])
+        P = np.array([3.0, 3.6, 0])
+        r1 = np.linalg.norm(P - S1)
+        r2 = np.linalg.norm(P - S2)
+        delta = r2 - r1  # P è più vicino a S1: r2 è il cammino più lungo
+
+        s1 = Dot(S1, color=BLUE_D, radius=0.09)
+        s2 = Dot(S2, color=GREEN_D, radius=0.09)
+        p = Dot(P, color=RED_D, radius=0.09)
+        lab_s1 = MathTex(r"S_1", color=BLUE_D, font_size=34).next_to(s1, LEFT, buff=0.15)
+        lab_s2 = MathTex(r"S_2", color=GREEN_D, font_size=34).next_to(s2, LEFT, buff=0.15)
+        lab_p = MathTex(r"P", color=RED_D, font_size=34).next_to(p, RIGHT, buff=0.15)
+
+        # I due cammini ottici verso P
+        ray1 = Line(S1, P, color=BLUE_D, stroke_width=4)
+        ray2 = Line(S2, P, color=GREEN_D, stroke_width=4)
+        lab_r1 = MathTex(r"r_1", color=BLUE_D, font_size=32).move_to(
+            (S1 + P) / 2 + np.array([0, 0.32, 0]))
+        lab_r2 = MathTex(r"r_2", color=GREEN_D, font_size=32).move_to(
+            (S2 + P) / 2 + np.array([0, -0.32, 0]))
+
+        # Distanza d tra le sorgenti
+        d_arrow = DoubleArrow(S1 + LEFT * 0.55, S2 + LEFT * 0.55, buff=0,
+                              color=DARK_GRAY, stroke_width=3, tip_length=0.16)
+        lab_d = MathTex(r"d", color=BLACK, font_size=34).next_to(d_arrow, LEFT, buff=0.12)
+
+        self.play(FadeIn(s1), FadeIn(s2), FadeIn(p),
+                  Write(lab_s1), Write(lab_s2), Write(lab_p))
+        self.play(GrowArrow(d_arrow), Write(lab_d))
+        self.play(Create(ray1), Create(ray2), Write(lab_r1), Write(lab_r2))
+        self.wait(0.4)
+
+        # Punto Q su r2 alla stessa distanza r1 da P: il tratto S2->Q è la
+        # differenza di cammino δ = r2 - r1.
+        Q = S2 + (delta / r2) * (P - S2)
+        # Arco centrato in P, raggio r1: passa per S1 e per Q (punti equidistanti da P)
+        ang_s1 = np.arctan2((S1 - P)[1], (S1 - P)[0])
+        ang_q = np.arctan2((Q - P)[1], (Q - P)[0])
+        arco = Arc(radius=r1, arc_center=P, start_angle=ang_s1, angle=ang_q - ang_s1,
+                   color=DARK_GRAY, stroke_width=2)
+        arco = DashedVMobject(arco, num_dashes=22)
+        lab_arco = fit(Text("stessa distanza da P", font_size=20, color=DARK_GRAY))
+        lab_arco.next_to(arco, RIGHT, buff=0.1).shift(DOWN * 0.1)
+
+        delta_seg = Line(S2, Q, color=RED_D, stroke_width=7)
+        lab_delta = MathTex(r"\delta", color=RED_D, font_size=36).next_to(
+            delta_seg, UP, buff=0.12).shift(LEFT * 0.1)
+
+        self.play(Create(arco), FadeIn(lab_arco))
+        self.play(Create(delta_seg), Write(lab_delta))
+        def_delta = fit(MathTex(r"\delta = r_2 - r_1 = \text{differenza di cammino}",
+                                color=BLACK, font_size=34))
+        def_delta.move_to([0, -1.3, 0])
+        self.play(Write(def_delta))
+        self.wait(0.5)
+
+        # Le due condizioni: massimo (costruttiva) e minimo (distruttiva)
+        cond_max = fit(MathTex(r"\delta = m\,\lambda \;\;\Rightarrow\;\; \text{MASSIMO}",
+                               color=GREEN_D, font_size=38))
+        cond_max.move_to([0, -2.6, 0])
+        sub_max = fit(Text("le onde arrivano in fase: costruttiva", font_size=22, color=DARK_GRAY))
+        sub_max.next_to(cond_max, DOWN, buff=0.2)
+
+        cond_min = fit(MathTex(r"\delta = \left(m + \tfrac{1}{2}\right)\lambda \;\;\Rightarrow\;\; \text{MINIMO}",
+                               color=RED_D, font_size=38))
+        cond_min.move_to([0, -4.4, 0])
+        sub_min = fit(Text("in opposizione di fase: distruttiva", font_size=22, color=DARK_GRAY))
+        sub_min.next_to(cond_min, DOWN, buff=0.2)
+
+        self.play(Write(cond_max), FadeIn(sub_max))
+        self.play(Write(cond_min), FadeIn(sub_min))
+        self.wait(0.5)
+
+        m_nota = fit(MathTex(r"m = 0,\ \pm 1,\ \pm 2,\ \dots", color=DARK_GRAY, font_size=30))
+        m_nota.move_to([0, -5.7, 0])
+        legame = fit(Text("Con lo schermo lontano: δ = d · sin θ", font_size=22, color=DARK_BLUE))
+        legame.move_to([0, -6.4, 0])
+        self.play(FadeIn(m_nota))
+        self.play(FadeIn(legame))
+        self.wait(1.5)
