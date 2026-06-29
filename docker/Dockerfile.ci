@@ -1,0 +1,32 @@
+# Immagine CI con Manim + LaTeX preinstallati.
+#
+# Serve a velocizzare il rendering nelle GitHub Actions: invece di installare
+# apt (texlive, ffmpeg, cairo/pango) e pip (manim) a ogni run, il workflow
+# esegue `make <topic>` dentro questa immagine già pronta.
+#
+# Pubblicata su GHCR come ghcr.io/guglielmo/formule-in-movimento-ci:latest
+# dal workflow .github/workflows/build-ci-image.yml (ricostruita solo quando
+# cambiano questo Dockerfile o requirements.txt).
+FROM python:3.12-slim
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Dipendenze di sistema: make + toolchain per cairo/pango, ffmpeg e lo stesso
+# set LaTeX usato in precedenza nel workflow (per fedeltà di rendering).
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        make build-essential pkg-config python3-dev \
+        ffmpeg \
+        libcairo2-dev libpango1.0-dev \
+        texlive texlive-latex-recommended texlive-latex-extra \
+        texlive-fonts-recommended texlive-fonts-extra texlive-science \
+        dvisvgm \
+    && rm -rf /var/lib/apt/lists/*
+
+# Manim in un venv dedicato. Il path /opt/manim-venv/bin/manim viene passato al
+# Makefile con MANIM=... (override della variabile, vedi workflow).
+COPY requirements.txt /tmp/requirements.txt
+RUN python3 -m venv /opt/manim-venv \
+    && /opt/manim-venv/bin/pip install --upgrade pip \
+    && /opt/manim-venv/bin/pip install -r /tmp/requirements.txt
+
+ENV PATH="/opt/manim-venv/bin:${PATH}"

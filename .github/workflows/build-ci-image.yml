@@ -1,0 +1,54 @@
+# Costruisce e pubblica su GHCR l'immagine CI con Manim + LaTeX preinstallati.
+#
+# L'immagine (ghcr.io/<owner>/<repo>-ci:latest) è usata dal workflow
+# "Genera animazioni e deploy Vercel" per renderizzare le animazioni senza
+# reinstallare ogni volta apt/pip.
+#
+# Si ricostruisce solo quando cambiano il Dockerfile o i requirements (o a mano).
+
+name: Build immagine CI (Manim + LaTeX)
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - docker/Dockerfile.ci
+      - requirements.txt
+      - .github/workflows/build-ci-image.yml
+
+concurrency:
+  group: build-ci-image
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  build:
+    name: Build & push immagine CI
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Login a GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # Nome immagine in minuscolo (GHCR lo richiede).
+      - id: meta
+        name: Calcola il nome immagine
+        run: echo "image=ghcr.io/$(echo '${{ github.repository }}' | tr '[:upper:]' '[:lower:]')-ci" >> "$GITHUB_OUTPUT"
+
+      - name: Build & push
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: docker/Dockerfile.ci
+          push: true
+          tags: ${{ steps.meta.outputs.image }}:latest
