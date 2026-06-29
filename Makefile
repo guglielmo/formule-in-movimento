@@ -323,6 +323,13 @@ new-animation:
 	@echo "$(GREEN)Creazione nuova animazione: $(DISCIPLINE)/$(TOPIC)$(NC)"
 	@mkdir -p animations/$(DISCIPLINE)/$(TOPIC)
 	@echo "from manim import *" > animations/$(DISCIPLINE)/$(TOPIC)/$(TOPIC).py
+	@echo "import sys, os" >> animations/$(DISCIPLINE)/$(TOPIC)/$(TOPIC).py
+	@echo "" >> animations/$(DISCIPLINE)/$(TOPIC)/$(TOPIC).py
+	@echo "# Rende importabile il package condiviso 'animations' (template, moduli, ...)" >> animations/$(DISCIPLINE)/$(TOPIC)/$(TOPIC).py
+	@echo "# calcolando la root del progetto: niente path hardcoded, funziona in locale e in CI." >> animations/$(DISCIPLINE)/$(TOPIC)/$(TOPIC).py
+	@echo "sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..')))" >> animations/$(DISCIPLINE)/$(TOPIC)/$(TOPIC).py
+	@echo "# Esempio (decommenta se ti serve il layout verticale condiviso):" >> animations/$(DISCIPLINE)/$(TOPIC)/$(TOPIC).py
+	@echo "# from animations.vertical_template import VerticalTemplate" >> animations/$(DISCIPLINE)/$(TOPIC)/$(TOPIC).py
 	@echo "" >> animations/$(DISCIPLINE)/$(TOPIC)/$(TOPIC).py
 	@echo "class IntroScene(Scene):" >> animations/$(DISCIPLINE)/$(TOPIC)/$(TOPIC).py
 	@echo "    \"\"\"" >> animations/$(DISCIPLINE)/$(TOPIC)/$(TOPIC).py
@@ -339,6 +346,9 @@ new-animation:
 	@echo "        self.play(Write(title))" >> animations/$(DISCIPLINE)/$(TOPIC)/$(TOPIC).py
 	@echo "        self.wait(2)" >> animations/$(DISCIPLINE)/$(TOPIC)/$(TOPIC).py
 	@echo "[CLI]" > animations/$(DISCIPLINE)/$(TOPIC)/manim.cfg
+	@echo "# Formato verticale 9:16 per social/mobile (vedi CLAUDE.md)" >> animations/$(DISCIPLINE)/$(TOPIC)/manim.cfg
+	@echo "frame_width = 8.0" >> animations/$(DISCIPLINE)/$(TOPIC)/manim.cfg
+	@echo "frame_height = 14.22" >> animations/$(DISCIPLINE)/$(TOPIC)/manim.cfg
 	@echo "media_dir = ../../../media/$(DISCIPLINE)" >> animations/$(DISCIPLINE)/$(TOPIC)/manim.cfg
 	@echo "$(GREEN)Directory creata: animations/$(DISCIPLINE)/$(TOPIC)$(NC)"
 	@echo "$(GREEN)Template file creato: animations/$(DISCIPLINE)/$(TOPIC)/$(TOPIC).py$(NC)"
