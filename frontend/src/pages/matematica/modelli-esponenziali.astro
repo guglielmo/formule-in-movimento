@@ -1,0 +1,187 @@
+---
+import LessonLayout from '../../layouts/LessonLayout.astro';
+import VideoPlayer from '../../components/VideoPlayer.astro';
+---
+
+<LessonLayout
+  title="Modelli Esponenziali"
+  subtitle="Dalle proprietà delle potenze alla crescita e al decadimento esponenziale"
+  description="Modelli Esponenziali - Proprietà delle potenze, esponenziale crescente e decrescente, equazioni esponenziali | Formule in Movimento"
+  theme="matematica"
+>
+  <div class="intro-section">
+    <h2 style="margin-top: 0;">Che cos'è un modello esponenziale?</h2>
+    <p>
+      Un <strong>modello esponenziale</strong> descrive una grandezza che, a intervalli regolari,
+      viene moltiplicata sempre per lo stesso fattore. La sua legge ha la forma:
+    </p>
+    <div class="example">
+      y = a<sup>x</sup>
+    </div>
+    <p>
+      dove <strong>a &gt; 0</strong> e <strong>a ≠ 1</strong> è la <em>base</em> e <strong>x</strong> è l'esponente.
+      A seconda della base distinguiamo due comportamenti opposti:
+    </p>
+
+    <div class="key-concept">
+      <strong>Crescita e decadimento:</strong>
+      <ul>
+        <li>Se <strong>a &gt; 1</strong> la funzione <em>cresce</em> (es. raddoppio di una popolazione)</li>
+        <li>Se <strong>0 &lt; a &lt; 1</strong> la funzione <em>decresce</em> (es. dimezzamento di una sostanza)</li>
+        <li>In entrambi i casi la curva è sempre positiva e non tocca mai l'asse x</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>1. Ripasso: Proprietà delle Potenze</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/matematica/videos/modelli_esponenziali/RipassoProprietaPotenze.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> Prima di lavorare con gli esponenziali è indispensabile padroneggiare
+      le proprietà delle potenze. Questa animazione le ripassa una per una:
+      <ul>
+        <li><strong>Prodotto di potenze:</strong> a<sup>m</sup> · a<sup>n</sup> = a<sup>m+n</sup></li>
+        <li><strong>Quoziente di potenze:</strong> a<sup>m</sup> / a<sup>n</sup> = a<sup>m−n</sup></li>
+        <li><strong>Potenza di potenza:</strong> (a<sup>m</sup>)<sup>n</sup> = a<sup>m·n</sup></li>
+        <li><strong>Esponente zero:</strong> a<sup>0</sup> = 1</li>
+        <li><strong>Esponente negativo:</strong> a<sup>−n</sup> = 1 / a<sup>n</sup></li>
+      </ul>
+      Con base <strong>a &gt; 0</strong> queste regole valgono per qualsiasi esponente, anche non intero.
+    </div>
+  </div>
+
+  <h2>2. Il Modello Esponenziale (Crescita)</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/matematica/videos/modelli_esponenziali/ModelloEsponenzialeCrescente.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> Partendo da una situazione concreta — una coltura di batteri che
+      <em>raddoppia ogni ora</em> — costruiamo la legge che la descrive e la rappresentiamo sul grafico.
+
+      <div class="steps">
+        <strong>Dalla tabella alla formula:</strong>
+        <ol>
+          <li>Dopo 0 ore: 2<sup>0</sup> = 1 batterio</li>
+          <li>Dopo 1 ora: 2<sup>1</sup> = 2 batteri</li>
+          <li>Dopo 2 ore: 2<sup>2</sup> = 4 batteri</li>
+          <li>Dopo 3 ore: 2<sup>3</sup> = 8 batteri</li>
+        </ol>
+        <div class="example">y = 2<sup>x</sup></div>
+      </div>
+
+      <div class="key-concept">
+        <strong>Caratteristica chiave:</strong> nella crescita esponenziale i valori aumentano
+        sempre più rapidamente. In poche tappe si raggiungono numeri enormi.
+      </div>
+    </div>
+  </div>
+
+  <h2>3. L'Esponenziale Decrescente</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/matematica/videos/modelli_esponenziali/EsponenzialeDecrescente.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> Quando la base è compresa tra 0 e 1 il modello descrive un
+      <em>decadimento</em>: la grandezza si dimezza ad ogni passo.
+
+      <div class="steps">
+        <strong>La quantità si dimezza ogni ora:</strong>
+        <ol>
+          <li>Dopo 0 ore: (1/2)<sup>0</sup> = 1</li>
+          <li>Dopo 1 ora: (1/2)<sup>1</sup> = 1/2</li>
+          <li>Dopo 2 ore: (1/2)<sup>2</sup> = 1/4</li>
+          <li>Dopo 3 ore: (1/2)<sup>3</sup> = 1/8</li>
+        </ol>
+        <div class="example">y = (1/2)<sup>x</sup></div>
+      </div>
+
+      <div class="key-concept">
+        <strong>Caratteristica chiave:</strong> la curva decresce e si avvicina sempre più allo zero
+        <em>senza mai raggiungerlo</em>. L'asse x è un asintoto orizzontale.
+      </div>
+    </div>
+  </div>
+
+  <h2>4. Equazioni Esponenziali: Metodo del Confronto</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/matematica/videos/modelli_esponenziali/EquazioniConfronto.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> Il metodo del confronto si usa quando è possibile ricondurre
+      entrambi i membri alla <em>stessa base</em>. Vale infatti la regola:
+
+      <div class="example">
+        a<sup>f(x)</sup> = a<sup>g(x)</sup> &nbsp;⟹&nbsp; f(x) = g(x)
+      </div>
+
+      <div class="steps">
+        <strong>Esempio — risolvere 2<sup>x+1</sup> = 8:</strong>
+        <ol>
+          <li><strong>Stessa base:</strong> riscrivo 8 come potenza di 2
+            <div class="example">2<sup>x+1</sup> = 2<sup>3</sup></div>
+          </li>
+          <li><strong>Confronto gli esponenti:</strong>
+            <div class="example">x + 1 = 3</div>
+          </li>
+          <li><strong>Risolvo l'equazione di primo grado:</strong>
+            <div class="example">x = 2</div>
+          </li>
+        </ol>
+      </div>
+
+      <div class="key-concept">
+        <strong>Idea chiave:</strong> la funzione esponenziale è iniettiva, quindi a esponenti diversi
+        corrispondono valori diversi: se le potenze sono uguali, lo sono anche gli esponenti.
+      </div>
+    </div>
+  </div>
+
+  <h2>5. Equazioni Esponenziali: Variabile Ausiliaria</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/matematica/videos/modelli_esponenziali/EquazioniVariabileAusiliaria.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> Quando l'incognita compare in più potenze legate tra loro, una
+      <em>sostituzione</em> trasforma l'equazione esponenziale in una più semplice (qui di secondo grado).
+
+      <div class="steps">
+        <strong>Esempio — risolvere 4<sup>x</sup> − 3·2<sup>x</sup> − 4 = 0:</strong>
+        <ol>
+          <li><strong>Riconoscere la struttura:</strong> poiché 4<sup>x</sup> = (2<sup>x</sup>)<sup>2</sup>
+            <div class="example">(2<sup>x</sup>)<sup>2</sup> − 3·2<sup>x</sup> − 4 = 0</div>
+          </li>
+          <li><strong>Sostituire</strong> ponendo t = 2<sup>x</sup> (con t &gt; 0)
+            <div class="example">t<sup>2</sup> − 3t − 4 = 0</div>
+          </li>
+          <li><strong>Risolvere l'equazione di secondo grado:</strong>
+            <div class="example">t = 4 &nbsp;∨&nbsp; t = −1</div>
+          </li>
+          <li><strong>Scartare le soluzioni non accettabili:</strong> t = 2<sup>x</sup> è sempre positivo,
+            quindi t = −1 va scartata
+          </li>
+          <li><strong>Tornare all'incognita</strong> con t = 4:
+            <div class="example">2<sup>x</sup> = 4 = 2<sup>2</sup> &nbsp;⟹&nbsp; x = 2</div>
+          </li>
+        </ol>
+      </div>
+
+      <div class="key-concept">
+        <strong>Attenzione:</strong> dopo la sostituzione bisogna sempre <em>verificare l'accettabilità</em>
+        delle soluzioni, perché la variabile ausiliaria t = 2<sup>x</sup> può assumere solo valori positivi.
+      </div>
+    </div>
+  </div>
+
+  <h2>Riepilogo</h2>
+  <div class="intro-section">
+    <p>I modelli esponenziali descrivono crescite e decadimenti che incontriamo ovunque: popolazioni,
+    interessi composti, decadimento radioattivo, raffreddamento. I punti chiave sono:</p>
+    <ol>
+      <li><strong>Proprietà delle potenze:</strong> la base algebrica per manipolare gli esponenziali</li>
+      <li><strong>Base &gt; 1:</strong> modello di <strong>crescita</strong></li>
+      <li><strong>Base tra 0 e 1:</strong> modello di <strong>decadimento</strong></li>
+      <li><strong>Metodo del confronto:</strong> stessa base ⟹ confronto gli esponenti</li>
+      <li><strong>Variabile ausiliaria:</strong> sostituzione per ricondursi a un'equazione nota</li>
+    </ol>
+    <p>
+      Padroneggiare questi strumenti è il primo passo per affrontare i logaritmi, che sono
+      l'operazione inversa dell'esponenziale.
+    </p>
+  </div>
+</LessonLayout>
