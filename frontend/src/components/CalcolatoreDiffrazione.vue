@@ -11,52 +11,78 @@ const colori = [
   { nome: 'Rosso',    lambda: 680, hex: '#e01515' },
 ];
 
+const modo = ref('L');                // 'L' = trova distanza schermo; 'dy' = trova spaziatura frange
 const selezionato = ref(colori[2]);   // Verde di default
-const d_mm = ref(0.20);               // distanza tra le fenditure (mm) - fissa/regolabile
-const dy_mm = ref(2.0);               // spaziatura delle frange desiderata (mm)
+const d_mm = ref(0.20);               // distanza tra le fenditure (mm) - condivisa
+const dy_mm = ref(2.0);               // spaziatura frange desiderata (mm) - modo 'L'
+const L_m_in = ref(1.5);              // distanza schermo (m) - modo 'dy'
 
-// L = Δy · d / λ   (formula della doppia fenditura: Δy = λL/d)
-const L_m = computed(() => {
-  const lambda_m = selezionato.value.lambda * 1e-9;
-  const d_m = d_mm.value * 1e-3;
-  const dy_m = dy_mm.value * 1e-3;
-  return (dy_m * d_m) / lambda_m;
-});
+const lambda_m = computed(() => selezionato.value.lambda * 1e-9);
+const d_m = computed(() => d_mm.value * 1e-3);
+
+// Modo 'L':  L = Δy · d / λ
+const L_calc = computed(() => (dy_mm.value * 1e-3 * d_m.value) / lambda_m.value);
+// Modo 'dy': Δy = λ · L / d   (in mm)
+const dy_calc = computed(() => (lambda_m.value * L_m_in.value / d_m.value) * 1e3);
+
+// Spaziatura frange "effettiva" (input nel modo L, calcolata nel modo dy) per l'anteprima
+const dy_eff = computed(() => (modo.value === 'L' ? dy_mm.value : dy_calc.value));
 
 const L_testo = computed(() => {
-  const L = L_m.value;
-  if (L < 1) return (L * 100).toFixed(0) + ' cm';
-  return L.toFixed(2) + ' m';
+  const L = L_calc.value;
+  return L < 1 ? (L * 100).toFixed(0) + ' cm' : L.toFixed(2) + ' m';
+});
+const dy_testo = computed(() => {
+  const dy = dy_calc.value;
+  return dy < 1 ? dy.toFixed(2) + ' mm' : dy.toFixed(1) + ' mm';
 });
 
-// Giudizio pratico sulla distanza dello schermo
 const verdetto = computed(() => {
-  const L = L_m.value;
-  if (L <= 3) return { testo: "Realizzabile in un'aula o in laboratorio", classe: 'ok' };
-  if (L <= 10) return { testo: 'Serve una stanza molto lunga', classe: 'warn' };
-  return { testo: 'Poco pratico: servono fenditure più vicine', classe: 'bad' };
+  if (modo.value === 'L') {
+    const L = L_calc.value;
+    if (L <= 3) return { testo: "Realizzabile in un'aula o in laboratorio", classe: 'ok' };
+    if (L <= 10) return { testo: 'Serve una stanza molto lunga', classe: 'warn' };
+    return { testo: 'Poco pratico: servono fenditure più vicine', classe: 'bad' };
+  } else {
+    const dy = dy_calc.value;
+    if (dy >= 2) return { testo: 'Frange ben visibili a occhio', classe: 'ok' };
+    if (dy >= 1) return { testo: 'Frange visibili', classe: 'ok' };
+    if (dy >= 0.5) return { testo: 'Appena distinguibili', classe: 'warn' };
+    return { testo: 'Troppo fitte: non distinguibili a occhio', classe: 'bad' };
+  }
 });
 
-// Anteprima delle frange (bande chiare nel colore scelto, su fondo scuro)
-const frange = computed(() => {
-  const bande = [];
-  for (let i = -4; i <= 4; i++) bande.push(i);
-  return bande;
-});
+// Anteprima frange: distanza tra le bande proporzionale a Δy
+const gapPx = computed(() => Math.min(28, Math.max(3, dy_eff.value * 5)));
+const frange = [-4, -3, -2, -1, 0, 1, 2, 3, 4];
 </script>
 
 <template>
   <div class="calc">
-    <h3 class="calc-title">Quanto lontano deve stare lo schermo?</h3>
+    <h3 class="calc-title">Quanto contano le distanze reali?</h3>
+
+    <!-- Selettore modalità -->
+    <div class="modi">
+      <button class="modo" :class="{ attivo: modo === 'L' }" @click="modo = 'L'">
+        Trova la distanza schermo (L)
+      </button>
+      <button class="modo" :class="{ attivo: modo === 'dy' }" @click="modo = 'dy'">
+        Trova la spaziatura frange (Δy)
+      </button>
+    </div>
+
     <p class="calc-intro">
-      Per <strong>vedere</strong> le frange, la loro spaziatura
-      <strong>Δy</strong> deve essere di qualche millimetro. Scegli il
-      <strong>colore</strong> (la lunghezza d'onda λ) e regola i parametri:
-      a fenditure fisse, lo schermo va messo a distanza
-      <strong>L = Δy · d / λ</strong>.
+      Relazione fondamentale: <strong>Δy = λL/d</strong>. Scegli il
+      <strong>colore</strong> (lunghezza d'onda λ); poi, a fenditure fisse,
+      <template v-if="modo === 'L'">
+        imposta la spaziatura di frange che vuoi vedere e ottieni la distanza dello schermo.
+      </template>
+      <template v-else>
+        imposta la distanza dello schermo e ottieni la spaziatura delle frange.
+      </template>
     </p>
 
-    <!-- Selettore colore -->
+    <!-- Selettore colore (condiviso) -->
     <div class="riga">
       <label class="etichetta">Colore (λ)</label>
       <div class="colori">
@@ -73,7 +99,7 @@ const frange = computed(() => {
       </div>
     </div>
 
-    <!-- Slider distanza fenditure -->
+    <!-- Distanza fenditure (condivisa) -->
     <div class="riga">
       <label class="etichetta">
         Distanza tra le fenditure <strong>d</strong>: {{ d_mm.toFixed(2) }} mm
@@ -81,27 +107,39 @@ const frange = computed(() => {
       <input type="range" min="0.05" max="1.0" step="0.01" v-model.number="d_mm" />
     </div>
 
-    <!-- Slider spaziatura frange desiderata -->
-    <div class="riga">
+    <!-- Input dipendente dalla modalità -->
+    <div class="riga" v-if="modo === 'L'">
       <label class="etichetta">
         Spaziatura frange desiderata <strong>Δy</strong>: {{ dy_mm.toFixed(1) }} mm
       </label>
       <input type="range" min="0.5" max="5.0" step="0.1" v-model.number="dy_mm" />
     </div>
+    <div class="riga" v-else>
+      <label class="etichetta">
+        Distanza dello schermo <strong>L</strong>: {{ L_m_in.toFixed(2) }} m
+      </label>
+      <input type="range" min="0.2" max="5.0" step="0.05" v-model.number="L_m_in" />
+    </div>
 
     <!-- Risultato -->
     <div class="risultato">
-      <div class="L-valore">
-        Distanza schermo: <span class="L-num">{{ L_testo }}</span>
+      <div class="out-valore" v-if="modo === 'L'">
+        Distanza schermo: <span class="out-num">{{ L_testo }}</span>
       </div>
-      <div class="formula">
+      <div class="out-valore" v-else>
+        Spaziatura frange: <span class="out-num">{{ dy_testo }}</span>
+      </div>
+      <div class="formula" v-if="modo === 'L'">
         L = Δy · d / λ = {{ dy_mm.toFixed(1) }} mm · {{ d_mm.toFixed(2) }} mm / {{ selezionato.lambda }} nm
+      </div>
+      <div class="formula" v-else>
+        Δy = λ · L / d = {{ selezionato.lambda }} nm · {{ L_m_in.toFixed(2) }} m / {{ d_mm.toFixed(2) }} mm
       </div>
       <div class="verdetto" :class="verdetto.classe">{{ verdetto.testo }}</div>
     </div>
 
-    <!-- Anteprima frange nel colore scelto -->
-    <div class="frange" aria-hidden="true">
+    <!-- Anteprima frange nel colore scelto (spaziatura proporzionale a Δy) -->
+    <div class="frange" :style="{ gap: gapPx + 'px' }" aria-hidden="true">
       <div
         v-for="i in frange"
         :key="i"
@@ -112,11 +150,10 @@ const frange = computed(() => {
 
     <p class="nota">
       Con la luce visibile (λ ≈ 0,4–0,7 µm) e fenditure molto vicine
-      (d ≈ 0,1–0,5 mm) bastano pochi metri. Ma se le fenditure fossero distanti
-      1 cm servirebbe uno schermo a decine di metri: ecco perché le fenditure
-      devono essere strettissime. Nota anche che, a parità di tutto, il
-      <strong>rosso</strong> (λ grande) richiede uno schermo più vicino del
-      <strong>violetto</strong>.
+      (d ≈ 0,1–0,5 mm) basta uno schermo a pochi metri. Se le fenditure fossero
+      distanti 1 cm servirebbe uno schermo a decine di metri: per questo devono
+      essere strettissime. Nota anche che il <strong>rosso</strong> (λ grande) dà
+      frange più larghe del <strong>violetto</strong> a parità di L e d.
     </p>
   </div>
 </template>
@@ -132,8 +169,30 @@ const frange = computed(() => {
   margin: 20px 0;
 }
 .calc-title {
-  margin: 0 0 8px;
+  margin: 0 0 12px;
   color: #2c3e50;
+}
+.modi {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.modo {
+  flex: 1 1 200px;
+  padding: 10px 12px;
+  border: 2px solid #3498db;
+  border-radius: 8px;
+  background: #fff;
+  color: #2c3e50;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.9em;
+  transition: all 0.15s ease;
+}
+.modo.attivo {
+  background: #3498db;
+  color: #fff;
 }
 .calc-intro,
 .nota {
@@ -198,11 +257,11 @@ input[type='range'] {
   border-radius: 8px;
   text-align: center;
 }
-.L-valore {
+.out-valore {
   font-size: 1.1em;
   color: #2c3e50;
 }
-.L-num {
+.out-num {
   font-size: 1.5em;
   font-weight: 700;
   color: #2563eb;
@@ -235,18 +294,20 @@ input[type='range'] {
 .frange {
   display: flex;
   justify-content: center;
-  gap: 6px;
+  align-items: center;
   margin-top: 18px;
   padding: 14px;
   background: #1a1a1a;
   border-radius: 8px;
+  min-height: 46px;
 }
 .banda {
-  width: 14px;
+  width: 12px;
   height: 46px;
   border-radius: 3px;
+  flex: none;
 }
 @media (max-width: 520px) {
-  .banda { width: 10px; height: 38px; }
+  .banda { width: 9px; height: 38px; }
 }
 </style>
