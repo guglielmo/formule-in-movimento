@@ -3,8 +3,8 @@ Test animation for the Gas module
 """
 
 from manim import *
-import sys
-sys.path.insert(0, '/home/gu/projects/formule-in-movimento')
+import sys, os
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "..")))
 from animations.gas_module import Gas
 
 

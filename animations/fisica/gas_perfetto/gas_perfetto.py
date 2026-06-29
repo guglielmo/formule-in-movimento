@@ -1,6 +1,9 @@
 from manim import *
-import sys
-sys.path.insert(0, '/home/gu/projects/formule-in-movimento')
+import sys, os
+# Rende importabile il package 'animations' calcolando la root del progetto
+# (tre livelli sopra: animations/fisica/gas_perfetto/ -> root), così funziona
+# sia in locale sia in CI senza path hardcoded.
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "..")))
 from animations.vertical_template import VerticalTemplate
 from animations.gas_module import Gas
 
