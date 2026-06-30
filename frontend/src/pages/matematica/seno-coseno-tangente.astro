@@ -1,0 +1,154 @@
+---
+import LessonLayout from '../../layouts/LessonLayout.astro';
+import VideoPlayer from '../../components/VideoPlayer.astro';
+---
+
+<LessonLayout
+  title="Seno, Coseno e Tangente"
+  subtitle="Le funzioni goniometriche definite sulla circonferenza unitaria"
+  description="Seno, Coseno e Tangente - Definizione sulla circonferenza goniometrica, variazione al variare dell'angolo, tangente, relazione fondamentale e valori notevoli | Formule in Movimento"
+  theme="matematica"
+  breadcrumbs={[
+    { label: 'Home', href: '/' },
+    { label: 'Matematica', href: '/matematica' },
+    { label: 'Seno, Coseno e Tangente' }
+  ]}
+>
+  <div class="intro-section">
+    <h2 style="margin-top: 0;">Dalle misure degli angoli alle funzioni</h2>
+    <p>
+      Dopo aver imparato a misurare gli angoli in <strong>radianti</strong>, possiamo
+      finalmente definire le tre funzioni goniometriche fondamentali: <strong>seno</strong>,
+      <strong>coseno</strong> e <strong>tangente</strong>. La chiave di tutto è un'unica
+      figura: la <strong>circonferenza goniometrica</strong>, cioè la circonferenza di
+      raggio 1 centrata nell'origine.
+    </p>
+
+    <div class="key-concept">
+      <strong>L'idea di fondo:</strong>
+      <p style="margin-top: 10px;">
+        Preso un angolo &alpha;, individuiamo il punto <strong>P</strong> sulla circonferenza
+        unitaria. Allora <strong>il coseno è l'ascissa</strong> di P e <strong>il seno è
+        l'ordinata</strong> di P. In formula: P = (cos&nbsp;&alpha;, sin&nbsp;&alpha;).
+        La tangente è invece il loro rapporto, tan&nbsp;&alpha; = sin&nbsp;&alpha;/cos&nbsp;&alpha;.
+      </p>
+    </div>
+  </div>
+
+  <h2>1. Seno e Coseno sulla Circonferenza</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/matematica/videos/seno_coseno_tangente/CirconferenzaGoniometrica.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> sulla circonferenza unitaria fissiamo il punto P
+      corrispondente all'angolo &alpha;. Proiettando P sui due assi si leggono direttamente
+      coseno e seno.
+      <ul>
+        <li><strong>Coseno:</strong> la proiezione di P sull'asse x (l'<strong>ascissa</strong>)</li>
+        <li><strong>Seno:</strong> la proiezione di P sull'asse y (l'<strong>ordinata</strong>)</li>
+        <li>Quindi <strong>P = (cos&nbsp;&alpha;, sin&nbsp;&alpha;)</strong></li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>2. Al Variare dell'Angolo</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/matematica/videos/seno_coseno_tangente/SenoCosenoInMovimento.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> facciamo compiere a P un giro completo. Mentre l'angolo
+      cresce, le due proiezioni si allungano e si accorciano, e i loro valori numerici
+      oscillano con continuità.
+
+      <div class="key-concept">
+        <strong>Limitazione fondamentale:</strong> poiché il raggio vale 1, seno e coseno
+        non possono mai uscire dall'intervallo [&minus;1,&nbsp;1]:
+        <strong>&minus;1 &le; sin&nbsp;&alpha;, cos&nbsp;&alpha; &le; 1</strong>.
+        Il segno dipende dal quadrante in cui cade il punto P.
+      </div>
+    </div>
+  </div>
+
+  <h2>3. La Tangente</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/matematica/videos/seno_coseno_tangente/Tangente.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> la tangente si definisce come rapporto fra seno e coseno
+      e si legge geometricamente come segmento sulla retta verticale tangente alla
+      circonferenza (la retta x&nbsp;=&nbsp;1).
+
+      <div class="steps">
+        <strong>Definizione:</strong>
+        <ol>
+          <li><strong>Come rapporto:</strong> tan&nbsp;&alpha; = sin&nbsp;&alpha; / cos&nbsp;&alpha;</li>
+          <li><strong>Significato geometrico:</strong> il prolungamento del raggio incontra
+              la retta x&nbsp;=&nbsp;1 a un'altezza pari a tan&nbsp;&alpha;</li>
+        </ol>
+      </div>
+
+      <div class="key-concept">
+        <strong>Attenzione:</strong> la tangente <em>non esiste</em> quando cos&nbsp;&alpha; = 0,
+        cioè per &alpha; = 90° (&pi;/2), 270° (3&pi;/2), e in generale 90° + k&middot;180°.
+      </div>
+    </div>
+  </div>
+
+  <h2>4. La Relazione Fondamentale</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/matematica/videos/seno_coseno_tangente/RelazioneFondamentale.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> il raggio, il coseno e il seno formano un triangolo
+      rettangolo con ipotenusa 1. Applicando il teorema di Pitagora si ottiene la più
+      importante identità della goniometria.
+
+      <div class="steps">
+        <strong>Dal teorema di Pitagora:</strong>
+        <ol>
+          <li>I cateti sono cos&nbsp;&alpha; e sin&nbsp;&alpha;, l'ipotenusa è 1</li>
+          <li>Quindi <strong>cos²&alpha; + sin²&alpha; = 1</strong></li>
+        </ol>
+      </div>
+
+      <div class="key-concept">
+        <strong>Vale per ogni angolo &alpha;:</strong> è la <em>relazione fondamentale</em>
+        della goniometria e permette di ricavare il seno dal coseno (e viceversa), a meno
+        del segno.
+      </div>
+    </div>
+  </div>
+
+  <h2>5. I Valori Notevoli</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/matematica/videos/seno_coseno_tangente/ValoriNotevoli.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> alcuni angoli ricorrono di continuo negli esercizi.
+      Conviene memorizzare i valori di seno, coseno e tangente per 0°, 30°, 45°, 60° e 90°.
+
+      <div class="key-concept">
+        <strong>Tabella da ricordare:</strong>
+        <ul>
+          <li><strong>0°:</strong> sin = 0, cos = 1, tan = 0</li>
+          <li><strong>30°:</strong> sin = 1/2, cos = &radic;3/2, tan = &radic;3/3</li>
+          <li><strong>45°:</strong> sin = &radic;2/2, cos = &radic;2/2, tan = 1</li>
+          <li><strong>60°:</strong> sin = &radic;3/2, cos = 1/2, tan = &radic;3</li>
+          <li><strong>90°:</strong> sin = 1, cos = 0, tan non esiste</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <h2>Riepilogo</h2>
+  <div class="intro-section">
+    <p>Le funzioni goniometriche nascono tutte dalla circonferenza unitaria:</p>
+    <ol>
+      <li><strong>Seno e coseno:</strong> ordinata e ascissa del punto P = (cos&nbsp;&alpha;, sin&nbsp;&alpha;)</li>
+      <li><strong>Variazione:</strong> oscillano con continuità nell'intervallo [&minus;1, 1]</li>
+      <li><strong>Tangente:</strong> tan&nbsp;&alpha; = sin&nbsp;&alpha;/cos&nbsp;&alpha;, non definita dove cos&nbsp;&alpha; = 0</li>
+      <li><strong>Relazione fondamentale:</strong> cos²&alpha; + sin²&alpha; = 1, valida per ogni angolo</li>
+      <li><strong>Valori notevoli:</strong> da memorizzare per 0°, 30°, 45°, 60°, 90°</li>
+    </ol>
+    <p>
+      Con seno, coseno e tangente in mano, la prossima tappa sarà studiare i loro
+      <strong>grafici</strong> e le <strong>formule goniometriche</strong> (addizione,
+      duplicazione, bisezione).
+    </p>
+  </div>
+</LessonLayout>
