@@ -1,0 +1,128 @@
+---
+import LessonLayout from '../../layouts/LessonLayout.astro';
+import VideoPlayer from '../../components/VideoPlayer.astro';
+---
+
+<LessonLayout
+  title="Teorema dei Seni e Teorema del Coseno"
+  subtitle="I due strumenti per risolvere qualsiasi triangolo"
+  description="Teorema dei seni e teorema del coseno - a/sin α = b/sin β = c/sin γ = 2R, c² = a² + b² − 2ab cos γ, con esempi numerici e una guida su quando usare ciascun teorema | Formule in Movimento"
+  theme="matematica"
+  breadcrumbs={[
+    { label: 'Home', href: '/' },
+    { label: 'Matematica', href: '/matematica' },
+    { label: 'Teorema dei Seni e Teorema del Coseno' }
+  ]}
+>
+  <div class="intro-section">
+    <h2 style="margin-top: 0;">Risolvere un triangolo qualsiasi</h2>
+    <p>
+      "Risolvere un triangolo" significa trovare tutti i suoi lati e angoli a partire da alcuni
+      dati. Per i triangoli <strong>qualunque</strong> (non solo quelli rettangoli) ci affidiamo
+      a due teoremi: il <strong>teorema dei seni</strong> e il <strong>teorema del coseno</strong>.
+    </p>
+
+    <div class="key-concept">
+      <strong>L'idea di fondo:</strong>
+      <p style="margin-top: 10px;">
+        Il teorema dei seni lega ogni <strong>lato</strong> al <strong>seno dell'angolo
+        opposto</strong>; il teorema del coseno è una versione "allargata" del teorema di
+        Pitagora, valida per qualsiasi angolo. Insieme bastano a risolvere ogni triangolo.
+      </p>
+    </div>
+  </div>
+
+  <h2>1. Il Teorema dei Seni</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/matematica/videos/teoremi_seni_coseno/TeoremaSeni.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> in ogni triangolo il rapporto fra un lato e il seno
+      dell'angolo opposto è costante, e vale il <strong>diametro</strong> della circonferenza
+      circoscritta.
+      <ul>
+        <li><strong>a / sin α = b / sin β = c / sin γ = 2R</strong></li>
+        <li>Ogni lato è proporzionale al seno dell'angolo opposto</li>
+        <li>R è il raggio della circonferenza circoscritta</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>2. Esempio con il Teorema dei Seni</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/matematica/videos/teoremi_seni_coseno/EsempioSeni.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> noti un lato e due angoli, troviamo un secondo lato.
+
+      <div class="steps">
+        <strong>Dati: a = 10, α = 30°, β = 45° → trovare b</strong>
+        <ol>
+          <li>a / sin α = b / sin β</li>
+          <li>b = a &middot; sin β / sin α = 10 &middot; sin 45° / sin 30°</li>
+          <li>b = 10 &middot; (&radic;2/2) / (1/2) = <strong>10&radic;2 &asymp; 14,14</strong></li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <h2>3. Il Teorema del Coseno</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/matematica/videos/teoremi_seni_coseno/TeoremaCoseno.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> generalizza il teorema di Pitagora ai triangoli qualunque,
+      aggiungendo un termine correttivo con il coseno.
+
+      <div class="key-concept">
+        <strong>Formula:</strong> c² = a² + b² &minus; 2ab &middot; cos γ. Se γ = 90° allora
+        cos γ = 0 e si ritrova il teorema di Pitagora: c² = a² + b².
+      </div>
+    </div>
+  </div>
+
+  <h2>4. Esempio con il Teorema del Coseno</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/matematica/videos/teoremi_seni_coseno/EsempioCoseno.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> noti due lati e l'angolo compreso, troviamo il terzo lato.
+
+      <div class="steps">
+        <strong>Dati: a = 5, b = 8, γ = 60° → trovare c</strong>
+        <ol>
+          <li>c² = a² + b² &minus; 2ab &middot; cos γ</li>
+          <li>c² = 25 + 64 &minus; 2 &middot; 5 &middot; 8 &middot; cos 60°</li>
+          <li>c² = 89 &minus; 80 &middot; ½ = 49 &rarr; c = <strong>7</strong></li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <h2>5. Quale Teorema Usare?</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/matematica/videos/teoremi_seni_coseno/QuandoUsarli.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> la scelta dipende da quali dati conosciamo.
+
+      <div class="key-concept">
+        <strong>Regola pratica:</strong>
+        <ul>
+          <li><strong>Teorema dei seni:</strong> un lato e l'angolo opposto, più un altro angolo o lato (ALA, AAL, SSA)</li>
+          <li><strong>Teorema del coseno:</strong> due lati e l'angolo compreso, oppure tutti e tre i lati (SAS, SSS)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <h2>Riepilogo</h2>
+  <div class="intro-section">
+    <p>I due teoremi per risolvere i triangoli qualunque:</p>
+    <ol>
+      <li><strong>Teorema dei seni:</strong> a/sin α = b/sin β = c/sin γ = 2R</li>
+      <li><strong>Teorema del coseno:</strong> c² = a² + b² &minus; 2ab cos γ</li>
+      <li><strong>Pitagora generalizzato:</strong> per γ = 90° il coseno si annulla</li>
+      <li><strong>Scelta:</strong> dipende dai dati noti (angolo opposto → seni; angolo compreso → coseno)</li>
+    </ol>
+    <p>
+      Con questi strumenti possiamo affrontare la <strong>risoluzione completa dei
+      triangoli</strong>, l'ultima tappa del percorso di trigonometria.
+    </p>
+  </div>
+</LessonLayout>
