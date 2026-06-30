@@ -1,0 +1,133 @@
+---
+import LessonLayout from '../../layouts/LessonLayout.astro';
+import VideoPlayer from '../../components/VideoPlayer.astro';
+---
+
+<LessonLayout
+  title="Grafici delle Funzioni Goniometriche"
+  subtitle="Dedurre i grafici di seno, coseno e tangente dalla circonferenza"
+  description="Grafici delle funzioni goniometriche - Grafico del seno dalla circonferenza, coseno come seno sfasato, tangente e asintoti, periodicità, simmetrie e caratteristiche di sin, cos, tan | Formule in Movimento"
+  theme="matematica"
+  breadcrumbs={[
+    { label: 'Home', href: '/' },
+    { label: 'Matematica', href: '/matematica' },
+    { label: 'Grafici delle Funzioni Goniometriche' }
+  ]}
+>
+  <div class="intro-section">
+    <h2 style="margin-top: 0;">Dalla circonferenza al grafico</h2>
+    <p>
+      Una volta definiti <strong>seno</strong>, <strong>coseno</strong> e <strong>tangente</strong>
+      sulla circonferenza unitaria, possiamo <strong>dedurne i grafici</strong>: basta riportare,
+      per ogni angolo, il valore della funzione su un piano cartesiano in cui l'asse orizzontale
+      rappresenta l'angolo x (in radianti) e quello verticale il valore della funzione.
+    </p>
+
+    <div class="key-concept">
+      <strong>L'idea di fondo:</strong>
+      <p style="margin-top: 10px;">
+        Mentre il punto P percorre la circonferenza, la sua <strong>ordinata</strong> disegna
+        l'onda del <strong>seno</strong> e la sua <strong>ascissa</strong> quella del
+        <strong>coseno</strong>. Sono curve <strong>periodiche</strong>: si ripetono identiche
+        ogni 2&pi; (ogni &pi; per la tangente).
+      </p>
+    </div>
+  </div>
+
+  <h2>1. Il Grafico del Seno</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/matematica/videos/grafici_goniometrici/GraficoSeno.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> il punto compie un giro sulla circonferenza e la sua altezza
+      (il seno) viene riportata sul grafico, tracciando la classica onda sinusoidale.
+      <ul>
+        <li>Parte da 0, sale al massimo <strong>+1</strong> in &pi;/2</li>
+        <li>Torna a 0 in &pi;, scende al minimo <strong>&minus;1</strong> in 3&pi;/2</li>
+        <li>Si richiude a 0 in 2&pi;: un <strong>periodo</strong> completo</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>2. Il Grafico del Coseno</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/matematica/videos/grafici_goniometrici/GraficoCoseno.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> il coseno ha esattamente la stessa forma del seno, ma è
+      <strong>anticipato di &pi;/2</strong>. Confrontando le due curve si vede subito lo sfasamento.
+
+      <div class="key-concept">
+        <strong>Relazione:</strong> cos&nbsp;x = sin(x + &pi;/2). La curva del coseno parte dal
+        massimo <strong>+1</strong> (in x = 0) invece che da 0.
+      </div>
+    </div>
+  </div>
+
+  <h2>3. Il Grafico della Tangente</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/matematica/videos/grafici_goniometrici/GraficoTangente.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> la tangente ha un andamento diverso: cresce senza limite e
+      presenta degli <strong>asintoti verticali</strong> dove non è definita.
+
+      <div class="steps">
+        <strong>Caratteristiche:</strong>
+        <ol>
+          <li><strong>Asintoti</strong> dove cos&nbsp;x = 0, cioè in x = &pi;/2 + k&pi;</li>
+          <li><strong>Periodo &pi;</strong> (la metà di seno e coseno)</li>
+          <li>Il codominio è <strong>tutto &real;</strong>: assume qualsiasi valore</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <h2>4. Periodicità e Simmetrie</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/matematica/videos/grafici_goniometrici/PeriodicitaSimmetrie.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> due proprietà rendono i grafici facili da prevedere: la
+      <strong>periodicità</strong> (si ripetono) e le <strong>simmetrie</strong> (parità).
+
+      <div class="steps">
+        <strong>Da ricordare:</strong>
+        <ol>
+          <li><strong>Periodicità:</strong> sin e cos hanno periodo 2&pi;, la tangente periodo &pi;</li>
+          <li><strong>Coseno pari:</strong> cos(&minus;x) = cos&nbsp;x (simmetrico rispetto all'asse y)</li>
+          <li><strong>Seno dispari:</strong> sin(&minus;x) = &minus;sin&nbsp;x (simmetrico rispetto all'origine)</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <h2>5. Caratteristiche a Confronto</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/matematica/videos/grafici_goniometrici/Caratteristiche.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> una tabella riassume dominio, codominio e periodo delle tre
+      funzioni, utile come scheda di ripasso.
+
+      <div class="key-concept">
+        <strong>In sintesi:</strong>
+        <ul>
+          <li><strong>sin x:</strong> dominio &real;, codominio [&minus;1, 1], periodo 2&pi;</li>
+          <li><strong>cos x:</strong> dominio &real;, codominio [&minus;1, 1], periodo 2&pi;</li>
+          <li><strong>tan x:</strong> dominio x &ne; &pi;/2 + k&pi;, codominio &real;, periodo &pi;</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <h2>Riepilogo</h2>
+  <div class="intro-section">
+    <p>I grafici goniometrici si deducono tutti dalla circonferenza unitaria:</p>
+    <ol>
+      <li><strong>Seno:</strong> onda che parte da 0, oscilla tra &minus;1 e 1 con periodo 2&pi;</li>
+      <li><strong>Coseno:</strong> stessa onda anticipata di &pi;/2, parte dal massimo</li>
+      <li><strong>Tangente:</strong> periodo &pi;, asintoti dove cos&nbsp;x = 0, codominio &real;</li>
+      <li><strong>Periodicità e simmetrie:</strong> coseno pari, seno dispari</li>
+    </ol>
+    <p>
+      Con i grafici ben chiari, la prossima tappa saranno le <strong>formule goniometriche</strong>
+      — addizione, sottrazione, duplicazione e bisezione.
+    </p>
+  </div>
+</LessonLayout>
