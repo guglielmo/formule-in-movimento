@@ -1,0 +1,144 @@
+---
+import LessonLayout from '../../layouts/LessonLayout.astro';
+import VideoPlayer from '../../components/VideoPlayer.astro';
+---
+
+<LessonLayout
+  title="Trigonometria: Risoluzione dei Triangoli"
+  subtitle="Mettere insieme tutto per trovare lati e angoli, anche nei problemi reali"
+  description="Risoluzione dei triangoli - I quattro casi (due angoli e un lato, due lati e l'angolo compreso, due lati e un angolo opposto, tre lati) con esempi e un problema reale di triangolazione | Formule in Movimento"
+  theme="matematica"
+  breadcrumbs={[
+    { label: 'Home', href: '/' },
+    { label: 'Matematica', href: '/matematica' },
+    { label: 'Trigonometria: Risoluzione dei Triangoli' }
+  ]}
+>
+  <div class="intro-section">
+    <h2 style="margin-top: 0;">Tutto insieme</h2>
+    <p>
+      È il momento di mettere insieme tutto il percorso di trigonometria. <strong>Risolvere un
+      triangolo</strong> significa determinare i suoi <strong>sei elementi</strong> — i tre lati
+      e i tre angoli — a partire da pochi dati noti, scegliendo di volta in volta il teorema
+      giusto.
+    </p>
+
+    <div class="key-concept">
+      <strong>L'idea di fondo:</strong>
+      <p style="margin-top: 10px;">
+        Si combinano <strong>somma degli angoli</strong> (&alpha; + &beta; + &gamma; = 180°),
+        <strong>teorema dei seni</strong> e <strong>teorema del coseno</strong>. Il caso dei
+        dati noti decide da dove partire.
+      </p>
+    </div>
+  </div>
+
+  <h2>1. Che cosa Significa</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/matematica/videos/risoluzione_triangoli/CosaSignifica.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> i sei elementi di un triangolo e i quattro casi tipici di
+      risoluzione.
+      <ul>
+        <li><strong>Due angoli e un lato</strong> → teorema dei seni</li>
+        <li><strong>Due lati e l'angolo compreso</strong> → teorema del coseno</li>
+        <li><strong>Due lati e un angolo opposto</strong> → teorema dei seni</li>
+        <li><strong>Tre lati</strong> → teorema del coseno</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>2. Caso: Due Angoli e un Lato</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/matematica/videos/risoluzione_triangoli/CasoDueAngoliUnLato.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> noti due angoli si trova subito il terzo, poi si usa il
+      teorema dei seni per i lati.
+
+      <div class="steps">
+        <strong>Dati: c = 14, α = 30°, β = 105°</strong>
+        <ol>
+          <li>γ = 180° &minus; 30° &minus; 105° = 45°</li>
+          <li>a = c &middot; sin α / sin γ = 14 &middot; sin 30° / sin 45°</li>
+          <li>a = <strong>7&radic;2 &asymp; 9,9</strong> (e b si trova allo stesso modo)</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <h2>3. Caso: Due Lati e l'Angolo Compreso</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/matematica/videos/risoluzione_triangoli/CasoDueLatiAngolo.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> il teorema del coseno dà il terzo lato; poi il teorema dei
+      seni fornisce gli angoli.
+
+      <div class="steps">
+        <strong>Dati: a = 8, b = 5, γ = 60°</strong>
+        <ol>
+          <li>c² = 64 + 25 &minus; 80 &middot; ½ = 49 &rarr; c = <strong>7</strong></li>
+          <li>sin α = a &middot; sin γ / c &asymp; 0,99 &rarr; α &asymp; 81,8°</li>
+          <li>β &asymp; 38,2° (per differenza da 180°)</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <h2>4. Caso: Tre Lati</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/matematica/videos/risoluzione_triangoli/CasoTreLati.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> con i tre lati si ricava un angolo dal teorema del coseno,
+      poi gli altri.
+
+      <div class="steps">
+        <strong>Dati: a = 7, b = 8, c = 13</strong>
+        <ol>
+          <li>cos γ = (a² + b² &minus; c²) / (2ab) = &minus;56 / 112 = &minus;½</li>
+          <li>γ = <strong>120°</strong></li>
+          <li>Gli altri angoli con il teorema dei seni e la somma a 180°</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <h2>5. Un Problema Reale</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/matematica/videos/risoluzione_triangoli/ProblemaReale.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> la trigonometria misura distanze inaccessibili. Per sapere
+      quanto distano due punti A e B separati da un lago, ci si pone in un punto C da cui si
+      vedono entrambi.
+
+      <div class="steps">
+        <strong>Dati: CA = 80 m, CB = 100 m, angolo in C = 60°</strong>
+        <ol>
+          <li>AB² = 80² + 100² &minus; 2 &middot; 80 &middot; 100 &middot; cos 60°</li>
+          <li>AB² = 16400 &minus; 8000 = 8400</li>
+          <li>AB = &radic;8400 &asymp; <strong>91,7 m</strong></li>
+        </ol>
+      </div>
+
+      <div class="key-concept">
+        Con due lati e l'angolo compreso, il teorema del coseno misura una distanza che non
+        potremmo percorrere direttamente: è la <strong>triangolazione</strong>, alla base di
+        topografia, navigazione e GPS.
+      </div>
+    </div>
+  </div>
+
+  <h2>Riepilogo</h2>
+  <div class="intro-section">
+    <p>Per risolvere qualsiasi triangolo:</p>
+    <ol>
+      <li><strong>Somma degli angoli:</strong> α + β + γ = 180°</li>
+      <li><strong>Teorema dei seni:</strong> quando è noto un lato con l'angolo opposto</li>
+      <li><strong>Teorema del coseno:</strong> con due lati e l'angolo compreso, o con tre lati</li>
+      <li><strong>Applicazioni reali:</strong> la triangolazione per misurare distanze inaccessibili</li>
+    </ol>
+    <p>
+      Con questa lezione si chiude il percorso di <strong>goniometria e trigonometria</strong>:
+      dalla misura degli angoli in radianti fino alla risoluzione completa dei triangoli.
+    </p>
+  </div>
+</LessonLayout>
