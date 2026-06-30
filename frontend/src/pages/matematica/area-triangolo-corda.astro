@@ -1,0 +1,130 @@
+---
+import LessonLayout from '../../layouts/LessonLayout.astro';
+import VideoPlayer from '../../components/VideoPlayer.astro';
+---
+
+<LessonLayout
+  title="Area del Triangolo e Teorema della Corda"
+  subtitle="Due formule trigonometriche con il seno, dai triangoli alla circonferenza"
+  description="Area del triangolo e teorema della corda - La formula dell'area con due lati e l'angolo compreso (1/2 a b sin γ), il teorema della corda (AB = 2R sin γ) e due esempi numerici | Formule in Movimento"
+  theme="matematica"
+  breadcrumbs={[
+    { label: 'Home', href: '/' },
+    { label: 'Matematica', href: '/matematica' },
+    { label: 'Area del Triangolo e Teorema della Corda' }
+  ]}
+>
+  <div class="intro-section">
+    <h2 style="margin-top: 0;">La trigonometria entra in scena</h2>
+    <p>
+      Con seno, coseno e tangente possiamo finalmente collegare <strong>angoli e lunghezze</strong>.
+      Due risultati classici aprono la trigonometria: la <strong>formula dell'area</strong> di un
+      triangolo a partire da due lati e dall'angolo compreso, e il <strong>teorema della
+      corda</strong>, che lega una corda al raggio della circonferenza.
+    </p>
+
+    <div class="key-concept">
+      <strong>L'idea di fondo:</strong>
+      <p style="margin-top: 10px;">
+        In entrambe le formule compare il <strong>seno di un angolo</strong>: è il seno a
+        trasformare le informazioni sugli angoli in misure di lunghezze e aree.
+      </p>
+    </div>
+  </div>
+
+  <h2>1. L'Area del Triangolo</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/matematica/videos/area_triangolo_corda/AreaTriangolo.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> partendo dalla formula base&times;altezza/2, l'altezza si
+      esprime con il seno dell'angolo compreso, ottenendo una formula molto comoda.
+      <ul>
+        <li>L'altezza vale h = a&nbsp;sin&nbsp;&gamma;</li>
+        <li>Quindi <strong>A = ½ &middot; a &middot; b &middot; sin&nbsp;&gamma;</strong></li>
+        <li>Bastano <strong>due lati e l'angolo compreso</strong> fra loro</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>2. Esempio sull'Area</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/matematica/videos/area_triangolo_corda/EsempioArea.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> con a = 6, b = 8 e &gamma; = 30° il calcolo è immediato.
+
+      <div class="steps">
+        <strong>Calcolo:</strong>
+        <ol>
+          <li>A = ½ &middot; 6 &middot; 8 &middot; sin&nbsp;30°</li>
+          <li>A = 24 &middot; ½</li>
+          <li>A = <strong>12</strong></li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <h2>3. Il Teorema della Corda</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/matematica/videos/area_triangolo_corda/TeoremaCorda.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> in una circonferenza, una corda è uguale al
+      <strong>diametro</strong> moltiplicato per il <strong>seno</strong> di uno qualunque
+      degli angoli alla circonferenza che insistono su di essa.
+
+      <div class="key-concept">
+        <strong>Formula:</strong> AB = 2R &middot; sin&nbsp;&gamma;. Tutti gli angoli alla
+        circonferenza che "vedono" la stessa corda sono uguali, quindi la formula non dipende
+        da quale punto P si sceglie sull'arco.
+      </div>
+    </div>
+  </div>
+
+  <h2>4. Esempio sulla Corda</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/matematica/videos/area_triangolo_corda/EsempioCorda.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> con raggio R = 5 e angolo alla circonferenza &gamma; = 30°.
+
+      <div class="steps">
+        <strong>Calcolo:</strong>
+        <ol>
+          <li>AB = 2 &middot; 5 &middot; sin&nbsp;30°</li>
+          <li>AB = 10 &middot; ½</li>
+          <li>AB = <strong>5</strong></li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <h2>5. Riepilogo</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/matematica/videos/area_triangolo_corda/Riepilogo.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> le due formule a confronto, accomunate dalla presenza del
+      seno.
+
+      <div class="key-concept">
+        <strong>Le due formule:</strong>
+        <ul>
+          <li>Area del triangolo: A = ½ &middot; a &middot; b &middot; sin&nbsp;&gamma;</li>
+          <li>Teorema della corda: AB = 2R &middot; sin&nbsp;&gamma;</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <h2>In Sintesi</h2>
+  <div class="intro-section">
+    <p>Due strumenti trigonometrici fondamentali:</p>
+    <ol>
+      <li><strong>Area:</strong> A = ½ a b sin&nbsp;&gamma;, da due lati e l'angolo compreso</li>
+      <li><strong>Altezza:</strong> h = a sin&nbsp;&gamma; è il ponte fra geometria e trigonometria</li>
+      <li><strong>Corda:</strong> AB = 2R sin&nbsp;&gamma;, indipendente dal punto sull'arco</li>
+      <li><strong>Filo conduttore:</strong> in entrambe compare il seno di un angolo</li>
+    </ol>
+    <p>
+      Da qui si arriva ai grandi teoremi della trigonometria: il <strong>teorema dei seni</strong>
+      e il <strong>teorema del coseno</strong>, per risolvere qualsiasi triangolo.
+    </p>
+  </div>
+</LessonLayout>
