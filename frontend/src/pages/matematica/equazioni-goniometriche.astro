@@ -1,0 +1,134 @@
+---
+import LessonLayout from '../../layouts/LessonLayout.astro';
+import VideoPlayer from '../../components/VideoPlayer.astro';
+---
+
+<LessonLayout
+  title="Equazioni Goniometriche"
+  subtitle="Risolvere equazioni con seno, coseno e tangente sulla circonferenza"
+  description="Equazioni goniometriche - Le equazioni elementari sin x = k, cos x = k, tan x = k, la soluzione generale con il periodo, le equazioni riconducibili per sostituzione e uno schema riassuntivo | Formule in Movimento"
+  theme="matematica"
+  breadcrumbs={[
+    { label: 'Home', href: '/' },
+    { label: 'Matematica', href: '/matematica' },
+    { label: 'Equazioni Goniometriche' }
+  ]}
+>
+  <div class="intro-section">
+    <h2 style="margin-top: 0;">Infinite soluzioni, un solo schema</h2>
+    <p>
+      Un'<strong>equazione goniometrica</strong> è un'equazione in cui l'incognita compare
+      come argomento di una funzione goniometrica. Poiché seno, coseno e tangente sono
+      <strong>periodici</strong>, queste equazioni hanno (in genere) <strong>infinite
+      soluzioni</strong>: si trovano gli angoli "base" sulla circonferenza e poi si aggiunge
+      il periodo.
+    </p>
+
+    <div class="key-concept">
+      <strong>L'idea di fondo:</strong>
+      <p style="margin-top: 10px;">
+        Si parte sempre dalle <strong>equazioni elementari</strong>
+        (sin&nbsp;x = k, cos&nbsp;x = k, tan&nbsp;x = k). Tutte le altre si
+        <strong>riconducono</strong> a queste, spesso con una sostituzione o usando le formule
+        goniometriche.
+      </p>
+    </div>
+  </div>
+
+  <h2>1. Equazione con il Seno</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/matematica/videos/equazioni_goniometriche/SenoElementare.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> la retta orizzontale sin&nbsp;x = 1/2 incontra la
+      circonferenza in <strong>due punti</strong>, che danno due famiglie di soluzioni.
+      <ul>
+        <li>x = &pi;/6 + 2k&pi;</li>
+        <li>x = 5&pi;/6 + 2k&pi;</li>
+        <li>con k &isin; &#8484; (si aggiunge un giro intero ogni volta)</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>2. Equazione con il Coseno</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/matematica/videos/equazioni_goniometriche/CosenoElementare.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> la retta verticale cos&nbsp;x = 1/2 dà due punti
+      <strong>simmetrici rispetto all'asse x</strong>, da cui la comoda forma con il &plusmn;.
+
+      <div class="key-concept">
+        <strong>Soluzione:</strong> x = &plusmn;&pi;/3 + 2k&pi;, con k &isin; &#8484;. Il
+        coseno è una funzione pari, perciò le due soluzioni sono opposte.
+      </div>
+    </div>
+  </div>
+
+  <h2>3. Equazione con la Tangente</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/matematica/videos/equazioni_goniometriche/TangenteElementare.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> per la tangente i due punti sono
+      <strong>diametralmente opposti</strong> (distano &pi;), quindi basta una sola famiglia
+      con periodo &pi;.
+
+      <div class="key-concept">
+        <strong>Soluzione:</strong> x = &pi;/4 + k&pi;, con k &isin; &#8484;. Il periodo della
+        tangente è &pi;, non 2&pi;.
+      </div>
+    </div>
+  </div>
+
+  <h2>4. Equazione Riconducibile</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/matematica/videos/equazioni_goniometriche/EquazioneRiconducibile.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> un'equazione di secondo grado in sin&nbsp;x si risolve con
+      una <strong>sostituzione</strong>, riportandola a equazioni elementari.
+
+      <div class="steps">
+        <strong>2 sin²x &minus; sin x &minus; 1 = 0:</strong>
+        <ol>
+          <li>Pongo t = sin&nbsp;x: 2t² &minus; t &minus; 1 = 0</li>
+          <li>(2t + 1)(t &minus; 1) = 0 &rarr; t = &minus;1/2 oppure t = 1</li>
+          <li>sin&nbsp;x = 1 &rarr; x = &pi;/2 + 2k&pi;</li>
+          <li>sin&nbsp;x = &minus;1/2 &rarr; x = 7&pi;/6 + 2k&pi; &or; x = 11&pi;/6 + 2k&pi;</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <h2>5. Schema Riassuntivo</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/matematica/videos/equazioni_goniometriche/SchemaRiepilogo.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> una tabella raccoglie le tre equazioni elementari con le
+      rispettive soluzioni generali.
+
+      <div class="key-concept">
+        <strong>Le tre formule base</strong> (con &alpha; = arcsin&nbsp;k, arccos&nbsp;k,
+        arctan&nbsp;k):
+        <ul>
+          <li>sin&nbsp;x = k &rarr; x = &alpha; + 2k&pi; &or; x = &pi; &minus; &alpha; + 2k&pi;</li>
+          <li>cos&nbsp;x = k &rarr; x = &plusmn;&alpha; + 2k&pi;</li>
+          <li>tan&nbsp;x = k &rarr; x = &alpha; + k&pi;</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <h2>Riepilogo</h2>
+  <div class="intro-section">
+    <p>Per risolvere un'equazione goniometrica:</p>
+    <ol>
+      <li><strong>Riconducila</strong> a una o più equazioni elementari</li>
+      <li><strong>Trova gli angoli base</strong> sulla circonferenza</li>
+      <li><strong>Aggiungi il periodo:</strong> 2k&pi; per seno e coseno, k&pi; per la tangente</li>
+      <li><strong>Sostituzione:</strong> utile quando compare la stessa funzione elevata a potenza</li>
+    </ol>
+    <p>
+      Una volta padroneggiate le equazioni, il passo successivo sono le
+      <strong>disequazioni goniometriche</strong>, dove conta anche il verso della
+      disuguaglianza.
+    </p>
+  </div>
+</LessonLayout>
