@@ -1,0 +1,142 @@
+---
+import LessonLayout from '../../layouts/LessonLayout.astro';
+import VideoPlayer from '../../components/VideoPlayer.astro';
+---
+
+<LessonLayout
+  title="Intensità Sonora e Decibel"
+  subtitle="Quanta energia trasporta un suono e come si misura il suo livello"
+  description="Intensità sonora e livello di intensità sonora - Definizione di intensità (I = P/A), legge dell'inverso del quadrato, il decibel (β = 10 log I/I₀) e la scala dei suoni comuni | Formule in Movimento"
+  theme="fisica"
+  breadcrumbs={[
+    { label: 'Home', href: '/' },
+    { label: 'Fisica', href: '/fisica' },
+    { label: 'Intensità Sonora e Decibel' }
+  ]}
+>
+  <div class="intro-section">
+    <h2 style="margin-top: 0;">Dal suono all'energia che trasporta</h2>
+    <p>
+      Un'onda sonora trasporta <strong>energia</strong>. Quanta ne arriva al nostro orecchio
+      dipende dalla <strong>potenza</strong> della sorgente e da <strong>quanto siamo
+      lontani</strong>. Per quantificare tutto questo si usano due grandezze: l'<strong>intensità
+      sonora</strong> e il <strong>livello di intensità sonora</strong> (i decibel).
+    </p>
+
+    <div class="key-concept">
+      <strong>Concetto Chiave:</strong>
+      <p style="margin-top: 10px;">
+        L'orecchio umano percepisce un intervallo enorme di intensità: per questo il livello
+        sonoro si misura con una scala <strong>logaritmica</strong>, i <strong>decibel</strong>,
+        molto più vicina a come percepiamo davvero i suoni.
+      </p>
+    </div>
+  </div>
+
+  <h2>1. Che cos'è l'Intensità Sonora</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/fisica/videos/intensita_sonora/IntensitaSonora.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> l'intensità è la potenza che attraversa una superficie,
+      divisa per l'area di quella superficie.
+      <ul>
+        <li><strong>I = P / A</strong></li>
+        <li>P è la potenza (in watt), A l'area (in m²)</li>
+        <li>L'intensità si misura in <strong>W/m²</strong></li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>2. La Legge dell'Inverso del Quadrato</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/fisica/videos/intensita_sonora/PropagazioneSferica.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> una sorgente puntiforme irradia in tutte le direzioni. La
+      stessa potenza si distribuisce su sfere sempre più grandi, quindi l'intensità cala
+      rapidamente con la distanza.
+
+      <div class="key-concept">
+        <strong>Formula:</strong> I = P / (4&pi;r²). Raddoppiando la distanza l'intensità
+        diventa <strong>un quarto</strong> (r → 2r ⇒ I → I/4): è la legge dell'inverso del
+        quadrato.
+      </div>
+    </div>
+  </div>
+
+  <h2>3. Il Livello di Intensità (Decibel)</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/fisica/videos/intensita_sonora/LivelloIntensita.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> il livello sonoro confronta l'intensità con una soglia di
+      riferimento, usando il logaritmo.
+
+      <div class="steps">
+        <strong>La formula del decibel:</strong>
+        <ol>
+          <li>&beta; = 10 &middot; log₁₀(I / I₀)</li>
+          <li>I₀ = 10⁻¹² W/m² è la soglia di udibilità</li>
+          <li>Alla soglia (I = I₀) si ha &beta; = 0 dB</li>
+        </ol>
+      </div>
+
+      <div class="key-concept">
+        Il logaritmo comprime un intervallo di intensità enorme (oltre dodici ordini di
+        grandezza) in una scala maneggevole da 0 a circa 130 dB.
+      </div>
+    </div>
+  </div>
+
+  <h2>4. Un Esempio in Decibel</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/fisica/videos/intensita_sonora/EsempioDecibel.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> calcoliamo il livello sonoro di un'intensità data, e vediamo
+      l'effetto del raddoppio.
+
+      <div class="steps">
+        <strong>Dati: I = 10⁻⁶ W/m²</strong>
+        <ol>
+          <li>&beta; = 10 &middot; log₁₀(10⁻⁶ / 10⁻¹²) = 10 &middot; log₁₀(10⁶)</li>
+          <li>&beta; = 10 &middot; 6 = <strong>60 dB</strong></li>
+          <li>Raddoppiare l'intensità aggiunge solo ≈ 3 dB (10 log 2 ≈ 3)</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <h2>5. La Scala dei Decibel</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/fisica/videos/intensita_sonora/ScalaDecibel.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> alcuni suoni comuni sulla scala dei decibel, per dare un
+      riferimento concreto.
+
+      <div class="key-concept">
+        <strong>Riferimenti:</strong>
+        <ul>
+          <li>Soglia di udibilità: 0 dB &middot; Sussurro: 30 dB</li>
+          <li>Conversazione: 60 dB &middot; Traffico intenso: 80 dB</li>
+          <li>Concerto rock: 110 dB &middot; Soglia del dolore: 130 dB</li>
+        </ul>
+        Ogni <strong>+10 dB</strong> corrisponde a un'intensità <strong>10 volte</strong>
+        maggiore. Oltre 85 dB prolungati c'è rischio per l'udito.
+      </div>
+    </div>
+  </div>
+
+  <h2>Riepilogo</h2>
+  <div class="intro-section">
+    <p>Per descrivere "quanto è forte" un suono:</p>
+    <ol>
+      <li><strong>Intensità:</strong> I = P/A, in W/m²</li>
+      <li><strong>Distanza:</strong> I = P/(4&pi;r²), cala con il quadrato della distanza</li>
+      <li><strong>Livello sonoro:</strong> &beta; = 10 log₁₀(I/I₀), in decibel</li>
+      <li><strong>Scala logaritmica:</strong> +10 dB significa intensità ×10</li>
+    </ol>
+    <p>
+      L'intensità sonora chiude il discorso sulle onde meccaniche. Le prossime tappe spostano
+      l'attenzione sulle <strong>onde luminose</strong> (riflessione e rifrazione) e
+      sull'<strong>elettrostatica</strong>.
+    </p>
+  </div>
+</LessonLayout>
