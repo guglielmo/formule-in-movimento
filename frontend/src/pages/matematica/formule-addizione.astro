@@ -1,0 +1,150 @@
+---
+import LessonLayout from '../../layouts/LessonLayout.astro';
+import VideoPlayer from '../../components/VideoPlayer.astro';
+---
+
+<LessonLayout
+  title="Formule di Addizione e Sottrazione"
+  subtitle="Seno, coseno e tangente della somma e della differenza di due angoli"
+  description="Formule di addizione e sottrazione - L'errore comune da evitare, le formule di seno, coseno e tangente per somma e differenza di angoli, con un esempio applicativo su cos 75° | Formule in Movimento"
+  theme="matematica"
+  breadcrumbs={[
+    { label: 'Home', href: '/' },
+    { label: 'Matematica', href: '/matematica' },
+    { label: 'Formule di Addizione e Sottrazione' }
+  ]}
+>
+  <div class="intro-section">
+    <h2 style="margin-top: 0;">Combinare due angoli</h2>
+    <p>
+      Spesso serve calcolare il seno o il coseno di una <strong>somma</strong> o di una
+      <strong>differenza</strong> di angoli, oppure ricavare valori di angoli non notevoli
+      (come 75°) a partire da quelli che conosciamo. Per farlo servono le
+      <strong>formule di addizione e sottrazione</strong>.
+    </p>
+
+    <div class="key-concept">
+      <strong>L'idea di fondo:</strong>
+      <p style="margin-top: 10px;">
+        Le funzioni goniometriche <strong>non sono lineari</strong>:
+        cos(&alpha; + &beta;) <em>non</em> è cos&nbsp;&alpha; + cos&nbsp;&beta;. Il valore di
+        un angolo composto si esprime invece tramite <strong>prodotti</strong> di seni e coseni
+        degli angoli di partenza.
+      </p>
+    </div>
+  </div>
+
+  <h2>1. L'Errore da Evitare</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/matematica/videos/formule_addizione/AttenzioneErrore.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> l'errore più comune è "distribuire" la funzione sulla somma.
+      Un controesempio numerico lo smonta subito.
+      <ul>
+        <li>cos(60° + 30°) = cos&nbsp;90° = <strong>0</strong></li>
+        <li>cos&nbsp;60° + cos&nbsp;30° = 1/2 + &radic;3/2 &asymp; <strong>1,37</strong></li>
+        <li>0 &ne; 1,37: la funzione <strong>non si distribuisce</strong> sulla somma</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>2. Coseno di Somma e Differenza</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/matematica/videos/formule_addizione/FormuleCoseno.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> le due formule del coseno, con la regola del segno.
+
+      <div class="steps">
+        <strong>Formule:</strong>
+        <ol>
+          <li>cos(&alpha; + &beta;) = cos&nbsp;&alpha;&nbsp;cos&nbsp;&beta; <strong>&minus;</strong> sin&nbsp;&alpha;&nbsp;sin&nbsp;&beta;</li>
+          <li>cos(&alpha; &minus; &beta;) = cos&nbsp;&alpha;&nbsp;cos&nbsp;&beta; <strong>+</strong> sin&nbsp;&alpha;&nbsp;sin&nbsp;&beta;</li>
+        </ol>
+      </div>
+
+      <div class="key-concept">
+        <strong>Regola del segno:</strong> nel coseno il segno <strong>si inverte</strong> —
+        la somma porta il meno, la differenza il più.
+      </div>
+    </div>
+  </div>
+
+  <h2>3. Seno di Somma e Differenza</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/matematica/videos/formule_addizione/FormuleSeno.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> le due formule del seno, con un comportamento opposto a
+      quello del coseno.
+
+      <div class="steps">
+        <strong>Formule:</strong>
+        <ol>
+          <li>sin(&alpha; + &beta;) = sin&nbsp;&alpha;&nbsp;cos&nbsp;&beta; <strong>+</strong> cos&nbsp;&alpha;&nbsp;sin&nbsp;&beta;</li>
+          <li>sin(&alpha; &minus; &beta;) = sin&nbsp;&alpha;&nbsp;cos&nbsp;&beta; <strong>&minus;</strong> cos&nbsp;&alpha;&nbsp;sin&nbsp;&beta;</li>
+        </ol>
+      </div>
+
+      <div class="key-concept">
+        <strong>Regola del segno:</strong> nel seno il segno <strong>si conserva</strong> —
+        la somma porta il più, la differenza il meno.
+      </div>
+    </div>
+  </div>
+
+  <h2>4. Tangente di Somma e Differenza</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/matematica/videos/formule_addizione/FormuleTangente.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> le formule della tangente si ricavano dal rapporto seno/coseno
+      e hanno una struttura a frazione.
+
+      <div class="steps">
+        <strong>Formule:</strong>
+        <ol>
+          <li>tan(&alpha; + &beta;) = (tan&nbsp;&alpha; + tan&nbsp;&beta;) / (1 &minus; tan&nbsp;&alpha;&nbsp;tan&nbsp;&beta;)</li>
+          <li>tan(&alpha; &minus; &beta;) = (tan&nbsp;&alpha; &minus; tan&nbsp;&beta;) / (1 + tan&nbsp;&alpha;&nbsp;tan&nbsp;&beta;)</li>
+        </ol>
+      </div>
+
+      <div class="key-concept">
+        <strong>Attenzione ai segni:</strong> numeratore e denominatore hanno
+        <strong>segni opposti</strong>.
+      </div>
+    </div>
+  </div>
+
+  <h2>5. Un Esempio Concreto</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/matematica/videos/formule_addizione/Esempio.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> usiamo la formula del coseno per calcolare un angolo non
+      notevole, scomponendolo nella somma di due angoli notevoli.
+
+      <div class="steps">
+        <strong>Calcolo di cos 75°:</strong>
+        <ol>
+          <li>75° = 45° + 30°</li>
+          <li>cos&nbsp;75° = cos&nbsp;45°&nbsp;cos&nbsp;30° &minus; sin&nbsp;45°&nbsp;sin&nbsp;30°</li>
+          <li>= (&radic;2/2)(&radic;3/2) &minus; (&radic;2/2)(1/2)</li>
+          <li>= <strong>(&radic;6 &minus; &radic;2) / 4</strong></li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <h2>Riepilogo</h2>
+  <div class="intro-section">
+    <p>Le formule di addizione e sottrazione permettono di scomporre angoli composti:</p>
+    <ol>
+      <li><strong>Non linearità:</strong> cos(&alpha; + &beta;) &ne; cos&nbsp;&alpha; + cos&nbsp;&beta;</li>
+      <li><strong>Coseno:</strong> cos&nbsp;&alpha;&nbsp;cos&nbsp;&beta; &#8723; sin&nbsp;&alpha;&nbsp;sin&nbsp;&beta; (il segno si inverte)</li>
+      <li><strong>Seno:</strong> sin&nbsp;&alpha;&nbsp;cos&nbsp;&beta; &plusmn; cos&nbsp;&alpha;&nbsp;sin&nbsp;&beta; (il segno si conserva)</li>
+      <li><strong>Tangente:</strong> frazione con segni opposti tra numeratore e denominatore</li>
+      <li><strong>Applicazione:</strong> calcolare angoli non notevoli come 75°</li>
+    </ol>
+    <p>
+      Da queste formule discendono direttamente quelle di <strong>duplicazione</strong>
+      (ponendo &beta; = &alpha;) e di <strong>bisezione</strong>, le prossime tappe.
+    </p>
+  </div>
+</LessonLayout>
