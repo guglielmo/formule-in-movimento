@@ -1,0 +1,148 @@
+---
+import LessonLayout from '../../layouts/LessonLayout.astro';
+import VideoPlayer from '../../components/VideoPlayer.astro';
+---
+
+<LessonLayout
+  title="Formule di Duplicazione e Bisezione"
+  subtitle="Dall'angolo doppio all'angolo metà, a partire dalle formule di addizione"
+  description="Formule di duplicazione e bisezione - sin 2α, cos 2α nelle tre forme, tan 2α, le formule dell'angolo metà e due esempi applicativi (sin 2α da sin α e cos 15°) | Formule in Movimento"
+  theme="matematica"
+  breadcrumbs={[
+    { label: 'Home', href: '/' },
+    { label: 'Matematica', href: '/matematica' },
+    { label: 'Formule di Duplicazione e Bisezione' }
+  ]}
+>
+  <div class="intro-section">
+    <h2 style="margin-top: 0;">Angolo doppio e angolo metà</h2>
+    <p>
+      Le <strong>formule di duplicazione</strong> esprimono seno, coseno e tangente di un
+      angolo <strong>doppio</strong> (2&alpha;) tramite le funzioni di &alpha;. Le
+      <strong>formule di bisezione</strong> fanno il percorso inverso: dall'angolo &alpha;
+      all'angolo <strong>metà</strong> (&alpha;/2). Non sono formule nuove da memorizzare a
+      forza: <strong>discendono direttamente</strong> da quelle di addizione.
+    </p>
+
+    <div class="key-concept">
+      <strong>L'idea di fondo:</strong>
+      <p style="margin-top: 10px;">
+        Basta porre <strong>&beta; = &alpha;</strong> nelle formule di addizione per ottenere
+        la duplicazione; e usare le forme di cos&nbsp;2&alpha; "al contrario" per ottenere la
+        bisezione. Un'unica radice comune per tutte e due.
+      </p>
+    </div>
+  </div>
+
+  <h2>1. Dalle Formule di Addizione</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/matematica/videos/formule_duplicazione/DaAddizioneADuplicazione.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> ponendo &beta; = &alpha; nelle formule di addizione, i due
+      addendi diventano uguali e otteniamo subito la duplicazione.
+      <ul>
+        <li>sin(&alpha;+&alpha;) = sin&nbsp;&alpha;cos&nbsp;&alpha; + cos&nbsp;&alpha;sin&nbsp;&alpha; &rarr; <strong>sin&nbsp;2&alpha; = 2&nbsp;sin&nbsp;&alpha;&nbsp;cos&nbsp;&alpha;</strong></li>
+        <li>cos(&alpha;+&alpha;) = cos&nbsp;&alpha;cos&nbsp;&alpha; &minus; sin&nbsp;&alpha;sin&nbsp;&alpha; &rarr; <strong>cos&nbsp;2&alpha; = cos²&alpha; &minus; sin²&alpha;</strong></li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>2. Le Formule di Duplicazione</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/matematica/videos/formule_duplicazione/FormuleDuplicazione.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> il quadro completo. Il coseno ha <strong>tre forme
+      equivalenti</strong>, utilissime a seconda di cosa è noto.
+
+      <div class="steps">
+        <strong>Formule:</strong>
+        <ol>
+          <li>sin&nbsp;2&alpha; = 2&nbsp;sin&nbsp;&alpha;&nbsp;cos&nbsp;&alpha;</li>
+          <li>cos&nbsp;2&alpha; = cos²&alpha; &minus; sin²&alpha; = 2cos²&alpha; &minus; 1 = 1 &minus; 2sin²&alpha;</li>
+          <li>tan&nbsp;2&alpha; = 2&nbsp;tan&nbsp;&alpha; / (1 &minus; tan²&alpha;)</li>
+        </ol>
+      </div>
+
+      <div class="key-concept">
+        <strong>Le tre forme del coseno</strong> si passano l'una nell'altra usando la
+        relazione fondamentale sin²&alpha; + cos²&alpha; = 1.
+      </div>
+    </div>
+  </div>
+
+  <h2>3. Esempio di Duplicazione</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/matematica/videos/formule_duplicazione/EsempioDuplicazione.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> dato sin&nbsp;&alpha; = 3/5 (con &alpha; acuto), troviamo
+      seno e coseno dell'angolo doppio.
+
+      <div class="steps">
+        <strong>Calcolo:</strong>
+        <ol>
+          <li>cos&nbsp;&alpha; = &radic;(1 &minus; 9/25) = 4/5</li>
+          <li>sin&nbsp;2&alpha; = 2 &middot; (3/5) &middot; (4/5) = <strong>24/25</strong></li>
+          <li>cos&nbsp;2&alpha; = 1 &minus; 2 &middot; (9/25) = <strong>7/25</strong></li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <h2>4. Le Formule di Bisezione</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/matematica/videos/formule_duplicazione/FormuleBisezione.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> ricavate dalle forme di cos&nbsp;2&alpha;, esprimono le
+      funzioni dell'angolo metà.
+
+      <div class="steps">
+        <strong>Formule:</strong>
+        <ol>
+          <li>sin(&alpha;/2) = &plusmn;&radic;((1 &minus; cos&nbsp;&alpha;) / 2)</li>
+          <li>cos(&alpha;/2) = &plusmn;&radic;((1 + cos&nbsp;&alpha;) / 2)</li>
+          <li>tan(&alpha;/2) = &plusmn;&radic;((1 &minus; cos&nbsp;&alpha;) / (1 + cos&nbsp;&alpha;)) = (1 &minus; cos&nbsp;&alpha;) / sin&nbsp;&alpha;</li>
+        </ol>
+      </div>
+
+      <div class="key-concept">
+        <strong>Attenzione al segno:</strong> il &plusmn; si scioglie guardando in quale
+        <strong>quadrante</strong> cade l'angolo &alpha;/2.
+      </div>
+    </div>
+  </div>
+
+  <h2>5. Esempio di Bisezione</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/matematica/videos/formule_duplicazione/EsempioBisezione.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> calcoliamo cos&nbsp;15° vedendolo come la metà di 30°,
+      angolo notevole.
+
+      <div class="steps">
+        <strong>Calcolo di cos 15°:</strong>
+        <ol>
+          <li>15° = 30° / 2</li>
+          <li>cos&nbsp;15° = &radic;((1 + cos&nbsp;30°) / 2) = &radic;((2 + &radic;3) / 4)</li>
+          <li>= <strong>&radic;(2 + &radic;3) / 2</strong> &asymp; 0,966</li>
+        </ol>
+        Segno <strong>+</strong> perché 15° è nel primo quadrante.
+      </div>
+    </div>
+  </div>
+
+  <h2>Riepilogo</h2>
+  <div class="intro-section">
+    <p>Duplicazione e bisezione discendono entrambe dalle formule di addizione:</p>
+    <ol>
+      <li><strong>Duplicazione:</strong> si ottiene ponendo &beta; = &alpha;</li>
+      <li><strong>sin&nbsp;2&alpha;</strong> = 2&nbsp;sin&nbsp;&alpha;&nbsp;cos&nbsp;&alpha;</li>
+      <li><strong>cos&nbsp;2&alpha;</strong> ha tre forme equivalenti (con sin²+cos²=1)</li>
+      <li><strong>Bisezione:</strong> formule con la radice e il doppio segno &plusmn;</li>
+      <li><strong>Il segno</strong> dell'angolo metà si decide dal quadrante</li>
+    </ol>
+    <p>
+      Con tutte le formule goniometriche a disposizione, le prossime tappe saranno le
+      <strong>equazioni</strong> e le <strong>disequazioni goniometriche</strong>.
+    </p>
+  </div>
+</LessonLayout>
