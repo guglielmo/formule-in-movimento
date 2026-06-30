@@ -1,0 +1,131 @@
+---
+import LessonLayout from '../../layouts/LessonLayout.astro';
+import VideoPlayer from '../../components/VideoPlayer.astro';
+---
+
+<LessonLayout
+  title="Disequazioni Goniometriche"
+  subtitle="Leggere sulla circonferenza gli archi che soddisfano la disuguaglianza"
+  description="Disequazioni goniometriche - Il metodo per risolverle, sin x maggiore di 1/2, cos x minore di 1/2, tan x maggiore di 1 e le disequazioni riconducibili di secondo grado, con la lettura degli archi sulla circonferenza | Formule in Movimento"
+  theme="matematica"
+  breadcrumbs={[
+    { label: 'Home', href: '/' },
+    { label: 'Matematica', href: '/matematica' },
+    { label: 'Disequazioni Goniometriche' }
+  ]}
+>
+  <div class="intro-section">
+    <h2 style="margin-top: 0;">Non un punto, ma un arco</h2>
+    <p>
+      Mentre un'equazione goniometrica ha come soluzioni dei <strong>singoli angoli</strong>,
+      una <strong>disequazione</strong> è soddisfatta da <strong>interi archi</strong> di
+      circonferenza. Il procedimento parte sempre dall'equazione associata, ma poi bisogna
+      capire <em>quale</em> arco prendere.
+    </p>
+
+    <div class="key-concept">
+      <strong>L'idea di fondo:</strong>
+      <p style="margin-top: 10px;">
+        Si trovano gli <strong>angoli di confine</strong> (risolvendo l'equazione associata),
+        si segnano sulla circonferenza e si legge l'arco dove la disuguaglianza è vera:
+        <strong>il verso del segno indica quale arco</strong> scegliere.
+      </p>
+    </div>
+  </div>
+
+  <h2>1. Come si Risolvono</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/matematica/videos/disequazioni_goniometriche/ComeSiRisolve.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> il metodo in quattro passi, valido per tutte le
+      disequazioni goniometriche.
+      <ul>
+        <li>Risolvo l'<strong>equazione associata</strong> (angoli di confine)</li>
+        <li>Segno gli <strong>archi</strong> sulla circonferenza</li>
+        <li>Leggo <strong>dove vale</strong> la disuguaglianza</li>
+        <li>Aggiungo il <strong>periodo</strong></li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>2. Disequazione con il Seno</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/matematica/videos/disequazioni_goniometriche/SenoMaggiore.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> per sin&nbsp;x &gt; 1/2 prendiamo l'arco dove l'altezza del
+      punto (l'ordinata) <strong>supera</strong> 1/2, compreso fra i due angoli di confine.
+
+      <div class="key-concept">
+        <strong>Soluzione:</strong> &pi;/6 + 2k&pi; &lt; x &lt; 5&pi;/6 + 2k&pi;. Gli estremi
+        sono <strong>esclusi</strong> (disuguaglianza stretta).
+      </div>
+    </div>
+  </div>
+
+  <h2>3. Disequazione con il Coseno</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/matematica/videos/disequazioni_goniometriche/CosenoMinore.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> per cos&nbsp;x &lt; 1/2 prendiamo l'arco dove l'ascissa è
+      <strong>minore</strong> di 1/2, cioè la parte <strong>sinistra</strong> della
+      circonferenza.
+
+      <div class="key-concept">
+        <strong>Soluzione:</strong> &pi;/3 + 2k&pi; &lt; x &lt; 5&pi;/3 + 2k&pi;. Qui l'arco
+        attraversa &pi; (il lato sinistro), non lo "zero".
+      </div>
+    </div>
+  </div>
+
+  <h2>4. Disequazione con la Tangente</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/matematica/videos/disequazioni_goniometriche/TangenteMaggiore.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> per tan&nbsp;x &gt; 1 l'arco va dall'angolo di confine
+      fino all'<strong>asintoto</strong> (dove la tangente "esplode"), e si ripete con periodo
+      &pi;.
+
+      <div class="key-concept">
+        <strong>Soluzione:</strong> &pi;/4 + k&pi; &lt; x &lt; &pi;/2 + k&pi;. Attenzione: il
+        valore &pi;/2 + k&pi; è escluso perché lì la tangente <strong>non esiste</strong>.
+      </div>
+    </div>
+  </div>
+
+  <h2>5. Disequazione Riconducibile</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/matematica/videos/disequazioni_goniometriche/DisequazioneRiconducibile.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> una disequazione di secondo grado si risolve con la
+      <strong>sostituzione</strong> e lo <strong>studio del segno</strong>, poi si torna alla
+      funzione goniometrica.
+
+      <div class="steps">
+        <strong>2 sin²x &minus; sin x &minus; 1 &ge; 0:</strong>
+        <ol>
+          <li>t = sin&nbsp;x: (2t + 1)(t &minus; 1) &ge; 0</li>
+          <li>parabola verso l'alto, &ge; 0 all'esterno: t &le; &minus;1/2 &or; t &ge; 1</li>
+          <li>sin&nbsp;x &ge; 1 &rarr; x = &pi;/2 + 2k&pi;</li>
+          <li>sin&nbsp;x &le; &minus;1/2 &rarr; 7&pi;/6 + 2k&pi; &le; x &le; 11&pi;/6 + 2k&pi;</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <h2>Riepilogo</h2>
+  <div class="intro-section">
+    <p>Per risolvere una disequazione goniometrica:</p>
+    <ol>
+      <li><strong>Equazione associata:</strong> trova gli angoli di confine</li>
+      <li><strong>Archi sulla circonferenza:</strong> il verso del segno dice quale prendere</li>
+      <li><strong>Estremi:</strong> inclusi con &le;/&ge;, esclusi con &lt;/&gt; (e sempre esclusi gli asintoti della tangente)</li>
+      <li><strong>Periodo:</strong> 2k&pi; per seno e coseno, k&pi; per la tangente</li>
+      <li><strong>Riconducibili:</strong> sostituzione + studio del segno</li>
+    </ol>
+    <p>
+      Con equazioni e disequazioni si chiude la parte goniometrica. Le prossime tappe portano
+      alla <strong>trigonometria</strong>: il teorema dei seni, quello del coseno e la
+      risoluzione dei triangoli.
+    </p>
+  </div>
+</LessonLayout>
