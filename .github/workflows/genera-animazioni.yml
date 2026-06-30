@@ -82,7 +82,7 @@ jobs:
       target: ${{ steps.cfg.outputs.target }}
       image: ${{ steps.cfg.outputs.image }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - id: cfg
         run: |
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
@@ -122,10 +122,10 @@ jobs:
       contents: read
       packages: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Login a GHCR
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
@@ -152,7 +152,7 @@ jobs:
     outputs:
       matrix: ${{ steps.set.outputs.matrix }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - id: set
         name: Costruisci la matrice delle animazioni
@@ -186,14 +186,14 @@ jobs:
       fail-fast: false
       matrix: ${{ fromJSON(needs.discover.outputs.matrix) }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       # Cache dei media renderizzati. La chiave dipende dalla qualità e
       # dall'hash dei sorgenti dell'animazione: se nulla è cambiato, la cache
       # viene ripristinata e il rendering viene saltato (nessun pull immagine).
       - name: Cache animazione renderizzata
         id: cache
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: media
           key: media-${{ needs.setup.outputs.quality }}-${{ matrix.discipline }}-${{ matrix.topic }}-${{ hashFiles(format('animations/{0}/{1}/**', matrix.discipline, matrix.topic)) }}
@@ -202,7 +202,7 @@ jobs:
       # CI (Manim + LaTeX già installati). Niente apt/pip qui.
       - name: Login a GHCR
         if: steps.cache.outputs.cache-hit != 'true'
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
@@ -218,7 +218,7 @@ jobs:
               MANIM=/opt/manim-venv/bin/manim
 
       - name: Carica i media generati come artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: media-${{ matrix.discipline }}-${{ matrix.topic }}
           path: media
@@ -236,18 +236,18 @@ jobs:
       VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
       VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
-          node-version: "20"
+          node-version: "22"
 
       # Raccoglie i media di tutte le animazioni in ./media (ricostruisce la
       # struttura media/<disciplina>/...). Il symlink frontend/public/media
       # punta a ../../media, quindi i video diventano visibili al frontend.
       - name: Scarica tutti i media generati
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           pattern: media-*
           path: media
