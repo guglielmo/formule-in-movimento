@@ -1,0 +1,127 @@
+---
+import LessonLayout from '../../layouts/LessonLayout.astro';
+import VideoPlayer from '../../components/VideoPlayer.astro';
+---
+
+<LessonLayout
+  title="Campo Elettrico e Linee di Campo"
+  subtitle="Come una carica modifica lo spazio attorno a sé"
+  description="Campo elettrico e linee di campo - Definizione E = F/q, campo di una carica puntiforme E = kQ/r², le linee di campo e le loro regole, il dipolo elettrico e la forza F = qE | Formule in Movimento"
+  theme="fisica"
+  breadcrumbs={[
+    { label: 'Home', href: '/' },
+    { label: 'Fisica', href: '/fisica' },
+    { label: 'Campo Elettrico e Linee di Campo' }
+  ]}
+>
+  <div class="intro-section">
+    <h2 style="margin-top: 0;">Dalla forza al campo</h2>
+    <p>
+      Nella lezione precedente abbiamo visto la forza tra cariche (la legge di Coulomb). Ma come
+      fa una carica a "sentire" un'altra a distanza? La fisica moderna risponde con il concetto
+      di <strong>campo elettrico</strong>: ogni carica modifica lo spazio attorno a sé, e
+      un'altra carica reagisce al campo che trova nel punto in cui si trova.
+    </p>
+
+    <div class="key-concept">
+      <strong>Concetto Chiave:</strong>
+      <p style="margin-top: 10px;">
+        Il <strong>campo elettrico</strong> è la forza per unità di carica: E = F/q. È una
+        grandezza <strong>vettoriale</strong> definita in ogni punto dello spazio, e si
+        visualizza con le <strong>linee di campo</strong>.
+      </p>
+    </div>
+  </div>
+
+  <h2>1. Che cos'è il Campo Elettrico</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/fisica/videos/campo_elettrico/CampoElettrico.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> immaginiamo una piccola carica di prova q in un punto: la
+      forza che subisce, divisa per q, definisce il campo in quel punto.
+      <ul>
+        <li><strong>E = F / q</strong> (grandezza vettoriale)</li>
+        <li>Si misura in <strong>N/C</strong></li>
+        <li>Il campo esiste <strong>anche senza</strong> la carica di prova: descrive lo spazio</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>2. Il Campo di una Carica Puntiforme</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/fisica/videos/campo_elettrico/CampoCaricaPuntiforme.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> attorno a una carica puntiforme il campo è
+      <strong>radiale</strong> e diminuisce con la distanza.
+
+      <div class="key-concept">
+        <strong>Formula:</strong> E = k · Q / r². Il campo punta <strong>lontano</strong> dalle
+        cariche positive e <strong>verso</strong> quelle negative, e cala con il quadrato della
+        distanza.
+      </div>
+    </div>
+  </div>
+
+  <h2>3. Le Linee di Campo</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/fisica/videos/campo_elettrico/LineeDiCampo.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> le linee di campo sono un modo per "disegnare" il campo: la
+      loro direzione dà il verso del campo, la loro densità la sua intensità.
+
+      <div class="steps">
+        <strong>Le regole:</strong>
+        <ol>
+          <li><strong>Escono</strong> dalle cariche positive, <strong>entrano</strong> in quelle negative</li>
+          <li>Sono <strong>più fitte</strong> dove il campo è più intenso</li>
+          <li><strong>Non si incrociano</strong> mai</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <h2>4. Il Dipolo Elettrico</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/fisica/videos/campo_elettrico/DipoloElettrico.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> due cariche uguali e opposte, vicine, formano un
+      <strong>dipolo</strong>. Le sue linee di campo sono un classico da riconoscere.
+
+      <div class="key-concept">
+        Le linee partono dalla carica <strong>positiva</strong> e arrivano a quella
+        <strong>negativa</strong>, curvandosi con continuità nello spazio. È la configurazione
+        alla base di molte molecole (come l'acqua).
+      </div>
+    </div>
+  </div>
+
+  <h2>5. La Forza su una Carica</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/fisica/videos/campo_elettrico/ForzaSuCarica.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> conoscendo il campo in un punto, la forza su una carica q è
+      immediata.
+
+      <div class="key-concept">
+        <strong>Formula:</strong> F = q · E. Una carica <strong>positiva</strong> sente una
+        forza nel verso del campo; una carica <strong>negativa</strong> nel verso opposto.
+      </div>
+    </div>
+  </div>
+
+  <h2>Riepilogo</h2>
+  <div class="intro-section">
+    <p>Il campo elettrico, in sintesi:</p>
+    <ol>
+      <li><strong>Definizione:</strong> E = F/q, in N/C (vettoriale)</li>
+      <li><strong>Carica puntiforme:</strong> E = k·Q/r², radiale</li>
+      <li><strong>Linee di campo:</strong> escono dal +, entrano nel −, non si incrociano</li>
+      <li><strong>Forza:</strong> F = q·E, nel verso del campo per le cariche positive</li>
+    </ol>
+    <p>
+      Con carica, legge di Coulomb, campo elettrico e linee di campo abbiamo le basi
+      dell'<strong>elettrostatica</strong>, punto di partenza per lo studio dei circuiti e
+      dell'elettromagnetismo.
+    </p>
+  </div>
+</LessonLayout>
