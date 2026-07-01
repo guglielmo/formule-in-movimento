@@ -1,0 +1,133 @@
+---
+import LessonLayout from '../../layouts/LessonLayout.astro';
+import VideoPlayer from '../../components/VideoPlayer.astro';
+---
+
+<LessonLayout
+  title="Riflessione e Rifrazione della Luce"
+  subtitle="Come la luce rimbalza e si piega passando tra mezzi diversi"
+  description="Riflessione e rifrazione delle onde luminose - La legge della riflessione, la legge di Snell, l'indice di rifrazione, la riflessione totale e l'angolo limite, con applicazioni come le fibre ottiche | Formule in Movimento"
+  theme="fisica"
+  breadcrumbs={[
+    { label: 'Home', href: '/' },
+    { label: 'Fisica', href: '/fisica' },
+    { label: 'Riflessione e Rifrazione della Luce' }
+  ]}
+>
+  <div class="intro-section">
+    <h2 style="margin-top: 0;">Quando la luce incontra una superficie</h2>
+    <p>
+      Quando un raggio di luce incontra la superficie che separa due mezzi (per esempio aria e
+      acqua), in parte <strong>rimbalza indietro</strong> — la <strong>riflessione</strong> — e
+      in parte <strong>attraversa</strong> il secondo mezzo cambiando direzione — la
+      <strong>rifrazione</strong>. Due leggi semplici descrivono entrambi i fenomeni.
+    </p>
+
+    <div class="key-concept">
+      <strong>Concetto Chiave:</strong>
+      <p style="margin-top: 10px;">
+        Tutti gli angoli si misurano rispetto alla <strong>normale</strong>, la retta
+        perpendicolare alla superficie nel punto di incidenza. La riflessione conserva l'angolo;
+        la rifrazione lo cambia secondo la <strong>legge di Snell</strong>.
+      </p>
+    </div>
+  </div>
+
+  <h2>1. La Riflessione</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/fisica/videos/riflessione_rifrazione/Riflessione.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> il raggio incidente e il raggio riflesso formano angoli
+      uguali con la normale.
+      <ul>
+        <li>Angolo di incidenza = angolo di riflessione: <strong>&theta;<sub>i</sub> = &theta;<sub>r</sub></strong></li>
+        <li>Raggio incidente, raggio riflesso e normale stanno sullo stesso piano</li>
+        <li>Gli angoli si misurano <strong>dalla normale</strong>, non dalla superficie</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>2. La Rifrazione e la Legge di Snell</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/fisica/videos/riflessione_rifrazione/Rifrazione.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> passando da un mezzo all'altro la luce cambia velocità e
+      quindi direzione. La relazione tra gli angoli è la legge di Snell.
+
+      <div class="key-concept">
+        <strong>Legge di Snell:</strong> n₁ &middot; sin&nbsp;&theta;₁ = n₂ &middot;
+        sin&nbsp;&theta;₂. Entrando in un mezzo <strong>più denso</strong> (n maggiore) il raggio
+        si <strong>avvicina</strong> alla normale; uscendo verso un mezzo meno denso se ne
+        allontana.
+      </div>
+    </div>
+  </div>
+
+  <h2>3. L'Indice di Rifrazione</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/fisica/videos/riflessione_rifrazione/IndiceRifrazione.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> l'indice di rifrazione misura quanto la luce rallenta in un
+      mezzo rispetto al vuoto.
+
+      <div class="steps">
+        <strong>Definizione e valori:</strong>
+        <ol>
+          <li>n = c / v (c = velocità nel vuoto, v = velocità nel mezzo)</li>
+          <li>Aria ≈ 1,00 &middot; Acqua ≈ 1,33 &middot; Vetro ≈ 1,50 &middot; Diamante ≈ 2,42</li>
+          <li>n più grande → luce più lenta → maggiore deviazione</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <h2>4. La Riflessione Totale</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/fisica/videos/riflessione_rifrazione/RiflessioneTotale.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> passando da un mezzo più denso a uno meno denso, oltre un
+      certo <strong>angolo limite</strong> la luce non esce più: viene <strong>tutta
+      riflessa</strong> all'interno.
+
+      <div class="key-concept">
+        <strong>Angolo limite:</strong> sin&nbsp;&theta;<sub>L</sub> = n₂ / n₁ (con n₂ &lt; n₁).
+        Per angoli maggiori di &theta;<sub>L</sub> avviene la <strong>riflessione totale</strong>:
+        è il principio che fa funzionare le <strong>fibre ottiche</strong>.
+      </div>
+    </div>
+  </div>
+
+  <h2>5. Riepilogo e Applicazioni</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/fisica/videos/riflessione_rifrazione/Applicazioni.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> le tre leggi insieme e alcune applicazioni quotidiane.
+
+      <div class="key-concept">
+        <strong>Le tre relazioni:</strong>
+        <ul>
+          <li>Riflessione: &theta;<sub>i</sub> = &theta;<sub>r</sub></li>
+          <li>Rifrazione: n₁ sin&nbsp;&theta;₁ = n₂ sin&nbsp;&theta;₂</li>
+          <li>Angolo limite: sin&nbsp;&theta;<sub>L</sub> = n₂ / n₁</li>
+        </ul>
+        Le ritroviamo in specchi, lenti, occhiali, fibre ottiche, miraggi e nella classica
+        cannuccia che sembra "spezzata" dentro il bicchiere.
+      </div>
+    </div>
+  </div>
+
+  <h2>Riepilogo</h2>
+  <div class="intro-section">
+    <p>Quando la luce incontra la superficie tra due mezzi:</p>
+    <ol>
+      <li><strong>Riflessione:</strong> rimbalza con &theta;<sub>i</sub> = &theta;<sub>r</sub></li>
+      <li><strong>Rifrazione:</strong> si piega secondo n₁ sin&nbsp;&theta;₁ = n₂ sin&nbsp;&theta;₂</li>
+      <li><strong>Indice n = c/v:</strong> indica quanto la luce rallenta nel mezzo</li>
+      <li><strong>Riflessione totale:</strong> oltre l'angolo limite la luce resta intrappolata (fibre ottiche)</li>
+    </ol>
+    <p>
+      Dopo la luce, il percorso di fisica prosegue con l'<strong>elettrostatica</strong> e il
+      <strong>campo elettrico</strong>.
+    </p>
+  </div>
+</LessonLayout>
