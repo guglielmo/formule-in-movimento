@@ -1,0 +1,131 @@
+---
+import LessonLayout from '../../layouts/LessonLayout.astro';
+import VideoPlayer from '../../components/VideoPlayer.astro';
+---
+
+<LessonLayout
+  title="Carica Elettrica e Legge di Coulomb"
+  subtitle="I due tipi di carica e la forza che agisce tra loro"
+  description="Carica elettrica e legge di Coulomb - I due tipi di carica, la quantizzazione, attrazione e repulsione, la legge di Coulomb F = k q₁q₂/r², un esempio numerico e l'analogia con la gravitazione | Formule in Movimento"
+  theme="fisica"
+  breadcrumbs={[
+    { label: 'Home', href: '/' },
+    { label: 'Fisica', href: '/fisica' },
+    { label: 'Carica Elettrica e Legge di Coulomb' }
+  ]}
+>
+  <div class="intro-section">
+    <h2 style="margin-top: 0;">Il punto di partenza dell'elettrostatica</h2>
+    <p>
+      Tutti i fenomeni elettrici nascono da una proprietà della materia: la <strong>carica
+      elettrica</strong>. Esistono <strong>due tipi</strong> di carica — positiva e negativa — e
+      tra corpi carichi agisce una forza descritta dalla <strong>legge di Coulomb</strong>.
+      Questa è la prima di due lezioni sull'elettrostatica.
+    </p>
+
+    <div class="key-concept">
+      <strong>Concetto Chiave:</strong>
+      <p style="margin-top: 10px;">
+        Cariche dello <strong>stesso segno si respingono</strong>, cariche di
+        <strong>segno opposto si attraggono</strong>. L'intensità della forza segue una legge
+        del tipo <strong>inverso del quadrato</strong> della distanza, come la gravitazione.
+      </p>
+    </div>
+  </div>
+
+  <h2>1. La Carica Elettrica</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/fisica/videos/carica_coulomb/CaricaElettrica.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> esistono due tipi di carica, e la carica totale è sempre un
+      multiplo intero di una carica elementare.
+      <ul>
+        <li>Carica <strong>positiva</strong> e <strong>negativa</strong></li>
+        <li>Quantizzazione: <strong>q = n · e</strong>, con e = 1,6 × 10⁻¹⁹ C</li>
+        <li>L'unità di misura è il <strong>coulomb (C)</strong></li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>2. Attrazione e Repulsione</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/fisica/videos/carica_coulomb/AttrazioneRepulsione.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> la regola fondamentale sul verso della forza tra due
+      cariche.
+
+      <div class="key-concept">
+        <strong>Regola:</strong> cariche dello <strong>stesso segno si respingono</strong>,
+        cariche di <strong>segno opposto si attraggono</strong>. La forza è sempre diretta lungo
+        la retta che unisce le due cariche.
+      </div>
+    </div>
+  </div>
+
+  <h2>3. La Legge di Coulomb</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/fisica/videos/carica_coulomb/LeggeCoulomb.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> l'intensità della forza tra due cariche puntiformi.
+
+      <div class="key-concept">
+        <strong>Formula:</strong> F = k · q₁q₂ / r², con k ≈ 9 × 10⁹ N·m²/C². La forza
+        <strong>cresce</strong> con il prodotto delle cariche e <strong>diminuisce</strong> con
+        il quadrato della distanza.
+      </div>
+    </div>
+  </div>
+
+  <h2>4. Un Esempio Numerico</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/fisica/videos/carica_coulomb/EsempioCoulomb.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> calcoliamo la forza tra due cariche note a una data
+      distanza.
+
+      <div class="steps">
+        <strong>Dati: q₁ = 2 μC, q₂ = 3 μC, r = 0,1 m</strong>
+        <ol>
+          <li>F = 9 × 10⁹ · (2 × 10⁻⁶)(3 × 10⁻⁶) / (0,1)²</li>
+          <li>F = 9 × 10⁹ · 6 × 10⁻¹² / 10⁻²</li>
+          <li>F = <strong>5,4 N</strong> (repulsiva: cariche entrambe positive)</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <h2>5. Analogia con la Gravitazione</h2>
+  <div class="video-container">
+    <VideoPlayer src="/media/fisica/videos/carica_coulomb/AnalogiaGravitazione.mp4" />
+    <div class="description">
+      <strong>Descrizione:</strong> la legge di Coulomb ha la stessa struttura della legge di
+      gravitazione universale di Newton.
+
+      <div class="key-concept">
+        <strong>Confronto:</strong>
+        <ul>
+          <li>Forza elettrica: F = k · q₁q₂ / r²</li>
+          <li>Forza gravitazionale: F = G · m₁m₂ / r²</li>
+        </ul>
+        Entrambe vanno come <strong>1/r²</strong>, ma la forza elettrica può
+        <strong>attrarre o respingere</strong>, mentre la gravità può solo attrarre.
+      </div>
+    </div>
+  </div>
+
+  <h2>Riepilogo</h2>
+  <div class="intro-section">
+    <p>I fondamenti dell'elettrostatica:</p>
+    <ol>
+      <li><strong>Due cariche:</strong> positiva e negativa, quantizzate (q = n·e)</li>
+      <li><strong>Verso della forza:</strong> uguali si respingono, opposte si attraggono</li>
+      <li><strong>Legge di Coulomb:</strong> F = k · q₁q₂ / r²</li>
+      <li><strong>Analogia:</strong> stessa forma della gravitazione (1/r²)</li>
+    </ol>
+    <p>
+      Nella prossima lezione introdurremo il <strong>campo elettrico</strong> e le
+      <strong>linee di campo</strong>, il modo moderno di descrivere come una carica influenza
+      lo spazio attorno a sé.
+    </p>
+  </div>
+</LessonLayout>
